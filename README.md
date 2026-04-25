@@ -323,8 +323,11 @@ espzero includes three runtime warnings designed to save beginners from common h
 | ESP32-C3 Mini | GPIO 8 (active-low) | 0–4 | None | None |
 | M5Stack ATOM Lite | GPIO 27 (RGB) | 33,35,36 | 0,2,4,12–15,25–27 | T0(4),T3(15) |
 | Wemos D1 Mini32 | GPIO 2 (active-low) | 32–39 | 0,2,4,12–15,25–27 | T0(4)–T9(32) |
+| NodeMCU V3 Lolin (ESP8266) | GPIO 2 (active-low) | A0 only (10-bit, 0–1.0 V) | None | None |
 
 > \* ADC2 pins cannot be used while WiFi is active. For educational use, stick to ADC1 pins only.
+>
+> **ESP8266 ADC note:** A0 accepts 0–1.0 V only. Use a voltage divider (e.g. 220 kΩ + 100 kΩ) to measure 3.3 V signals safely.
 
 ---
 
