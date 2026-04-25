@@ -85,9 +85,8 @@ def begin(board="auto"):
             )
         mod_name, cls_name = _PROFILE_MAP[board]
         # Dynamically import the profile module within the package
-        import importlib
         full_mod_name = __name__ + "." + mod_name
-        mod = importlib.import_module(full_mod_name)
+        mod = __import__(full_mod_name, None, None, [cls_name])
         _hal._profile = getattr(mod, cls_name)()
 
     print("[espzero] Board: {} ({})".format(
