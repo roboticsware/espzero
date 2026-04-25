@@ -19,15 +19,33 @@ mpremote cp -r espzero/ :espzero/
 
 ```python
 import espzero
-espzero.begin()                    # auto-detect board from sys.implementation
-# or explicitly:
-espzero.begin("esp32_devkit_v1")
+espzero.begin()                # initialise: auto-detect board
 
+# Built-in LED — available after begin()
+from espzero import esp_led
+from time import sleep
+
+while True:
+    esp_led.on()
+    sleep(1)
+    esp_led.off()
+    sleep(1)
+```
+
+Specify a board explicitly instead of auto-detection:
+
+```python
+import espzero
+espzero.begin("esp32_38pin_nodemcu")   # or "esp32_devkit_v1", "esp8266_lolin_v3", ...
+```
+
+Use other components after `begin()`:
+
+```python
 from espzero import LED, Button, Servo, WiFi
 
-led = LED("internal")              # built-in LED — the profile maps the alias to the real pin
-btn = Button(0)                    # GPIO 0 button
-
+led = LED("internal")              # built-in LED — profile maps alias to real GPIO
+btn = Button(0)                    # GPIO 0 (BOOT button)
 led.blink(on_time=0.5, n=5)       # identical API to picozero
 
 # WiFi (ESP32-specific)
@@ -35,16 +53,16 @@ wifi = WiFi()
 ip = wifi.connect("MySSID", "password")
 print("IP:", ip)
 
-# Capacitive touch (ESP32-specific, WROOM/WROVER only)
+# Capacitive touch (WROOM/WROVER only)
 from espzero import CapTouch
 touch = CapTouch(pin=4)            # GPIO 4 = T0
 if touch.is_touched:
-    led.on()
+    esp_led.on()
 
-# Servo — uses SERVO_FREQ = 50 Hz from the profile
+# Servo
 servo = Servo(13)
 servo.mid()
-servo.value = 0.75                 # same 0–1 range as picozero
+servo.value = 0.75                 # 0–1 range, same as picozero
 ```
 
 ---
