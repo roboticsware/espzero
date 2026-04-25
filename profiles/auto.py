@@ -17,8 +17,16 @@ def detect():
     Detect the current board at runtime by inspecting sys.implementation._machine.
 
     Returns a board key string that corresponds to an entry in
-    espzero._PROFILE_MAP (e.g. 'esp32_devkit_v1').
-    Falls back to 'esp32_devkit_v1' (WROOM) if detection fails.
+    espzero._PROFILE_MAP (e.g. 'esp32_38pin_nodemcu').
+    Falls back to 'esp32_38pin_nodemcu' (38-pin NodeMCU) if detection fails.
+
+    Note: ESP32 DevKit V1 (30-pin) and ESP32 38-Pin NodeMCU share the same
+    WROOM-32 chip and firmware, so they cannot be distinguished at runtime.
+    The 38-pin NodeMCU is used as the generic ESP32 fallback because:
+      1. It is the more widely available board in the target region.
+      2. Its profile includes RESTRICTED_PINS [6-11] safety protection.
+    If your board is a 30-pin DevKit V1, call espzero.begin('esp32_devkit_v1')
+    explicitly to use its profile (active-low LED, no RESTRICTED_PINS).
     """
     try:
         machine_str = sys.implementation._machine.lower()
@@ -32,9 +40,11 @@ def detect():
     elif "esp8266" in machine_str:
         return "esp8266_lolin_v3"
     elif "esp32" in machine_str:
-        return "esp32_devkit_v1"
+        # Cannot distinguish 38-pin NodeMCU from DevKit V1 — same WROOM-32 chip.
+        # Default to 38-pin NodeMCU (more common; includes flash-pin safety guard).
+        return "esp32_38pin_nodemcu"
     else:
         print("[espzero] WARNING: Could not auto-detect board. "
-              "Falling back to 'esp32_devkit_v1' profile. "
+              "Falling back to 'esp32_38pin_nodemcu' profile. "
               "Call espzero.begin('<board_name>') to specify your board.")
-        return "esp32_devkit_v1"
+        return "esp32_38pin_nodemcu"
