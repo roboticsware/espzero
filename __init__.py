@@ -6,11 +6,21 @@
 espzero/__init__.py
 Public entry point for the espzero library — an ESP32 port of picozero.
 
-Quick start::
+Quick start — picozero style (no explicit begin() needed)::
+
+    from espzero import esp_led       # board is auto-detected on import
+    from time import sleep
+
+    while True:
+        esp_led.on()
+        sleep(1)
+        esp_led.off()
+        sleep(1)
+
+Or specify a board explicitly before using any other class::
 
     import espzero
-    espzero.begin()                    # auto-detect board
-    espzero.begin("esp32_devkit_v1")   # or specify explicitly
+    espzero.begin("esp32_devkit_v1")  # override auto-detection
 
     from espzero import LED, Button, Servo, WiFi
 
@@ -34,8 +44,54 @@ _PROFILE_MAP = {
     "esp32_38pin_nodemcu":("profiles.esp32_boards", "ESP32_38Pin_NodeMCU"),
 }
 
-# ── Convenience objects created by begin() ─────────────────────
-esp_led         = None   # Built-in LED (DigitalLED or NeoPixelLED)
+# ── esp_led: lazy proxy for the built-in LED ──────────────────
+# Behaves exactly like a DigitalLED / NeoPixelLED but auto-calls begin()
+# on first use so that 'from espzero import esp_led' works without an
+# explicit begin() call — same pattern as picozero's pico_led.
+
+class _LazyLED:
+    """
+    Transparent proxy for the board's built-in LED.
+
+    On the first method call or attribute access, auto-detects the board
+    (begin('auto')) if begin() has not already been called.  After that,
+    every call is forwarded to the real LED object created by begin().
+
+    Calling begin('specific_board') before accessing esp_led is also
+    supported — the proxy picks up the LED set by that call.
+    """
+
+    def _real(self):
+        """Return the actual LED object, initialising if necessary."""
+        global _esp_led_obj
+        if _esp_led_obj is None:
+            begin()           # auto-detect board and create the real LED
+        return _esp_led_obj
+
+    # ── Core LED API ───────────────────────────────────────────────
+    def on(self, *a, **kw):    return self._real().on(*a, **kw)
+    def off(self):             return self._real().off()
+    def toggle(self):          return self._real().toggle()
+    def blink(self, *a, **kw): return self._real().blink(*a, **kw)
+    def pulse(self, *a, **kw): return self._real().pulse(*a, **kw)
+    def close(self):           return self._real().close()
+
+    @property
+    def value(self):           return self._real().value
+    @value.setter
+    def value(self, v):        self._real().value = v
+
+    @property
+    def is_active(self):       return self._real().is_active
+    @property
+    def is_lit(self):          return self._real().is_active
+
+    def __str__(self):
+        return str(self._real())
+
+
+_esp_led_obj    = None   # backing LED object; set by begin()
+esp_led         = _LazyLED()  # always-valid proxy — import safely at any time
 esp_temp_sensor = None   # Built-in temperature sensor (ESPTemperatureSensor)
 
 
@@ -50,7 +106,7 @@ def begin(board="auto"):
 
     Raises ``ValueError`` for unknown board name strings.
     """
-    global esp_led, esp_temp_sensor
+    global _esp_led_obj, esp_temp_sensor
 
     from profiles._base import BoardProfile
 
@@ -76,18 +132,19 @@ def begin(board="auto"):
     print("[espzero] Board: {} ({})".format(
         _hal._profile.NAME, _hal._profile.CHIP))
 
-    # Initialise built-in LED — branch on LED type declared in the profile
+    # Initialise built-in LED — branch on LED type declared in the profile.
+    # Stores the real object in _esp_led_obj; esp_led proxy picks it up automatically.
     from _core import NeoPixelLED, LED as _LED
     try:
         p = _hal._profile
         if p.INTERNAL_LED_TYPE == "neopixel":
-            esp_led = NeoPixelLED(p.resolve_pin("internal"))
+            _esp_led_obj = NeoPixelLED(p.resolve_pin("internal"))
         else:
-            esp_led = _LED("internal",
-                           pwm=False,
-                           active_high=p.INTERNAL_LED_ACTIVE_HIGH)
+            _esp_led_obj = _LED("internal",
+                                pwm=False,
+                                active_high=p.INTERNAL_LED_ACTIVE_HIGH)
     except Exception:
-        esp_led = None
+        _esp_led_obj = None
 
     # Initialise built-in temperature sensor
     from _core import ESPTemperatureSensor
