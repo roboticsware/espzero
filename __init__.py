@@ -33,7 +33,7 @@ ADC attenuation, strapping pins, NeoPixel vs GPIO LEDs, etc.) so that
 user code remains identical across supported boards.
 """
 
-import _hal
+from . import _hal
 
 # ── Board → profile class mapping ─────────────────────────────
 # Key   : user-facing board name (passed to begin())
@@ -67,13 +67,13 @@ def begin(board="auto"):
     """
     global esp_led, esp_temp_sensor
 
-    from profiles._base import BoardProfile
+    from .profiles._base import BoardProfile
 
     if isinstance(board, BoardProfile):
         _hal._profile = board
 
     elif board == "auto":
-        from profiles.auto import detect
+        from .profiles.auto import detect
         begin(detect())
         return
 
@@ -84,15 +84,17 @@ def begin(board="auto"):
                 "Available boards: {}".format(board, list(_PROFILE_MAP.keys()))
             )
         mod_name, cls_name = _PROFILE_MAP[board]
+        # Dynamically import the profile module within the package
         import importlib
-        mod = importlib.import_module(mod_name)
+        full_mod_name = __name__ + "." + mod_name
+        mod = importlib.import_module(full_mod_name)
         _hal._profile = getattr(mod, cls_name)()
 
     print("[espzero] Board: {} ({})".format(
         _hal._profile.NAME, _hal._profile.CHIP))
 
     # Initialise built-in LED — branch on LED type declared in the profile
-    from _core import NeoPixelLED, LED as _LED
+    from ._core import NeoPixelLED, LED as _LED
     try:
         p = _hal._profile
         if p.INTERNAL_LED_TYPE == "neopixel":
@@ -105,12 +107,12 @@ def begin(board="auto"):
         esp_led = None
 
     # Initialise built-in temperature sensor
-    from _core import ESPTemperatureSensor
+    from ._core import ESPTemperatureSensor
     esp_temp_sensor = ESPTemperatureSensor()
 
 
 # ── Re-export public API ───────────────────────────────────────
-from _core import (
+from ._core import (
     LED, DigitalLED, PWMLED, NeoPixelLED,
     Buzzer, PWMBuzzer, Speaker,
     RGBLED,
@@ -124,5 +126,5 @@ from _core import (
     DigitalOutputDevice, PWMOutputDevice,
     DigitalInputDevice, AnalogInputDevice,
 )
-from _wifi  import WiFi
-from _touch import CapTouch
+from ._wifi  import WiFi
+from ._touch import CapTouch
