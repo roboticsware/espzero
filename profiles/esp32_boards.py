@@ -198,3 +198,54 @@ class ESP8266LolinV3(BoardProfile):
         """
         from machine import ADC
         return ADC(0)   # channel 0 = A0 pin, the sole ADC input on ESP8266
+
+
+# ──────────────────────────────────────────────────────────────
+# ESP32 38-Pin NodeMCU (Type-C / Micro-USB combo)
+# ──────────────────────────────────────────────────────────────
+class ESP32_38Pin_NodeMCU(BoardProfile):
+    """
+    ESP32 38-Pin NodeMCU development board (Type-C & Micro-USB combo).
+
+    Built-in LED: GPIO 2 (active-HIGH — lit when HIGH, unlike most WROOM boards).
+    I2C defaults: SDA=GPIO 21, SCL=GPIO 22.
+    BOOT button: GPIO 0.
+
+    GPIO 6-11 are internally wired to the SPI flash memory.
+    Driving them as GPIO will corrupt flash and hang the system.
+    Safe user GPIOs: 1-5, 12-23, 25-27, 32-39
+      (34, 35, 36, 39 are input-only — no internal pull-up/down).
+
+    ADC1: GPIO 32-39   ADC2: GPIO 0, 2, 4, 12-15, 25-27 (unusable with WiFi)
+    Strapping pins: GPIO 0, 2, 5, 12, 15
+    """
+    NAME = "esp32_38pin_nodemcu"
+    CHIP = "esp32"
+
+    PIN_ALIASES = {
+        # Built-in LED (active-HIGH on this board)
+        "internal":    2,
+        "led":         2,
+        "builtin_led": 2,
+        # Built-in BOOT button
+        "button": 0,
+        # Standard I2C bus
+        "sda": 21,
+        "scl": 22,
+    }
+
+    ADC_ATTEN = _atten()    # ATTN_11DB → 0–3.6 V range
+    ADC_VREF  = 3.6
+
+    # This board's built-in LED is active-HIGH (HIGH = on), unlike most ESP32 boards
+    INTERNAL_LED_TYPE        = "digital"
+    INTERNAL_LED_ACTIVE_HIGH = True
+
+    # Boot strapping pins — attaching buttons here may cause boot failures
+    STRAPPING_PINS = [0, 2, 5, 12, 15]
+
+    # ADC2 pins — cannot be read while WiFi is active
+    ADC2_PINS = [0, 2, 4, 12, 13, 14, 15, 25, 26, 27]
+
+    # Flash-memory pins — NEVER use as GPIO; doing so corrupts flash
+    RESTRICTED_PINS = [6, 7, 8, 9, 10, 11]

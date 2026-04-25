@@ -25,12 +25,13 @@ import _hal
 # Key   : user-facing board name (passed to begin())
 # Value : (module_name, class_name) for lazy import
 _PROFILE_MAP = {
-    "esp32_devkit_v1": ("profiles.esp32_boards", "ESP32DevKitV1"),
-    "esp32_s3_devkit" : ("profiles.esp32_boards", "ESP32S3DevKit"),
-    "esp32_c3_mini"   : ("profiles.esp32_boards", "ESP32C3Mini"),
-    "m5stack_atom"    : ("profiles.esp32_boards", "M5StackAtom"),
-    "wemos_d1_mini32" : ("profiles.esp32_boards", "WemosD1Mini32"),
-    "esp8266_lolin_v3": ("profiles.esp32_boards", "ESP8266LolinV3"),
+    "esp32_devkit_v1":    ("profiles.esp32_boards", "ESP32DevKitV1"),
+    "esp32_s3_devkit":    ("profiles.esp32_boards", "ESP32S3DevKit"),
+    "esp32_c3_mini":      ("profiles.esp32_boards", "ESP32C3Mini"),
+    "m5stack_atom":       ("profiles.esp32_boards", "M5StackAtom"),
+    "wemos_d1_mini32":    ("profiles.esp32_boards", "WemosD1Mini32"),
+    "esp8266_lolin_v3":   ("profiles.esp32_boards", "ESP8266LolinV3"),
+    "esp32_38pin_nodemcu":("profiles.esp32_boards", "ESP32_38Pin_NodeMCU"),
 }
 
 # ── Convenience objects created by begin() ─────────────────────
