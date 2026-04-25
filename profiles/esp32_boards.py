@@ -156,9 +156,13 @@ class ESP8266LolinV3(BoardProfile):
     """
     NodeMCU V3 Lolin (ESP8266).
     Built-in LED: GPIO 2 (active-low, blue).
-    Single ADC: A0 only — 10-bit (0-1023), input range 0-1.0 V.
-    D-pin labels on the board silkscreen differ from GPIO numbers;
-    use the D0-D8 aliases so user code is board-label friendly.
+    Single ADC: A0 only — 10-bit (0-1023).
+      The Lolin V3 board includes an on-board voltage divider (220 kΩ / 100 kΩ)
+      that extends the A0 input range from the bare ESP8266's 0-1.0 V to 0-3.3 V.
+      ADC_VREF is therefore 3.3 V for this board.
+    D-pin labels on the silkscreen differ from GPIO numbers;
+    use the D0-D8 aliases so user code matches the board labels.
+    Standard I2C: SDA=D2 (GPIO 4), SCL=D1 (GPIO 5).
     No ADC2 group, no TouchPad, no ATTN setting.
     """
     NAME = "esp8266_lolin_v3"
@@ -174,12 +178,15 @@ class ESP8266LolinV3(BoardProfile):
         # Built-in LED aliases
         "internal": 2,
         "led":      2,
+        # Standard I2C bus (matches Arduino/MicroPython convention for Lolin V3)
+        "sda": 4,   # D2
+        "scl": 5,   # D1
     }
 
-    # ESP8266 has a 10-bit ADC (0-1023) with a 0-1.0 V input range.
+    # 10-bit ADC (0-1023). Lolin V3 on-board divider extends range to 3.3 V.
     ADC_MAX_RAW = 1023
     ADC_ATTEN   = None      # ESP8266 has no attenuation register
-    ADC_VREF    = 1.0       # A0 accepts 0–1.0 V (use a voltage divider for 3.3 V)
+    ADC_VREF    = 3.3       # 0–3.3 V thanks to the Lolin V3 voltage divider
 
     INTERNAL_LED_TYPE        = "digital"
     INTERNAL_LED_ACTIVE_HIGH = False    # active-low
