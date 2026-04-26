@@ -1,103 +1,165 @@
 예제 (Recipes)
 ==============
 
-이 섹션은 ``espzero``를 사용하여 다양한 센서와 부품을 제어하는 방법을 설명합니다.
+이 섹션은 ``espzero``를 사용하여 다양한 센서와 부품을 제어하는 실전 예제를 다룹니다. 모든 예제는 ``import espzero; espzero.begin()``이 호출되었다고 가정합니다.
 
-보드 초기화
-----------
+내장 LED (Built-in LED)
+---------------------
 
-모든 코드의 시작 부분에는 반드시 ``begin()``을 호출해야 합니다.
-
-.. code-block:: python
-
-    import espzero
-    espzero.begin()
-
-LED 제어
--------
-
-단순 켜기/끄기
-~~~~~~~~~~~~~
+보드에 내장된 LED를 제어하는 가장 간단한 방법입니다.
 
 .. code-block:: python
 
-    from espzero import LED
+    from espzero import esp_led
     from time import sleep
 
-    led = LED(4) # GPIO 4번에 연결된 LED
-
-    led.on()
+    esp_led.on()  # 켜기
     sleep(1)
-    led.off()
+    esp_led.off() # 끄기
+    esp_led.blink() # 백그라운드에서 깜빡이기
 
-깜빡이기 (Blink)
-~~~~~~~~~~~~~~
+디지털 출력 (LED)
+---------------
 
-``espzero``의 강력한 기능 중 하나는 백그라운드 깜빡임입니다. ``wait=False``(기본값)를 사용하면 LED가 깜빡이는 동안 다른 코드를 계속 실행할 수 있습니다.
+일반 LED를 특정 핀에 연결하여 제어합니다.
 
 .. code-block:: python
 
     from espzero import LED
 
-    led = LED(4)
-    led.blink(on_time=0.5, off_time=0.5, n=10) # 10번 깜빡임
+    led = LED(4) # GPIO 4번
 
-버튼 입력
---------
+    led.on()
+    led.off()
+    led.toggle()
+    
+    # 0.5초 켜지고 0.5초 꺼지기를 5번 반복 (비동기)
+    led.blink(on_time=0.5, off_time=0.5, n=5)
 
-버튼 누름 감지
-~~~~~~~~~~~~~
+PWM 제어 (밝기 조절)
+~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    led.value = 0.5 # 50% 밝기
+    led.pulse()     # 서서히 밝아졌다 어두워졌다 반복
+
+RGB LED
+-------
+
+빨강, 초록, 파랑 핀을 각각 연결하여 다양한 색상을 만듭니다.
+
+.. code-block:: python
+
+    from espzero import RGBLED
+
+    rgb = RGBLED(red=25, green=26, blue=27)
+
+    rgb.color = (255, 0, 0)   # 빨간색
+    rgb.color = (0, 255, 0)   # 초록색
+    rgb.color = (255, 255, 0) # 노란색 (빨강+초록)
+    rgb.off()
+
+부저 및 스피커 (Buzzer & Speaker)
+-------------------------------
+
+단순 경고음 (Beep)
+~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    from espzero import Buzzer
+
+    bz = Buzzer(15)
+    bz.beep(on_time=0.1, off_time=0.1, n=3) # "삑-삑-삑"
+
+멜로디 연주 (Play)
+~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    from espzero import Speaker
+
+    spk = Speaker(15)
+
+    # (음계, 박자) 튜플의 리스트
+    tune = [
+        ('c4', 0.5), ('d4', 0.5), ('e4', 0.5), ('c4', 0.5),
+        ('e4', 0.5), ('c4', 0.5), ('g4', 1.0)
+    ]
+    spk.play(tune)
+
+입력 장치 (Input Devices)
+-----------------------
+
+버튼 (Button)
+~~~~~~~~~~~~
 
 .. code-block:: python
 
     from espzero import Button
 
-    button = Button(5) # GPIO 5번에 연결된 버튼
+    btn = Button(5)
 
-    if button.is_pressed:
-        print("버튼이 눌려있습니다!")
+    btn.when_pressed = lambda: print("눌림!")
+    btn.when_released = lambda: print("떨어짐!")
 
-이벤트 기반 처리 (Callback)
-~~~~~~~~~~~~~~~~~~~~~~~~
+가변저항 (Potentiometer)
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
-    from espzero import Button
+    from espzero import Pot
 
-    button = Button(5)
+    pot = Pot(34) # 아날로그 핀 (ADC)
 
-    def hello():
-        print("안녕하세요!")
+    print("현재 값 (0-1):", pot.value)
+    print("전압 (V):", pot.voltage)
 
-    button.when_pressed = hello
+초음파 거리 센서 (Distance Sensor)
+-------------------------------
 
-    # 프로그램이 종료되지 않도록 무한 루프
+HC-SR04 등의 초음파 센서를 사용하여 거리를 측정합니다.
+
+.. code-block:: python
+
+    from espzero import DistanceSensor
+
+    # echo=14, trigger=13
+    ds = DistanceSensor(echo=14, trigger=13)
+
     while True:
-        pass
+        print("거리: ", ds.distance, "m")
+        sleep(0.5)
 
-서보 모터 (Servo)
----------------
+온도 센서 (Temperature Sensor)
+----------------------------
 
-.. code-block:: python
+내장 온도 센서
+~~~~~~~~~~~~
 
-    from espzero import Servo
-
-    servo = Servo(18)
-
-    servo.min() # 0도
-    servo.mid() # 90도
-    servo.max() # 180도
-    servo.value = 0.5 # 중간 위치
-
-WiFi 연결
---------
+ESP32 칩 내부의 온도를 측정합니다. (주의: 외부 기온과는 차이가 있을 수 있습니다.)
 
 .. code-block:: python
 
-    from espzero import WiFi
+    from espzero import esp_temp_sensor
 
-    wifi = WiFi()
-    wifi.connect("SSID_NAME", "PASSWORD")
+    print("칩 내부 온도:", esp_temp_sensor.temp, "C")
 
-    if wifi.is_connected:
-        print("IP 주소:", wifi.ip)
+복합 예제: 버튼으로 조명 제어
+--------------------------
+
+버튼을 누를 때마다 LED가 토글되는 예제입니다.
+
+.. code-block:: python
+
+    from espzero import LED, Button, begin
+
+    begin()
+    led = LED(4)
+    btn = Button(5)
+
+    btn.when_pressed = led.toggle
+
+    while True:
+        pass # 이벤트 대기

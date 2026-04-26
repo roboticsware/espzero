@@ -1,48 +1,73 @@
-espzero
-=======
+espzero: ESP32를 위한 가장 쉬운 코딩 라이브러리
+==========================================
 
-**espzero**는 Raspberry Pi Pico용 `picozero` 라이브러리를 ESP32 및 ESP8266 환경에서도 동일하게 사용할 수 있도록 이식한 라이브러리입니다. 초보자도 쉽고 직관적으로 하드웨어를 제어할 수 있도록 설계되었습니다.
+.. image:: https://raw.githubusercontent.com/roboticsware/espzero/main/docs/_static/logo.png
+   :width: 200px
+   :align: center
+   :alt: espzero logo
 
-.. image:: https://img.shields.io/github/license/roboticsware/espzero
-   :target: https://github.com/roboticsware/espzero/blob/main/LICENSE
-   :alt: License
+**espzero**는 ESP32 및 ESP8266 마이크로컨트롤러를 위한 초보자 친화적인 하드웨어 제어 라이브러리입니다. Raspberry Pi Pico의 인기 라이브러리인 ``picozero``의 사용법을 그대로 ESP32 환경에서 사용할 수 있게 해줍니다.
 
-특징
-----
-
-* **직관적인 API**: `LED.on()`, `Button.when_pressed` 등 사람이 이해하기 쉬운 함수명을 사용합니다.
-* **보드 프로필 시스템**: ESP32의 수많은 변종 보드들을 자동으로 감지하고 핀 맵을 맞춰줍니다.
-* **비동기 지원**: 복잡한 타이머 설정 없이도 여러 개의 LED를 동시에 다른 주기로 깜빡일 수 있습니다.
-
-빠른 시작
+핵심 철학
 --------
 
-라이브러리를 설치한 후, 가장 먼저 ``begin()`` 함수를 호출하여 보드를 초기화해야 합니다.
+* **단순함**: 복잡한 레지스터 설정이나 PWM 주파수 계산 없이, ``LED.on()`` 한 줄로 시작하세요.
+* **추상화**: 어떤 보드를 쓰더라도 코드는 동일하게 유지됩니다. 보드별 차이는 ``espzero.begin()``이 처리합니다.
+* **현대적**: 비동기 스케줄러를 내장하여 백그라운드 작업을 손쉽게 처리합니다.
+
+주요 기능
+--------
+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
+
+   * - 구성 요소
+     - 지원 기능
+   * - **출력 장치**
+     - LED, PWM LED, RGB LED, Buzzer, Speaker (Melody), Motor
+   * - **입력 장치**
+     - Button, Switch, Motion Sensor, Touch, Potentiometer
+   * - **센서**
+     - Distance (HC-SR04), Temperature (Internal/External)
+   * - **무선 통신**
+     - WiFi 간편 연결 및 상태 관리
+
+시작하기
+-------
+
+1. **설치**: Mu 에디터의 패키지 관리자나 ``pip``를 통해 ``espzero``를 설치합니다.
+2. **초기화**: 스크립트 상단에서 ``espzero.begin()``을 호출합니다.
 
 .. code-block:: python
 
     import espzero
-    from time import sleep
-
-    # 보드 자동 감지 및 초기화
+    from espzero import LED
+    
     espzero.begin()
-
-    # 내장 LED 깜빡이기
-    while True:
-        espzero.esp_led.on()
-        sleep(1)
-        espzero.esp_led.off()
-        sleep(1)
+    led = LED(4)
+    led.pulse() # 부드럽게 깜빡이기
 
 목차
 ----
 
 .. toctree::
-   :maxcode-depth: 2
+   :maxdepth: 2
+   :caption: 가이드 및 레시피
 
    recipes
-   api
    boards
+   api
 
-.. note::
-   이 프로젝트는 오픈 소스이며 `GitHub <https://github.com/roboticsware/espzero>`_에서 소스 코드를 확인하실 수 있습니다.
+.. toctree::
+   :maxdepth: 1
+   :caption: 프로젝트 정보
+
+   contributing
+   license
+
+도움이 필요하신가요?
+------------------
+
+* **GitHub 저장소**: `Issues <https://github.com/roboticsware/espzero/issues>`_ 탭에 질문을 남겨주세요.
+* **커뮤니티**: 관련 포럼이나 블로그를 통해 다양한 활용 사례를 공유하고 있습니다.

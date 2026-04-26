@@ -1,24 +1,58 @@
-API Reference
-=============
+API 레퍼런스 (API Reference)
+==========================
 
-이 섹션은 ``espzero`` 라이브러리의 모든 클래스와 함수에 대한 상세 명세입니다.
+이 섹션은 ``espzero`` 라이브러리의 모든 공개 클래스와 함수에 대한 상세 사양을 다룹니다.
 
-Core 클래스
-----------
+핵심 함수 (Core Functions)
+------------------------
 
-.. autoclass:: espzero.LED
+.. autofunction:: espzero.begin
+
+출력 장치 (Output Devices)
+------------------------
+
+DigitalLED
+~~~~~~~~~~
+.. autoclass:: espzero.DigitalLED
    :members:
 
+PWMLED
+~~~~~~
+.. autoclass:: espzero.PWMLED
+   :members:
+
+RGBLED
+~~~~~~
+.. autoclass:: espzero.RGBLED
+   :members:
+
+Speaker
+~~~~~~~
+.. autoclass:: espzero.Speaker
+   :members:
+
+입력 장치 (Input Devices)
+-----------------------
+
+Button
+~~~~~~
 .. autoclass:: espzero.Button
    :members:
 
-.. autoclass:: espzero.Servo
+Potentiometer
+~~~~~~~~~~~~~
+.. autoclass:: espzero.Potentiometer
    :members:
 
-WiFi 및 시스템
-------------
+센서 (Sensors)
+-------------
 
-.. autoclass:: espzero.WiFi
+DistanceSensor
+~~~~~~~~~~~~~~
+.. autoclass:: espzero.DistanceSensor
    :members:
 
-.. autofunction:: espzero.begin
+ESPTemperatureSensor
+~~~~~~~~~~~~~~~~~~~~
+.. autoclass:: espzero.ESPTemperatureSensor
+   :members:
