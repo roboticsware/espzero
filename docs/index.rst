@@ -9,7 +9,8 @@ espzero: ESP32를 위한 가장 쉬운 코딩 라이브러리
 **espzero**는 ESP32 및 ESP8266 마이크로컨트롤러를 위한 초보자 친화적인 하드웨어 제어 라이브러리입니다. Raspberry Pi Pico의 인기 라이브러리인 ``picozero``의 사용법을 그대로 ESP32 환경에서 사용할 수 있게 해줍니다.
 
 .. tip::
-   🌐 **English Version**: You can find the English version of this documentation in the `docs/en/` directory or select the language in the sidebar.
+   🌐 **English Version**: You can find the English version of this documentation in the `docs/en/` directory.
+   🌐 **O'zbekcha versiya**: Ushbu hujjatning o'zbekcha versiyasini `docs/uz/` katalogida topishingiz mumkin.
 
 핵심 철학
 --------

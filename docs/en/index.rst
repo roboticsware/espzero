@@ -9,7 +9,8 @@ espzero: The Easiest Coding Library for ESP32
 **espzero** is a beginner-friendly hardware control library for ESP32 and ESP8266 microcontrollers. It brings the simplicity of the popular ``picozero`` library to the ESP32 ecosystem.
 
 .. tip::
-   🌐 **한국어 버전**: 이 문서의 한국어 버전은 `docs/` 루트 디렉토리에서 확인하거나 사이드바에서 언어를 선택할 수 있습니다.
+   🌐 **한국어 버전**: 이 문서의 한국어 버전은 `docs/` 루트 디렉토리에서 확인하실 수 있습니다.
+   🌐 **O'zbekcha versiya**: Ushbu hujjatning o'zbekcha versiyasini `docs/uz/` katalogida topishingiz mumkin.
 
 Core Philosophy
 ---------------
