@@ -48,10 +48,23 @@ _PROFILE_MAP = {
     "esp32_38pin_nodemcu":("profiles.esp32_boards", "ESP32_38Pin_NodeMCU"),
 }
 
-# ── Convenience objects — set by begin() ──────────────────────
-# Always call begin() before importing or accessing these objects.
-esp_led         = None   # Built-in LED (DigitalLED or NeoPixelLED)
-esp_temp_sensor = None   # Built-in temperature sensor
+# ── Internal state for convenience objects ─────────────────────
+_esp_led         = None   # Built-in LED (DigitalLED or NeoPixelLED)
+_esp_temp_sensor = None   # Built-in temperature sensor
+
+# Module-level __getattr__ (MicroPython 1.18+) for lazy loading.
+# This prevents NoneType errors if user imports before calling begin().
+def __getattr__(name):
+    if name == "esp_led":
+        if _esp_led is None:
+            raise RuntimeError(
+                "[espzero] ERROR: 'esp_led' is not initialized. "
+                "You must call espzero.begin() first."
+            )
+        return _esp_led
+    if name == "esp_temp_sensor":
+        return _esp_temp_sensor
+    raise AttributeError("module 'espzero' has no attribute '{}'".format(name))
 
 
 def begin(board="auto"):
@@ -65,7 +78,7 @@ def begin(board="auto"):
 
     Raises ``ValueError`` for unknown board name strings.
     """
-    global esp_led, esp_temp_sensor
+    global _esp_led, _esp_temp_sensor
 
     from .profiles._base import BoardProfile
 
@@ -97,17 +110,22 @@ def begin(board="auto"):
     try:
         p = _hal._profile
         if p.INTERNAL_LED_TYPE == "neopixel":
-            esp_led = NeoPixelLED(p.resolve_pin("internal"))
+            _esp_led = NeoPixelLED(p.resolve_pin("internal"))
         else:
-            esp_led = _LED("internal",
-                           pwm=False,
-                           active_high=p.INTERNAL_LED_ACTIVE_HIGH)
-    except Exception:
-        esp_led = None
+            _esp_led = _LED("internal",
+                            pwm=False,
+                            active_high=p.INTERNAL_LED_ACTIVE_HIGH)
+    except Exception as e:
+        print("[espzero] LED Init Error:", e)
+        _esp_led = None
 
     # Initialise built-in temperature sensor
-    from ._core import ESPTemperatureSensor
-    esp_temp_sensor = ESPTemperatureSensor()
+    try:
+        from ._core import ESPTemperatureSensor
+        _esp_temp_sensor = ESPTemperatureSensor()
+    except Exception as e:
+        print("[espzero] TempSensor Init Error:", e)
+        _esp_temp_sensor = None
 
 
 # ── Re-export public API ───────────────────────────────────────
