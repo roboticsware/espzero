@@ -1,7 +1,7 @@
 espzero: ESP32 uchun eng oson dasturlash kutubxonasi
 =============================================
 
-.. image:: https://raw.githubusercontent.com/roboticsware/espzero/main/docs/_static/logo.png
+.. image:: /images/logo.png
    :width: 200px
    :align: center
    :alt: espzero logotipi

@@ -1,7 +1,7 @@
 espzero: The Easiest Coding Library for ESP32
 =============================================
 
-.. image:: https://raw.githubusercontent.com/roboticsware/espzero/main/docs/_static/logo.png
+.. image:: /images/logo.png
    :width: 200px
    :align: center
    :alt: espzero logo

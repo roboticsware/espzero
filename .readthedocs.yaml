@@ -1,9 +1,18 @@
 version: 2
 
 build:
-  os: ubuntu-22.04
+  os: ubuntu-24.04
   tools:
     python: "3.10"
+  jobs:
+    pre_build:
+      - |
+        # MY_DOC_LANG이 en이나 uz일 때만 해당 폴더 내용을 루트로 복사
+        if [ "$MY_DOC_LANG" = "en" ]; then
+          cp -r docs/en/* docs/
+        elif [ "$MY_DOC_LANG" = "uz" ]; then
+          cp -r docs/uz/* docs/
+        fi
 
 python:
   install:
