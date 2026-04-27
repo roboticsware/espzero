@@ -1,13 +1,32 @@
-# Configuration file for the Sphinx documentation builder.
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
 
+# -- Path setup --------------------------------------------------------------
+sys.path.insert(0, os.path.abspath('..'))
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+
+# [추가] RTD 대시보드에서 설정할 환경 변수를 읽어옵니다 (기본값 'en')
+# 이 변수는 RTD 프로젝트 설정의 Environment Variables에서 지정할 수 있습니다.
+MY_DOC_LANG = os.environ.get('MY_DOC_LANG', 'en')
+
+# Mock out certain modules while building documentation on RTD
+class Mock:
+    __all__ = []
+    def __init__(self, *args, **kw): pass
+    def __call__(self, *args, **kw): return Mock()
+    def __getattr__(self, name): return Mock()
+
+if on_rtd:
+    sys.modules['machine'] = Mock()
+    sys.modules['micropython'] = Mock()
+    sys.modules['neopixel'] = Mock()
+    sys.modules['network'] = Mock()
+    sys.modules['esp32'] = Mock()
+
+# -- Project information -----------------------------------------------------
 project = 'espzero'
 copyright = '2024, Roboticsware'
 author = 'Roboticsware'
-
-# The full version, including alpha/beta/rc tags
 release = '0.1.0'
 
 # -- General configuration ---------------------------------------------------
@@ -19,7 +38,20 @@ extensions = [
 ]
 
 templates_path = ['_templates']
+
+# [수정] 언어별로 빌드할 때 다른 언어 폴더가 포함되지 않도록 제외 설정을 동적으로 변경합니다.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+
+if MY_DOC_LANG == 'ko':
+    exclude_patterns.extend(['uz/**', 'en/**']) 
+    language = 'ko'
+elif MY_DOC_LANG == 'uz':
+    exclude_patterns.extend(['ko/**', 'en/**'])
+    language = 'uz'
+else:
+    # Default to English (at the root or in en/)
+    exclude_patterns.extend(['ko/**', 'uz/**'])
+    language = 'en'
 
 # -- Options for HTML output -------------------------------------------------
 html_theme = 'sphinx_rtd_theme'

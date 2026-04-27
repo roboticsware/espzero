@@ -40,7 +40,20 @@ espzero: ESP32를 위한 가장 쉬운 코딩 라이브러리
 시작하기
 -------
 
-1. **설치**: Mu 에디터의 패키지 관리자나 ``pip``를 통해 ``espzero``를 설치합니다.
+1. **설치**: 
+   
+   보드에 직접 설치하려면 ``mpremote``를 추천합니다:
+   
+   .. code-block:: bash
+   
+       mpremote mip install espzero
+
+   또는 PC 개발 환경에서 자동 완성을 위해 ``pip``로 설치할 수 있습니다:
+   
+   .. code-block:: bash
+   
+       pip install espzero
+
 2. **초기화**: 스크립트 상단에서 ``espzero.begin()``을 호출합니다.
 
 .. code-block:: python

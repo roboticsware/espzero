@@ -1,5 +1,8 @@
 # espzero
 
+[![PyPI version](https://badge.fury.io/py/espzero.svg)](https://badge.fury.io/py/espzero)
+[![License](https://img.shields.io/github/license/roboticsware/espzero)](https://github.com/roboticsware/espzero/blob/main/LICENSE)
+
 > A single MicroPython library that ports [picozero](https://github.com/raspberrypilearning/picozero) to the ESP32 family (WROOM, S3, C3, and more).  
 > **"One codebase, many boards"** — hardware differences are absorbed by the Board Profile system.
 
@@ -7,10 +10,20 @@
 
 ## Installation
 
-Copy the `espzero/` directory to the root of your ESP32 filesystem using Mu Editor, Thonny, or `mpremote`:
+### For your ESP32 board (Recommended)
+Use `mpremote` to install directly from PyPI to your board:
 
+```bash
+mpremote mip install espzero
 ```
-mpremote cp -r espzero/ :espzero/
+
+Or manually copy the `espzero/` directory to your board's root.
+
+### For your PC (Development)
+To get autocomplete and linting in your IDE:
+
+```bash
+pip install espzero
 ```
 
 ---

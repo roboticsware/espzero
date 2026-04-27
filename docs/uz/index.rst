@@ -36,7 +36,20 @@ Asosiy xususiyatlar
 Ishni boshlash
 --------------
 
-1. **O'rnatish**: Mu Editor-ning paket menejeri yoki ``pip`` orqali ``espzero``-ni o'rnating.
+1. **O'rnatish**: 
+
+   Plataga to'g'ridan-to'g'ri o'rnatish uchun ``mpremote``-dan foydalanishni tavsiya etamiz:
+   
+   .. code-block:: bash
+   
+       mpremote mip install espzero
+
+   Yoki kompyuteringizda (IDE-da avtomatik to'ldirish uchun) ``pip`` orqali o'rnating:
+   
+   .. code-block:: bash
+   
+       pip install espzero
+
 2. **Ishga tushirish**: Skriptingizning yuqori qismida ``espzero.begin()`` funksiyasini chaqiring.
 
 .. code-block:: python

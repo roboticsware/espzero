@@ -40,7 +40,20 @@ Key Features
 Getting Started
 ---------------
 
-1. **Install**: Use Mu Editor's package manager or ``pip`` to install ``espzero``.
+1. **Install**: 
+
+   To install directly to your board, we recommend using ``mpremote``:
+   
+   .. code-block:: bash
+   
+       mpremote mip install espzero
+
+   Alternatively, for IDE autocomplete and linting on your PC:
+   
+   .. code-block:: bash
+   
+       pip install espzero
+
 2. **Initialize**: Call ``espzero.begin()`` at the top of your script.
 
 .. code-block:: python
