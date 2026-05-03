@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "espzero"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="Neo Neopia-uz", email="neopia.uz@gmail.com" },
 ]
@@ -20,3 +20,13 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/roboticsware/espzero"
 "Bug Tracker" = "https://github.com/roboticsware/espzero/issues"
+
+[tool.setuptools]
+# 명시적으로 패키지 이름과 포함할 하위 패키지를 지정합니다.
+packages = ["espzero", "espzero.profiles"]
+
+[tool.setuptools.package-dir]
+# 루트 디렉토리(.)의 모든 파이썬 파일을 espzero 패키지 내부로 매핑합니다.
+"espzero" = "."
+# profiles 폴더를 espzero의 하위 패키지인 espzero.profiles로 매핑합니다.
+"espzero.profiles" = "profiles"

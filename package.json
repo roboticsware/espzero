@@ -1,15 +1,42 @@
 {
   "urls": [
-    ["espzero/__init__.py", "github:roboticsware/espzero/__init__.py"],
-    ["espzero/_core.py", "github:roboticsware/espzero/_core.py"],
-    ["espzero/_hal.py", "github:roboticsware/espzero/_hal.py"],
-    ["espzero/_touch.py", "github:roboticsware/espzero/_touch.py"],
-    ["espzero/_wifi.py", "github:roboticsware/espzero/_wifi.py"],
-    ["espzero/profiles/__init__.py", "github:roboticsware/espzero/profiles/__init__.py"],
-    ["espzero/profiles/_base.py", "github:roboticsware/espzero/profiles/_base.py"],
-    ["espzero/profiles/auto.py", "github:roboticsware/espzero/profiles/auto.py"],
-    ["espzero/profiles/esp32_boards.py", "github:roboticsware/espzero/profiles/esp32_boards.py"]
+    [
+      "espzero/__init__.py",
+      "github:roboticsware/espzero/__init__.py"
+    ],
+    [
+      "espzero/_core.py",
+      "github:roboticsware/espzero/_core.py"
+    ],
+    [
+      "espzero/_hal.py",
+      "github:roboticsware/espzero/_hal.py"
+    ],
+    [
+      "espzero/_touch.py",
+      "github:roboticsware/espzero/_touch.py"
+    ],
+    [
+      "espzero/_wifi.py",
+      "github:roboticsware/espzero/_wifi.py"
+    ],
+    [
+      "espzero/profiles/__init__.py",
+      "github:roboticsware/espzero/profiles/__init__.py"
+    ],
+    [
+      "espzero/profiles/_base.py",
+      "github:roboticsware/espzero/profiles/_base.py"
+    ],
+    [
+      "espzero/profiles/auto.py",
+      "github:roboticsware/espzero/profiles/auto.py"
+    ],
+    [
+      "espzero/profiles/esp32_boards.py",
+      "github:roboticsware/espzero/profiles/esp32_boards.py"
+    ]
   ],
   "deps": [],
-  "version": "0.0.1"
+  "version": "0.0.2"
 }
