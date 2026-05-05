@@ -30,15 +30,8 @@ author = 'Roboticsware'
 release = '0.1.0'
 
 # -- General configuration ---------------------------------------------------
-extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.napoleon',
-    'sphinx_copybutton',
-]
-
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.viewcode", "sphinx.ext.intersphinx"]
 templates_path = ['_templates']
-
 # [수정] 언어별로 빌드할 때 다른 언어 폴더가 포함되지 않도록 제외 설정을 동적으로 변경합니다.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
@@ -54,5 +47,20 @@ else:
     language = 'en'
 
 # -- Options for HTML output -------------------------------------------------
-html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+if on_rtd:
+    html_theme = "sphinx_rtd_theme"
+    html_sidebars = {
+        "**": [
+            "globaltoc.html",
+            "relations.html",
+            "searchbox.html",
+        ],
+    }
+else:
+    html_theme = "alabaster"
+
+html_static_path = ["_static"]
+
+# -- Autodoc configuration ------------------------------------------------
+autodoc_member_order = "groupwise"
+autodoc_default_flags = ["members"]
