@@ -1,18 +1,18 @@
 Ishni boshlash
-=============
+==============
 
 Mu yordamida o'rnatish
-=====================
+---------------------
 
 Talablar
---------
+~~~~~~~~
 
-Windows yoki macOS kompyuteri ( `Mu Editor`_\ o'rnatilgan).
+Windows yoki macOS kompyuteri (`Mu Editor`_\ o'rnatilgan).
 
 .. _Mu Editor: https://github.com/roboticsware/mu/releases/latest
 
 MicroPython rejimini tanlash
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Mu-ni oching va yuqori chap burchakdagi **Mode** tugmasini bosing. **ESP32**\ ni tanlang va **OK** tugmasini bosing.
 
@@ -20,7 +20,7 @@ Mu-ni oching va yuqori chap burchakdagi **Mode** tugmasini bosing. **ESP32**\ ni
     :alt: Mu Editor-da ESP32 rejimini tanlash
 
 Mu-da espzero-ni o'rnatish
---------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Mu-da espzero-ni o'rnatish uchun **Packages** tugmasini bosing.
 
@@ -47,7 +47,7 @@ Fayl menejerini ochish uchun **Files** tugmasini bosing.
 .. image:: /images/mu-files-button.jpg
     :alt: Mu-dagi Files tugmasini bosish
 
-Mu-dagi **Files on your computer** oynasidan ``espzero_lib`` papkasi ichidagi ``espzero`` papkasini toping. Ularni **Files on your device** oynasiga sudrab olib o'ting (drag and drop).
+Mu-dagi **Kompyuteringizdagi fayllar (Files on your computer)** oynasidan ``espzero_lib`` papkasi ichidagi ``espzero`` papkasini toping. Ularni **Qurilmadagi fayllar (Files on your device)** oynasiga sudrab olib o'ting (drag and drop).
 
 .. image:: /images/mu-drag-and-drop.jpg
     :alt: Mu-da espzero-ni kompyuterdan qurilmaga sudrab olib o'tish
