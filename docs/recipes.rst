@@ -1,7 +1,7 @@
 예제 (Recipes)
 ==============
 
-이 섹션은 ``espzero``를 사용하여 다양한 센서와 부품을 제어하는 실전 예제를 다룹니다. 모든 예제는 ``import espzero; espzero.begin()``이 호출되었다고 가정합니다.
+이 섹션은 ``espzero`` 를 사용하여 다양한 센서와 부품을 제어하는 실전 예제를 다룹니다. 모든 예제는 ``import espzero; espzero.begin()`` 이 호출되었다고 가정합니다.
 
 내장 LED (Built-in LED)
 ---------------------
