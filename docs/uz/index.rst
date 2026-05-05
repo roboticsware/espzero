@@ -68,6 +68,7 @@ Mundarija
    :maxdepth: 2
    :caption: Qo'llanmalar va Retseptlar
 
+   gettingstarted
    recipes
    boards
    api

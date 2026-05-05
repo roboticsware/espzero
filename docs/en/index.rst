@@ -72,6 +72,7 @@ Table of Contents
    :maxdepth: 2
    :caption: Guides & Recipes
 
+   gettingstarted
    recipes
    boards
    api

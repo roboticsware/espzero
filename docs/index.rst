@@ -72,6 +72,7 @@ espzero: ESP32를 위한 가장 쉬운 코딩 라이브러리
    :maxdepth: 2
    :caption: 가이드 및 레시피
 
+   gettingstarted
    recipes
    boards
    api
