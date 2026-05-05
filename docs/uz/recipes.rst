@@ -129,7 +129,7 @@ HC-SR04 kabi ultratovushli sensor yordamida masofani o'lchang.
     ds = DistanceSensor(echo=14, trigger=13)
 
     while True:
-        print("Masofa: ", ds.distance, "m")
+        print("Masofa: ", ds.distance, "cm")
         sleep(0.5)
 
 Harorat sensori (Temperature Sensor)
@@ -163,3 +163,33 @@ Tugma bosilganda LED holatini o'zgartirish.
 
     while True:
         pass # Hodisalarni kutish
+
+Stepper motor (Stepper motor)
+-----------------------------
+
+Drayver platasi (masalan, ULN2003) orqali ulangan stepper motorni boshqarish.
+
+Analog soat (Analog clock)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Uzluksiz ishlaydigan analog soat soniya mili yarating:
+
+.. literalinclude:: examples/stepper_analog_clock.py
+
+Avtomatik jalyuzilar (Automatic blinds)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Vaqtga asoslangan jalyuzi boshqaruvchisi:
+
+.. literalinclude:: examples/stepper_automatic_blinds.py
+
+LCD Displey (LCD Display)
+-------------------------
+
+I2C shinasidan va PCF8574 I2C adapteridan foydalanib LiquidCrystal displeylarida (LCD) belgilarni chop etish.
+
+.. literalinclude:: examples/i2c_lcd.py
+
+Faqat GPIO pinlari yordamida LiquidCrystal displeylarida (LCD) belgilarni chop etish.
+
+.. literalinclude:: examples/lcd.py

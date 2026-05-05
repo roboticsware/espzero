@@ -142,6 +142,7 @@ from ._core import (
     ESPTemperatureSensor,
     DigitalOutputDevice, PWMOutputDevice,
     DigitalInputDevice, AnalogInputDevice,
+    I2cLcd, GpioLcd,
 )
 from ._wifi  import WiFi
 from ._touch import CapTouch

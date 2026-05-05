@@ -129,7 +129,7 @@ Measure distance using an ultrasonic sensor like HC-SR04.
     ds = DistanceSensor(echo=14, trigger=13)
 
     while True:
-        print("Distance: ", ds.distance, "m")
+        print("Distance: ", ds.distance, "cm")
         sleep(0.5)
 
 Temperature Sensor
@@ -163,3 +163,33 @@ Toggle an LED each time a button is pressed.
 
     while True:
         pass # Wait for events
+
+Stepper Motor
+-------------
+
+Control a stepper motor connected via a driver board (e.g. ULN2003).
+
+Analog clock
+~~~~~~~~~~~~
+
+Create a continuously-running analog clock second hand:
+
+.. literalinclude:: examples/stepper_analog_clock.py
+
+Automatic blinds
+~~~~~~~~~~~~~~~~
+
+Time-based blind controller:
+
+.. literalinclude:: examples/stepper_automatic_blinds.py
+
+LCD Display
+-----------
+
+Print characters on LiquidCrystal displays (LCD) by using the I2C bus and a PCF8574 I2C adapter.
+
+.. literalinclude:: examples/i2c_lcd.py
+
+Print characters on LiquidCrystal displays (LCD) by using GPIO pins only.
+
+.. literalinclude:: examples/lcd.py
