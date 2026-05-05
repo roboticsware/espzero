@@ -1,4 +1,4 @@
-from picozero import Pot, Button
+from espzero import Pot, Button
 from time import sleep
 
 x = Pot(27)

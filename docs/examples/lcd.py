@@ -1,4 +1,4 @@
-from picozero import GpioLcd
+from espzero import GpioLcd
 from time import sleep
 
 # Create the LCD object

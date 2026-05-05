@@ -1,4 +1,4 @@
-from picozero import I2cLcd
+from espzero import I2cLcd
 from time import sleep
 
 lcd =  I2cLcd(1, 3, 2)  # i2c_id=1, scl=3, sda=2

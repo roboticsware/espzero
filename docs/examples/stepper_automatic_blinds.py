@@ -1,4 +1,4 @@
-from picozero import Stepper
+from espzero import Stepper
 from time import localtime, sleep
 
 stepper = Stepper((1, 2, 3, 4), step_sequence="half")
