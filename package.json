@@ -35,8 +35,12 @@
     [
       "espzero/profiles/esp32_boards.py",
       "github:roboticsware/espzero/profiles/esp32_boards.py"
+    ],
+    [
+      "espzero/vision.py",
+      "github:roboticsware/espzero/vision.py"
     ]
   ],
   "deps": [],
-  "version": "0.0.4"
+  "version": "0.0.5"
 }

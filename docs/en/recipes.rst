@@ -193,3 +193,57 @@ Print characters on LiquidCrystal displays (LCD) by using the I2C bus and a PCF8
 Print characters on LiquidCrystal displays (LCD) by using GPIO pins only.
 
 .. literalinclude:: examples/lcd.py
+
+
+AI Vision
+---------
+
+Examples for using the ESP32-S3 camera with PC-assisted AI and standalone on-device AI.
+
+PC-Side AI (with MediaPipe)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Streams camera images to the PC (Pico Editor), which uses Google's MediaPipe library to track hands, faces, etc., in real time. The detected coordinates are sent back to the ESP32 for hardware control.
+
+.. code-block:: python
+
+    from espzero import vision
+    from time import sleep
+
+    # Start streaming camera frames to the PC
+    vision.start_stream_to_pc()
+
+    while True:
+        # Read the hand coordinates injected by the editor
+        if "__pc_ai_data" in globals():
+            x = __pc_ai_data.get("hand_x", 0)
+            y = __pc_ai_data.get("hand_y", 0)
+            print("Hand position -> X:", x, "Y:", y)
+        sleep(0.1)
+
+On-Device AI (On-Device TFLite)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Loads a `.tflite` model file directly from the ESP32's file system to perform local AI inference. It can run independently of any computer.
+
+.. note::
+    You can download sample `.tflite` model files from the Google TensorFlow Lite official models repository (https://www.tensorflow.org/lite/guide/hosted_models).
+
+.. code-block:: python
+
+    import camera
+    import tflite
+    from time import sleep
+
+    # Initialize camera and load TFLite model
+    camera.init(framesize=camera.FRAME_QVGA)
+    model = tflite.load("model.tflite")
+
+    while True:
+        img = camera.capture()
+        if img:
+            # Perform inference and extract the class result
+            result = model.detect(img)
+            print("Detected class ID:", result.class_id)
+        sleep(0.5)
+
