@@ -777,9 +777,18 @@ class ESPTemperatureSensor:
     def temp(self):
         try:
             import esp32
-            return esp32.raw_temperature() / 100.0
+            if hasattr(esp32, "mcu_temperature"):
+                return float(esp32.mcu_temperature())
+            elif hasattr(esp32, "raw_temperature"):
+                raw = esp32.raw_temperature()
+                # On classic ESP32, raw_temperature returns Fahrenheit (~100..150)
+                # Convert F to C: (F - 32) * 5/9
+                if raw > 60:
+                    return round((raw - 32.0) * 5.0 / 9.0, 1)
+                return float(raw)
         except Exception:
-            return None
+            pass
+        return None
 
 
 class DistanceSensor(PinsMixin):
