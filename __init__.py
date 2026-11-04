@@ -62,7 +62,7 @@ def __getattr__(name):
                 "You must call espzero.begin() first."
             )
         return _esp_led
-    if name == "esp_temp_sensor":
+    if name in ("esp_temp_sensor", "esp_temp"):
         return _esp_temp_sensor
     raise AttributeError("module 'espzero' has no attribute '{}'".format(name))
 
