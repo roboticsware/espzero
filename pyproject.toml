@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "espzero"
-version = "0.0.5"
+version = "0.0.3"
 authors = [
   { name="Neo Neopia-uz", email="neopia.uz@gmail.com" },
 ]
@@ -19,6 +19,7 @@ classifiers = [
 
 [project.urls]
 "Homepage" = "https://github.com/roboticsware/espzero"
+"Documentation" = "https://espzero.readthedocs.io"
 "Bug Tracker" = "https://github.com/roboticsware/espzero/issues"
 
 [tool.setuptools]

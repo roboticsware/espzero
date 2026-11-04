@@ -116,6 +116,25 @@ RGB LED
     print("현재 값 (0-1):", pot.value)
     print("전압 (V):", pot.voltage)
 
+내장 터치 센서 (Capacitive Touch)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ESP32 및 ESP32-S3 칩에 내장된 정전용량식 터치 센서를 사용합니다. 외부 저항이나 회로 없이 핀에 손가락을 대는 것만으로 터치를 감지합니다.
+
+.. code-block:: python
+
+    from espzero import CapTouch
+    from time import sleep
+
+    # WROOM은 T0~T9 (예: GPIO 4), S3은 터치 지원 핀 (예: GPIO 1)
+    touch = CapTouch(1)
+
+    while True:
+        # value: 원시 측정값 (손을 대면 값이 감소함)
+        # is_touched: threshold(기본값 300)보다 작으면 True
+        print("Raw:", touch.value, "터치됨:", touch.is_touched)
+        sleep(0.2)
+
 초음파 거리 센서 (Distance Sensor)
 -------------------------------
 

@@ -116,6 +116,25 @@ Potentiometer
     print("Current value (0-1):", pot.value)
     print("Voltage (V):", pot.voltage)
 
+Built-in Touch Sensor (Capacitive Touch)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use the built-in capacitive touch peripheral on ESP32 / ESP32-S3. Detects touch directly from a finger or conductive wire without external resistors.
+
+.. code-block:: python
+
+    from espzero import CapTouch
+    from time import sleep
+
+    # WROOM: T0~T9 (e.g. GPIO 4), ESP32-S3: touch-capable pin (e.g. GPIO 1)
+    touch = CapTouch(1)
+
+    while True:
+        # value: raw capacitance reading (decreases when touched)
+        # is_touched: True if raw value drops below threshold (default: 300)
+        print("Raw:", touch.value, "Touched:", touch.is_touched)
+        sleep(0.2)
+
 Distance Sensor
 ---------------
 

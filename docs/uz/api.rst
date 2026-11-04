@@ -44,6 +44,11 @@ Potentiometer
 .. autoclass:: espzero.Potentiometer
    :members:
 
+CapTouch
+~~~~~~~~
+.. autoclass:: espzero.CapTouch
+   :members:
+
 Sensorlar (Sensors)
 -------------------
 

@@ -116,6 +116,25 @@ Potentiometr
     print("Joriy qiymat (0-1):", pot.value)
     print("Kuchlanish (V):", pot.voltage)
 
+O'rnatilgan sensorli tugma (Capacitive Touch)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ESP32 va ESP32-S3 chiplariga o'rnatilgan sig'imli sensorli periferiyadan foydalanadi. Tashqi rezistorlarsiz barmog'ingiz bilan teginishni aniqlaydi.
+
+.. code-block:: python
+
+    from espzero import CapTouch
+    from time import sleep
+
+    # WROOM: T0~T9 (masalan, GPIO 4), S3: touch pin (masalan, GPIO 1)
+    touch = CapTouch(1)
+
+    while True:
+        # value: xom o'lchov qiymati (tegilganda kamayadi)
+        # is_touched: threshold (standart 300) dan kichik bo'lsa True
+        print("Xom qiymat:", touch.value, "Tegildi:", touch.is_touched)
+        sleep(0.2)
+
 Masofa sensori (Distance Sensor)
 --------------------------------
 

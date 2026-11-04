@@ -1,6 +1,7 @@
 # espzero
 
 [![PyPI version](https://badge.fury.io/py/espzero.svg)](https://badge.fury.io/py/espzero)
+[![Documentation Status](https://readthedocs.org/projects/espzero/badge/?version=latest)](https://espzero.readthedocs.io/)
 [![License](https://img.shields.io/github/license/roboticsware/espzero)](https://github.com/roboticsware/espzero/blob/main/LICENSE)
 
 > A single MicroPython library that ports [picozero](https://github.com/raspberrypilearning/picozero) to the ESP32 family (WROOM, S3, C3, and more).  
