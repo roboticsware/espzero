@@ -330,7 +330,7 @@ def LED(pin, pwm=True, active_high=True, initial_value=False):
         return DigitalLED(pin=pin, active_high=active_high, initial_value=initial_value)
 
 
-class NeoPixelLED(OutputDevice):
+class NeoPixelLED(OutputDevice, PinMixin):
     """WS2812 single-pixel wrapper for boards with a built-in RGB LED.
     Automatically used when INTERNAL_LED_TYPE == 'neopixel'.
     """
@@ -339,10 +339,21 @@ class NeoPixelLED(OutputDevice):
         self._np = neopixel.NeoPixel(Pin(pin), 1)
         self._color = color
         self._pin_num = pin
+        self._state = False
         super().__init__(active_high, initial_value)
 
+    def _value_to_state(self, value):
+        return bool(self._active_state if value else self._inactive_state)
+
+    def _state_to_value(self, state):
+        return int(bool(state) == self._active_state)
+
+    def _read(self):
+        return self._state_to_value(self._state)
+
     def _write(self, value):
-        self._np[0] = self._color if self._value_to_state(value) else (0, 0, 0)
+        self._state = self._value_to_state(value)
+        self._np[0] = self._color if self._state else (0, 0, 0)
         self._np.write()
 
     def close(self):
