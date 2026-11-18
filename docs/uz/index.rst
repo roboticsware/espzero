@@ -12,7 +12,7 @@ Asosiy falsafa
 --------------
 
 * **Soddalik**: Registrlar yoki PWM chastotalari haqida qayg'urmasdan, ``LED.on()`` kabi bitta qator bilan boshlang.
-* **Abstraksiya**: Qaysi platadan foydalanishingizdan qat'i nazar, kodingiz o'zgarishsiz qoladi. Platalar orasidagi farqlar ``espzero.begin()`` tomonidan hal qilinadi.
+* **Abstraksiya**: Qaysi platadan foydalanishingizdan qat'i nazar, kodingiz o'zgarishsiz qoladi. Platalar orasidagi farqlar kutubxona tomonidan avtomatik aniqlanadi.
 * **Zamonaviy**: Fon vazifalarini oson boshqarish uchun o'rnatilgan asinxron rejalashtiruvchi.
 
 Asosiy xususiyatlar
@@ -50,16 +50,17 @@ Ishni boshlash
    
        pip install espzero
 
-2. **Ishga tushirish**: Skriptingizning yuqori qismida ``espzero.begin()`` funksiyasini chaqiring.
+2. **Foydalanish**: Ortiqcha sozlamalarsiz komponentlarni import qiling va darhol ishlating (plata avtomatik aniqlanadi).
 
 .. code-block:: python
 
-    import espzero
     from espzero import LED
-    
-    espzero.begin()
+
     led = LED(4)
     led.pulse() # Orqa fonda silliq miltillash
+
+.. note::
+   Plata birinchi komponentdan foydalanishda avtomatik aniqlangani uchun ``espzero.begin()`` ni chaqirish majburiy emas (ixtiyoriy). Faqatgina platani qo'lda aniq belgilash kerak bo'lganda ``espzero.begin("plata_nomi")`` chaqiriladi.
 
 Mundarija
 ---------

@@ -16,7 +16,7 @@ Core Philosophy
 ---------------
 
 * **Simplicity**: Start with a single line like ``LED.on()``, without worrying about registers or PWM frequencies.
-* **Abstraction**: Your code remains the same regardless of which board you use. Board-specific differences are handled by ``espzero.begin()``.
+* **Abstraction**: Your code remains the same regardless of which board you use. Board-specific differences are automatically handled by the library.
 * **Modern**: Built-in asynchronous scheduler for easy background task management.
 
 Key Features
@@ -54,16 +54,17 @@ Getting Started
    
        pip install espzero
 
-2. **Initialize**: Call ``espzero.begin()`` at the top of your script.
+2. **Usage**: Import and use components right away without boilerplate initialization (the board is auto-detected).
 
 .. code-block:: python
 
-    import espzero
     from espzero import LED
-    
-    espzero.begin()
+
     led = LED(4)
     led.pulse() # Blink smoothly in the background
+
+.. note::
+   The board profile is auto-detected on first component access, so calling ``espzero.begin()`` is completely optional. You only need to call ``espzero.begin("board_name")`` if you wish to override the board manually.
 
 Table of Contents
 -----------------

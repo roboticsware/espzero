@@ -60,6 +60,10 @@ def __getattr__(name):
     if name in ("esp_temp_sensor", "pico_temp_sensor"):
         _ensure_init()
         return _esp_temp_sensor
+    if name == "vision":
+        mod = __import__(__name__ + ".vision", None, None, ["vision"])
+        globals()["vision"] = mod
+        return mod
     raise AttributeError("module 'espzero' has no attribute '{}'".format(name))
 
 
@@ -163,4 +167,5 @@ __all__ = [
     "DigitalInputDevice", "AnalogInputDevice",
     "I2cLcd", "GpioLcd",
     "WiFi", "CapTouch",
+    "vision",
 ]

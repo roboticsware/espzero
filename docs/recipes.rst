@@ -368,6 +368,11 @@ AI 비전 (AI Vision)
 
 ESP32-S3 AI 비전 카메라와 에디터 연동 및 단독 실행 AI 예제입니다.
 
+.. important::
+    **카메라 지원 펌웨어 필요**:
+    공식 MicroPython 기본 펌웨어에는 용량 문제로 카메라 드라이버(C 모듈 ``camera``)가 포함되어 있지 않습니다.
+    비전 기능을 사용하려면 보드(ESP32-S3 WROOM CAM)에 **카메라 드라이버가 포함 빌드된 MicroPython 펌웨어(Camera-enabled Firmware)** 가 플래싱되어 있어야 합니다.
+
 PC 연동 AI (MediaPipe 연동)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -395,7 +400,7 @@ ESP32 카메라 영상을 PC(에디터)로 전송하고, PC의 MediaPipe 라이�
 ESP32 내부에 다운로드한 `.tflite` 모델 파일을 읽어와 직접 AI 추론을 수행합니다. PC와 연결되지 않은 상태에서도 동작할 수 있습니다.
 
 .. note::
-    사용 가능한 샘플 `.tflite` 모델 파일들은 구글의 텐서플로우 라이트 공식 모델 저장소(https://www.tensorflow.org/lite/guide/hosted_models)에서 직접 내려받을 수 있습니다.
+    ESP32(마이크로컨트롤러)용 경량 `.tflite` 모델들은 Kaggle Models(https://www.kaggle.com/models?framework=liteRT), Hugging Face LiteRT 커뮤니티(https://huggingface.co/litert-community), 또는 텐서플로우 마이크로 공식 저장소(https://github.com/tensorflow/tflite-micro)에서 직접 내려받을 수 있습니다.
 
 .. code-block:: python
 

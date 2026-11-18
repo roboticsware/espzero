@@ -352,6 +352,11 @@ AI Vision
 
 Examples for using the ESP32-S3 camera with PC-assisted AI and standalone on-device AI.
 
+.. important::
+    **Camera-Enabled Firmware Required**:
+    The official generic MicroPython firmware does not include the camera C driver (``camera`` module).
+    To use vision features, ensure your board (e.g. ESP32-S3 WROOM CAM) is flashed with a **Camera-enabled MicroPython firmware**.
+
 PC-Side AI (with MediaPipe)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -379,7 +384,7 @@ On-Device AI (On-Device TFLite)
 Loads a `.tflite` model file directly from the ESP32's file system to perform local AI inference. It can run independently of any computer.
 
 .. note::
-    You can download sample `.tflite` model files from the Google TensorFlow Lite official models repository (https://www.tensorflow.org/lite/guide/hosted_models).
+    Lightweight `.tflite` models for ESP32 and microcontrollers can be downloaded directly from Kaggle Models (https://www.kaggle.com/models?framework=liteRT), Hugging Face LiteRT Community (https://huggingface.co/litert-community), or the official TensorFlow Lite Micro repository (https://github.com/tensorflow/tflite-micro).
 
 .. code-block:: python
 

@@ -352,6 +352,11 @@ AI Vision (AI vizualizatsiyasi)
 
 ESP32-S3 kamerasi yordamida kompyuter ko'magidagi AI va mustaqil ishlaydigan qurilmadagi AI misollari.
 
+.. important::
+    **Kamerani qo'llab-quvvatlovchi proshivka zarur**:
+    Rasmiy standart MicroPython proshivkasida xotira cheklovlari tufayli kamera drayveri (``camera`` moduli) mavjud emas.
+    Vizual funksiyalardan foydalanish uchun platangizga (ESP32-S3 WROOM CAM) **Kamera drayveri bilan yig'ilgan MicroPython proshivkasi (Camera-enabled Firmware)** o'rnatilgan bo'lishi kerak.
+
 PC ko'magidagi AI (MediaPipe bilan)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -379,7 +384,7 @@ Qurilmadagi AI (On-Device TFLite)
 Mahalliy AI xulosalarini chiqarish uchun bevosita ESP32 fayl tizimidan `.tflite` model faylini yuklaydi. U har qanday kompyuterga ulanmasdan ham mustaqil ishlashi mumkin.
 
 .. note::
-    Siz namunaviy `.tflite` model fayllarini Google TensorFlow Lite rasmiy modellar repozitoriysidan (https://www.tensorflow.org/lite/guide/hosted_models) yuklab olishingiz mumkin.
+    ESP32 va mikrokontrollerlar uchun mo'ljallangan ixcham `.tflite` model fayllarini Kaggle Models (https://www.kaggle.com/models?framework=liteRT), Hugging Face LiteRT Community (https://huggingface.co/litert-community) yoki rasmiy TensorFlow Lite Micro repozitoriysidan (https://github.com/tensorflow/tflite-micro) to'g'ridan-to'g'ri yuklab olishingiz mumkin.
 
 .. code-block:: python
 
