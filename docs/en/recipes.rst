@@ -47,18 +47,37 @@ PWM Control (Brightness)
 RGB LED
 -------
 
+External 4-pin RGB LED
+~~~~~~~~~~~~~~~~~~~~~~
+
 Combine Red, Green, and Blue pins to create various colors.
+(Note: ESP32-S3 boards lack pins 22–34, so use universally supported pins such as GPIO 4, 5, 6.)
 
 .. code-block:: python
 
     from espzero import RGBLED
 
-    rgb = RGBLED(red=25, green=26, blue=27)
+    # Universally supported pins for ESP32 and ESP32-S3 (e.g. GPIO 4, 5, 6)
+    rgb = RGBLED(red=4, green=5, blue=6)
 
     rgb.color = (255, 0, 0)   # Red
     rgb.color = (0, 255, 0)   # Green
     rgb.color = (255, 255, 0) # Yellow (Red + Green)
     rgb.off()
+
+Built-in Onboard RGB LED (ESP32-S3 WS2812 NeoPixel)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For boards with a built-in WS2812 NeoPixel RGB LED (such as ESP32-S3 DevKit or M5Stack), simply use ``esp_led`` without specifying pin numbers:
+
+.. code-block:: python
+
+    from espzero import esp_led
+
+    esp_led.color = (255, 0, 0)   # Red
+    esp_led.color = (0, 255, 0)   # Green
+    esp_led.color = (0, 0, 255)   # Blue
+    esp_led.off()
 
 Buzzer & Speaker
 ----------------

@@ -47,18 +47,37 @@ PWM boshqaruvi (Yorqinlikni sozlash)
 RGB LED
 -------
 
+Tashqi 4-pinli RGB LED
+~~~~~~~~~~~~~~~~~~~~~~
+
 Turli xil ranglarni yaratish uchun Qizil, Yashil va Moviy pinlarni birlashtiring.
+(Eslatma: ESP32-S3 platalarida 22–34 pinlar mavjud emas, shuning uchun GPIO 4, 5, 6 kabi pinlardan foydalaning.)
 
 .. code-block:: python
 
     from espzero import RGBLED
 
-    rgb = RGBLED(red=25, green=26, blue=27)
+    # ESP32 va ESP32-S3 uchun umumiy qo'llab-quvvatlanadigan pinlar (masalan, GPIO 4, 5, 6)
+    rgb = RGBLED(red=4, green=5, blue=6)
 
     rgb.color = (255, 0, 0)   # Qizil
     rgb.color = (0, 255, 0)   # Yashil
     rgb.color = (255, 255, 0) # Sariq (Qizil + Yashil)
     rgb.off()
+
+O'rnatilgan RGB LED (ESP32-S3 WS2812 NeoPixel)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+O'rnatilgan WS2812 NeoPixel RGB LED (ESP32-S3 DevKit yoki M5Stack) bo'lgan platalar uchun pin raqamlarini ko'rsatmasdan ``esp_led`` dan foydalaning:
+
+.. code-block:: python
+
+    from espzero import esp_led
+
+    esp_led.color = (255, 0, 0)   # Qizil
+    esp_led.color = (0, 255, 0)   # Yashil
+    esp_led.color = (0, 0, 255)   # Moviy
+    esp_led.off()
 
 Buzzer va Dinamik (Buzzer & Speaker)
 ------------------------------------

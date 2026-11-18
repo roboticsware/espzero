@@ -62,18 +62,37 @@ PWM 제어 (밝기 조절)
 RGB LED
 -------
 
+외장 4핀 RGB LED (External RGB LED)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 빨강, 초록, 파랑 핀을 각각 연결하여 다양한 색상을 만듭니다.
+(ESP32-S3 등 일부 칩셋은 22~34번 핀이 없으므로, 모든 보드에서 공통으로 지원하는 GPIO 4, 5, 6번 등을 사용합니다.)
 
 .. code-block:: python
 
     from espzero import RGBLED
 
-    rgb = RGBLED(red=25, green=26, blue=27)
+    # ESP32 및 ESP32-S3 공통 지원 핀 (예: GPIO 4, 5, 6)
+    rgb = RGBLED(red=4, green=5, blue=6)
 
     rgb.color = (255, 0, 0)   # 빨간색
     rgb.color = (0, 255, 0)   # 초록색
     rgb.color = (255, 255, 0) # 노란색 (빨강+초록)
     rgb.off()
+
+온보드 내장 RGB LED (ESP32-S3 WS2812 NeoPixel)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ESP32-S3 또는 M5Stack 등 보드 자체에 WS2812 NeoPixel RGB LED가 내장된 경우, 핀 번호 지정 없이 ``esp_led`` 로 간편하게 제어합니다.
+
+.. code-block:: python
+
+    from espzero import esp_led
+
+    esp_led.color = (255, 0, 0)   # 빨간색
+    esp_led.color = (0, 255, 0)   # 초록색
+    esp_led.color = (0, 0, 255)   # 파란색
+    esp_led.off()
 
 부저 및 스피커 (Buzzer & Speaker)
 -------------------------------
