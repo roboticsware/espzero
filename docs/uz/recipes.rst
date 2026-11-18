@@ -485,6 +485,31 @@ Biroq, ESP32 va kompyuter o'rtasida **Wi-Fi** orqali vazifalarni taqsimlash orqa
     cap.release()
     cv2.destroyAllWindows()
 
+.. tip::
+    **Batareyada mustaqil ishlash va ochiq havoda Hotspot (AP rejimi) bo'yicha maslahatlar**
+
+    * **Kompyutersiz batareyada to'liq simsiz ishlash (main.py sifatida saqlash)**:
+      Aqlli mashina, robot yoki kuzatuv kamerasi loyihasini yakunlab, kompyutersiz mustaqil ishlatish uchun kodni ESP32 xotirasiga ``main.py`` nomi bilan saqlang. Shundan so'ng, USB kabelni uzib, faqat batareya ulashingiz kifoya: plata yoqilishi bilanoq avtomatik Wi-Fi ga ulanadi va video uzatish serverini ishga tushiradi.
+      Kompyuter yoki smartfoningizdan Mu muharriri kamera oynasidagi Wi-Fi maydoniga (``http://192.168.x.x:8080/``) yoki brauzerga plata IP manzilini kiritib, jonli efirni ko'rishingiz va robotni simsiz boshqarishingiz mumkin.
+
+    * **Wi-Fi router bo'lmagan ochiq havoda yoki sinfda Hotspot (AP rejimi) orqali ishlash**:
+      Atrofda Wi-Fi router bo'lmasa ham muammo yo'q! ESP32 ning o'zini simsiz Wi-Fi nuqtasi (Access Point) sifatida yoqib, tashqi internetsiz smartfon yoki noutbuk bilan to'g'ridan-to'g'ri 1:1 bog'lanish mumkin:
+
+      .. code-block:: python
+
+          import network
+          from espzero import vision
+
+          # 1. ESP32 ni mustaqil Wi-Fi kirish nuqtasi (AP) sifatida yoqish
+          ap = network.WLAN(network.AP_IF)
+          ap.active(True)
+          ap.config(essid="ESP32-CAM-ROBOT", authmode=network.AUTH_OPEN)
+
+          # 2. Hotspot tarmog'ida video uzatishni boshlash (Standart IP: http://192.168.4.1:8080/)
+          vision.start_wifi_stream(port=8080)
+
+      Noutbuk yoki telefoningizdan ``ESP32-CAM-ROBOT`` Wi-Fi tarmog'iga ulaning va brauzer yoki kompyuter dasturida ``http://192.168.4.1:8080/`` manziliga kirib, istalgan joyda simsiz video va AI boshqaruvidan foydalaning.
+
 Qurilmadagi AI (On-Device TFLite)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

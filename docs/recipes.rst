@@ -501,6 +501,31 @@ ESP32 카메라 영상을 PC(에디터)로 전송하고, PC의 MediaPipe 라이�
     cap.release()
     cv2.destroyAllWindows()
 
+.. tip::
+    **완성 후 배터리 독립 구동 & 야외 핫스팟(AP) 꿀팁**
+
+    * **PC 없이 보조배터리로 완전 무선 구동하기 (main.py 저장)**:
+      스마트카나 로봇 프로젝트를 완성하여 PC 연결 없이 야외나 바닥에서 굴릴 때는, 코드를 ESP32 보드 플래시 최상위에 ``main.py`` 라는 이름으로 저장하세요. USB 케이블을 뽑고 보조배터리나 어댑터만 연결하면, 부팅 즉시 Wi-Fi를 잡고 무선 영상 스트리밍과 주행 대기 상태에 들어갑니다.
+      PC나 스마트폰에서는 Mu 에디터 카메라 창의 Wi-Fi 입력란(``http://192.168.x.x:8080/``) 또는 웹 브라우저에서 보드 IP로 접속해 무선으로 영상을 보며 제어할 수 있습니다.
+
+    * **공유기(Wi-Fi)가 없는 야외나 교실에서의 단독 핫스팟(AP 모드) 구동**:
+      주변에 Wi-Fi 공유기가 없더라도 걱정할 필요가 없습니다. ESP32 자체를 무선 공유기(AP)로 동작시키면 외부 인터넷이나 공유기 없이도 스마트폰/노트북과 1:1 직결 무선 스트리밍이 가능합니다:
+
+      .. code-block:: python
+
+          import network
+          from espzero import vision
+
+          # 1. ESP32 자체를 무선 핫스팟(AP)으로 활성화
+          ap = network.WLAN(network.AP_IF)
+          ap.active(True)
+          ap.config(essid="ESP32-CAM-ROBOT", authmode=network.AUTH_OPEN)
+
+          # 2. 자체 망에서 스트리밍 시작 (기본 IP: http://192.168.4.1:8080/)
+          vision.start_wifi_stream(port=8080)
+
+      노트북이나 스마트폰의 Wi-Fi 목록에서 ``ESP32-CAM-ROBOT`` 에 접속한 뒤, 브라우저나 PC 컨트롤러에서 ``http://192.168.4.1:8080/`` 로 연결하면 어디서든 무선 스트리밍 및 AI 원격 제어가 가능합니다.
+
 기기 단독 AI (On-Device TFLite)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -485,6 +485,31 @@ However, by dividing responsibilities between the ESP32 and a PC over **Wi-Fi**,
     cap.release()
     cv2.destroyAllWindows()
 
+.. tip::
+    **Standalone Battery Operation & Outdoor Hotspot (AP Mode) Tips**
+
+    * **Completely Untethered Operation on Battery Power (Save as main.py)**:
+      When completing your smart car, surveillance camera, or robot project to run untethered from a PC, save your code as ``main.py`` at the root of the ESP32 filesystem. Once saved, you can unplug the USB cable and power the board via a power bank or battery pack. The ESP32 will automatically connect to Wi-Fi and initiate the video streaming server on boot.
+      On your PC or smartphone, enter the board's URL (e.g., ``http://192.168.x.x:8080/``) in Mu Editor's Wi-Fi camera pane or in any web browser to view the live feed and control the robot wirelessly.
+
+    * **Standalone Hotspot (AP Mode) in Classrooms or Outdoors without a Router**:
+      No Wi-Fi router nearby? You can turn the ESP32 itself into an Access Point (hotspot) for direct 1:1 wireless streaming without any external network:
+
+      .. code-block:: python
+
+          import network
+          from espzero import vision
+
+          # 1. Enable ESP32 as a standalone Wi-Fi Access Point (hotspot)
+          ap = network.WLAN(network.AP_IF)
+          ap.active(True)
+          ap.config(essid="ESP32-CAM-ROBOT", authmode=network.AUTH_OPEN)
+
+          # 2. Start video stream on the hotspot network (Default IP: http://192.168.4.1:8080/)
+          vision.start_wifi_stream(port=8080)
+
+      Connect your laptop or smartphone to the ``ESP32-CAM-ROBOT`` Wi-Fi network and open ``http://192.168.4.1:8080/`` to stream video and run AI remote control anywhere outdoors.
+
 On-Device AI (On-Device TFLite)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

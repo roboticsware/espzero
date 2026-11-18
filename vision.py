@@ -176,6 +176,13 @@ def _stream_loop(streamer, delay, is_modern):
     except Exception:
         pass
 
+    sleep_ms_fn = getattr(time, 'sleep_ms', None)
+    def _sleep_ms(ms):
+        if sleep_ms_fn:
+            sleep_ms_fn(int(ms))
+        else:
+            time.sleep(ms / 1000.0)
+
     while _streaming_active:
         try:
             if is_modern:
@@ -183,8 +190,13 @@ def _stream_loop(streamer, delay, is_modern):
             else:
                 buf = streamer.capture()
 
-            if buf:
-                writer.write(buf)
+            buf_len = len(buf) if buf else 0
+            if buf_len > 0:
+                # Transmit in chunks to prevent ESP32 UART TX buffer overflow
+                chunk_size = 512
+                for i in range(0, buf_len, chunk_size):
+                    writer.write(buf[i : i + chunk_size])
+                    _sleep_ms(1)
 
             # Read incoming AI feedback from PC: [AI]:x,y,det\n
             if poller:
@@ -197,12 +209,17 @@ def _stream_loop(streamer, delay, is_modern):
                 except Exception:
                     pass
 
-            time.sleep(delay)
+            # Calculate physical UART transmission time (at 115200 baud, ~10 bytes/ms safe)
+            # Ensuring no frame is sent while the previous frame is still traveling over UART
+            tx_ms = int(buf_len / 10.0) if buf_len > 0 else 0
+            target_ms = int(delay * 1000)
+            wait_ms = tx_ms if tx_ms > target_ms else target_ms
+            _sleep_ms(wait_ms)
         except Exception:
             time.sleep(0.2)
 
 
-def start_stream_to_pc(framesize=None, fps=10, background=True, quality=35):
+def start_stream_to_pc(framesize=None, fps=10, background=True, quality=25):
     """
     Captures JPEG frames from the camera and streams them over serial stdout.
     The PC-side viewer / editor receives the JPEG packets and displays the live feed.
@@ -211,7 +228,7 @@ def start_stream_to_pc(framesize=None, fps=10, background=True, quality=35):
     :param fps: Target streaming frame rate (default: 10 FPS).
     :param background: If True (default), runs streaming in a background thread so
                        user code (e.g. AI coordinate reading loops) can execute concurrently.
-    :param quality: JPEG compression quality (default: 35 for optimal serial throughput).
+    :param quality: JPEG compression quality (default: 25 for optimal serial throughput without packet loss).
     """
     global _streaming_active, _stream_thread
 
