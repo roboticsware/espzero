@@ -383,9 +383,33 @@ Streams camera images to the PC (Pico Editor), which uses Google's MediaPipe lib
 Wi-Fi Video Streaming & PC YOLO Autonomous Driving
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Streams ESP32-S3 camera video wirelessly over Wi-Fi (MJPEG stream) to a PC. The PC runs a **YOLOv8** model in real time to detect objects/pedestrians and sends driving commands back to the ESP32.
+As a microcontroller, the ESP32-S3 has limited hardware RAM and computing power, making it challenging to run heavy modern deep learning models (such as YOLOv8) directly on-device.
+However, by dividing responsibilities between the ESP32 and a PC over **Wi-Fi**, you can build a high-performance autonomous driving robot car with ease.
 
-1. **ESP32 Robot Car Script (MicroPython)**:
+**Working Principle & Role Division**:
+
+.. code-block:: text
+
+    [ ESP32 Robot Car ] (Eyes & Feet)
+      - Streams camera video wirelessly over Wi-Fi (MJPEG stream)
+      - Drives DC motors according to received wireless commands ('GO' / 'STOP')
+      ▲
+      │  (Wi-Fi Network: Real-time Video Stream & Driving Commands)
+      ▼
+    [ PC / Mu Editor - Python 3 Mode ] (Brain)
+      - Receives Wi-Fi video stream and runs YOLOv8 in real time on PC CPU/GPU
+      - Detects obstacles/pedestrians and sends 'STOP' or 'GO' commands wirelessly
+
+**Step-by-Step Practical Guide with Mu Editor**:
+
+1. **PC YOLO Environment Setup**:
+   Install the required packages to run YOLO inference on your PC:
+   * **Option A (In Mu Editor)**: Click the **Settings (gear icon)** at bottom-right → **[Third-party Packages]** tab, enter ``ultralytics``, and click [OK].
+   * **Option B (In Terminal)**: Open CMD or PowerShell and run ``pip install ultralytics opencv-python requests``.
+
+2. **Step 1: Upload ESP32 Robot Car Code (Mu [ESP32 Mode])**:
+   Switch Mu Editor to **ESP32 mode** and save the code below as ``main.py`` on the board.
+   (Saving as ``main.py`` allows you to unplug the USB cable and power the car with batteries; it will automatically connect to Wi-Fi and start streaming on boot. Check the ESP32 IP address printed in the REPL, e.g., ``192.168.0.50``.)
 
 .. code-block:: python
 
@@ -412,16 +436,10 @@ Streams ESP32-S3 camera video wirelessly over Wi-Fi (MJPEG stream) to a PC. The 
                 car.stop()       # Stop if pedestrian or obstacle detected
         sleep(0.05)
 
-2. **PC-Side Real-Time YOLO Controller (Python)**:
-
-Run this on your PC to fetch the ESP32's Wi-Fi video stream, run YOLOv8 object detection, and send wireless driving commands.
-
-.. note::
-    To run YOLO real-time object detection on your PC, install the required packages in your terminal:
-
-    .. code-block:: bash
-
-        pip install ultralytics opencv-python requests
+3. **Step 2: Run PC AI Autonomous Driving Controller (Mu [Python 3 Mode])**:
+   Switch Mu Editor mode to **Python 3 mode** via the **[Mode]** button at top-left.
+   Paste the script below into a new tab, replace the ESP32 IP address in ``STREAM_URL`` and ``CMD_URL``, and click **[Play]**.
+   A live video window showing real-time detection boxes will appear on your PC, autonomously piloting the robot car!
 
 .. code-block:: python
 

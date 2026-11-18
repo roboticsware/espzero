@@ -383,9 +383,33 @@ Kamera tasvirlarini kompyuterga (Pico Editor) uzatadi va u real vaqt rejimida qo
 Wi-Fi orqali video uzatish va kompyuterda YOLO avtonom boshqaruvi
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ESP32-S3 kamera videosini Wi-Fi orqali (MJPEG oqimi) simsiz kompyuterga uzatadi. Kompyuter real vaqtda obyektlar/odamlarni aniqlash uchun **YOLOv8** modelini ishga tushiradi va ESP32 ga avtonom haydash buyruqlarini yuboradi.
+Mikrokontroller sifatida ESP32-S3 cheklangan RAM va hisoblash quvvatiga ega bo'lib, YOLOv8 kabi og'ir zamonaviy chuqur o'rganish (deep learning) modellarini to'g'ridan-to'g'ri qurilmada ishga tushirish qiyin.
+Biroq, ESP32 va kompyuter o'rtasida **Wi-Fi** orqali vazifalarni taqsimlash orqali siz yuqori samarali avtonom harakatlanuvchi robot mashinani osongina yaratishingiz mumkin.
 
-1. **ESP32 Robot Mashina Kodingiz (MicroPython)**:
+**Ishlash printsipi va vazifalar taqsimoti**:
+
+.. code-block:: text
+
+    [ ESP32 Robot Mashina ] (Ko'zlar va Oyoqlar roli)
+      - Wi-Fi orqali kamera videosini simsiz uzatadi (MJPEG oqimi)
+      - Kompyuterdan qabul qilingan simsiz buyruqlar ('GO' / 'STOP') asosida motorlarni harakatga keltiradi
+      ▲
+      │  (Wi-Fi tarmog'i: Real vaqtda video uzatish & Haydash buyruqlari)
+      ▼
+    [ Kompyuter / Mu Muharriri - Python 3 rejimi ] (Miya roli)
+      - Wi-Fi video oqimini qabul qiladi va kompyuterning yuqori quvvatli CPU/GPU sida YOLOv8 ni ishlatadi
+      - Odam/to'siq aniqlanganda darhol 'STOP', yo'l ochiq bo'lsa 'GO' buyrug'ini yuboradi
+
+**Mu Muharririda Bosqichma-bosqich Amaliy Qo'llanma**:
+
+1. **Kompyuterda YOLO muhitini tayyorlash**:
+   Kompyuteringizda YOLOv8 ni ishga tushirish uchun kerakli paketlarni o'rnating:
+   * **A usuli (Mu sozlamalarida)**: Mu pastki o'ng burchagidagi **Sozlamalar (tishli g'ildirak)** tugmasini bosing → **[Third-party Packages (Uchinchi tomon paketlari)]** bo'limiga o'ting, ``ultralytics`` deb yozing va [OK] tugmasini bosing.
+   * **B usuli (Terminalda)**: CMD yoki PowerShell da ``pip install ultralytics opencv-python requests`` buyrug'ini bajaring.
+
+2. **1-bosqich: ESP32 Robot kodini yuklash (Mu [ESP32 rejimi])**:
+   Mu muharririning rejimini **ESP32 rejimi**ga o'tkazing va quyidagi kodni yozib, plataga ``main.py`` nomi bilan saqlang.
+   (``main.py`` qilib saqlanganda, USB kabelni uzib, faqat batareya ulaganingizda ham plata o'z-o'zidan Wi-Fi ga ulanadi va simsiz video uzatishni boshlaydi. REPL da chiqqan ESP32 IP manzilini (masalan, ``192.168.0.50``) eslab qoling.)
 
 .. code-block:: python
 
@@ -412,16 +436,10 @@ ESP32-S3 kamera videosini Wi-Fi orqali (MJPEG oqimi) simsiz kompyuterga uzatadi.
                 car.stop()       # Odam yoki to'siq aniqlanganda to'xtash
         sleep(0.05)
 
-2. **Kompyuter uchun Real-vaqtli YOLO Nazoratchisi (Python)**:
-
-ESP32 ning Wi-Fi video oqimini o'qish, YOLOv8 yordamida obyektlarni aniqlash va simsiz boshqaruv buyruqlarini yuborish uchun kompyuteringizda ishga tushiring.
-
-.. note::
-    Kompyuterda YOLO real vaqtdagi obyektlarni aniqlash dasturini ishga tushirish uchun avval terminalda kerakli kutubxonalarni o'rnating:
-
-    .. code-block:: bash
-
-        pip install ultralytics opencv-python requests
+3. **2-bosqich: Kompyuter AI Avtonom Boshqaruvchisini ishga tushirish (Mu [Python 3 rejimi])**:
+   Mu muharririning yuqori chap burchagidagi **[Rejim (Mode)]** tugmasini bosib **Python 3 rejimi**ga o'ting.
+   Yangi oynada quyidagi skriptni yozing, yuqorida olingan ESP32 IP manzilini ``STREAM_URL`` va ``CMD_URL`` ga kiriting hamda **[Boshlash (Play)]** tugmasini bosing.
+   Kompyuteringizda real vaqtda aniqlangan obyektlar ramka bilan ko'rsatilgan video oyna ochiladi va robot mashina avtonom harakatni boshlaydi.
 
 .. code-block:: python
 

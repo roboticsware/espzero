@@ -399,9 +399,33 @@ ESP32 카메라 영상을 PC(에디터)로 전송하고, PC의 MediaPipe 라이�
 무선 WiFi 영상 전송 및 PC YOLO 자율주행
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ESP32-S3 카메라 영상을 무선 WiFi(MJPEG 스트림)로 PC에 전송하고, PC에서 **YOLOv8** 모델로 실시간 사물/사람을 감지하여 자율주행 자동차를 제어합니다.
+마이크로컨트롤러인 ESP32-S3는 하드웨어 연산 능력과 메모리가 제한되어 있어 무거운 최신 딥러닝 모델(YOLOv8 등)을 단독으로 구동하기 어렵습니다.
+하지만 ESP32와 PC가 **무선 WiFi**를 통해 역할을 분담하면, 실시간 객체 인식 기반의 고성능 자율주행 로봇 자동차를 쉽게 만들 수 있습니다.
 
-1. **ESP32 로봇 자동차 측 코드 (MicroPython)**:
+**동작 원리 및 역할 분담**:
+
+.. code-block:: text
+
+    [ ESP32 로봇 자동차 ] (눈과 발 역할)
+      - 카메라 영상을 Wi-Fi (MJPEG 스트림)로 실시간 전송
+      - PC에서 수신된 무선 주행 명령('GO' / 'STOP')에 따라 모터 구동
+      ▲
+      │  (Wi-Fi 무선 네트워크: 실시간 영상 수신 & 주행 명령 전송)
+      ▼
+    [ PC의 Mu 에디터 - Python 3 모드 ] (두뇌 역할)
+      - Wi-Fi 영상 스트림을 받아 PC의 고성능 CPU/GPU로 YOLOv8 실시간 객체 추론
+      - 사람/장애물 감지 시 즉시 'STOP', 전방 안전 시 'GO' 주행 명령 전송
+
+**Mu 에디터 단계별 실습 가이드**:
+
+1. **PC YOLO 환경 준비**:
+   PC에서 YOLO 추론을 실행하기 위해 필요한 패키지를 설치합니다:
+   * **방법 A (Mu 에디터 설정)**: Mu 우측 하단의 **설정(톱니바퀴 아이콘) → [Third-party Packages (서드파티 패키지)]** 탭에서 ``ultralytics`` 입력 후 [OK]를 클릭합니다.
+   * **방법 B (터미널)**: CMD 또는 PowerShell에서 ``pip install ultralytics opencv-python requests`` 를 실행합니다.
+
+2. **1단계: ESP32 로봇 자동차 코드 업로드 (Mu [ESP32 모드])**:
+   Mu 에디터 상단 모드를 **ESP32 모드**로 두고 아래 코드를 작성한 후, 파일 이름을 ``main.py``로 ESP32에 저장합니다.
+   (``main.py``로 저장하면 PC와 USB 케이블을 분리하고 배터리만 연결해도 전원이 켜지면 스스로 Wi-Fi에 접속하여 무선 스트리밍을 시작합니다. 실행 시 터미널에 표시되는 ESP32의 IP 주소(예: ``192.168.0.50``)를 확인합니다.)
 
 .. code-block:: python
 
@@ -428,16 +452,10 @@ ESP32-S3 카메라 영상을 무선 WiFi(MJPEG 스트림)로 PC에 전송하고,
                 car.stop()       # 사람/장애물 감지 시 정지
         sleep(0.05)
 
-2. **PC 측 실시간 YOLO 자율주행 컨트롤러 (Python)**:
-
-PC에서 실행하여 ESP32의 WiFi 스트림을 읽고, YOLOv8로 사람(Person)을 감지하면 즉시 무선 제어 명령을 전송합니다.
-
-.. note::
-    PC에서 YOLO 실시간 객체 인식을 실행하려면 터미널(CMD 또는 PowerShell)에서 필요한 라이브러리를 먼저 설치해야 합니다.
-
-    .. code-block:: bash
-
-        pip install ultralytics opencv-python requests
+3. **2단계: PC AI 자율주행 컨트롤러 실행 (Mu [Python 3 모드])**:
+   Mu 에디터 좌측 상단의 **[모드(Mode)]** 버튼을 클릭하여 **Python 3 모드**로 변경합니다.
+   새 탭에 아래 스크립트를 작성하고, 앞서 확인한 ESP32의 IP 주소를 ``STREAM_URL``과 ``CMD_URL``에 입력한 뒤 **[실행(Play)]**을 누릅니다.
+   PC 화면에 실시간 감지 결과가 표시되는 비디오 창이 열리며 로봇 자동차가 자율주행을 시작합니다.
 
 .. code-block:: python
 
