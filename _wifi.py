@@ -22,8 +22,13 @@ class WiFi:
     """
 
     def __init__(self):
-        import network
-        self._sta = network.WLAN(network.STA_IF)
+        try:
+            import network
+            self._sta = network.WLAN(network.STA_IF)
+            self._is_mock = False
+        except ImportError:
+            self._sta = None
+            self._is_mock = True
 
     def connect(self, ssid, password, timeout=10):
         """
@@ -41,6 +46,12 @@ class WiFi:
         :returns: IP address string.
         :raises OSError: If the connection times out.
         """
+        if self._is_mock:
+            _hal._wifi_active = True
+            print("[espzero] WiFi simulated (PC mode). IP: 192.168.1.100")
+            print("[espzero] NOTE: ADC2 pins are unavailable while WiFi is active.")
+            return "192.168.1.100"
+
         import time
         self._sta.active(True)
         self._sta.connect(ssid, password)
@@ -56,7 +67,8 @@ class WiFi:
 
     def disconnect(self):
         """Disconnect from the current access point."""
-        self._sta.disconnect()
+        if not self._is_mock and self._sta:
+            self._sta.disconnect()
         _hal._wifi_active = False
 
     def scan(self):

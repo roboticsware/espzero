@@ -71,9 +71,12 @@ class BoardProfile:
 
     def make_adc(self, gpio_num):
         """Create an ADC object for the given GPIO, applying attenuation if configured."""
-        from machine import ADC, Pin
+        try:
+            from machine import ADC, Pin
+        except ImportError:
+            from .._hal import ADC, Pin
         adc = ADC(Pin(gpio_num))
-        if self.ADC_ATTEN is not None:
+        if self.ADC_ATTEN is not None and hasattr(adc, 'atten'):
             adc.atten(self.ADC_ATTEN)
         return adc
 

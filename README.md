@@ -31,14 +31,14 @@ pip install espzero
 
 ## Quick Start
 
-```python
-import espzero
-espzero.begin()                # initialise: auto-detect board
+### 1. Zero-Setup (picozero-rw style)
+`espzero` automatically detects your board on first use. Calling `begin()` is completely optional!
 
-# Built-in LED — available after begin()
-from espzero import esp_led
+```python
+from espzero import esp_led, LED, Button
 from time import sleep
 
+# Built-in LED works right away
 while True:
     esp_led.on()
     sleep(1)
@@ -46,37 +46,53 @@ while True:
     sleep(1)
 ```
 
-Specify a board explicitly instead of auto-detection:
+### 2. Picozero Compatibility
+Code written for `picozero-rw` runs seamlessly using the `pico_led` alias and identical APIs:
+
+```python
+from espzero import pico_led, LED, Button, Servo, Potentiometer, pinout
+
+# Display ASCII board pinout diagram
+pinout()
+
+# Servo with degree positioning (picozero-rw parity)
+servo = Servo(13)
+servo.move_to_degree(90)   # 0 to 180 degrees
+
+# Potentiometer with raw 16-bit ADC value
+pot = Potentiometer(34)
+print("Raw ADC:", pot.raw_value)
+
+# pico_led alias works identically to esp_led
+pico_led.blink(on_time=0.5, n=3)
+```
+
+### 3. Specify a Board Explicitly (Optional)
+If your board requires a specific profile instead of auto-detection:
 
 ```python
 import espzero
-espzero.begin("esp32_38pin_nodemcu")   # or "esp32_devkit_v1", "esp8266_lolin_v3", ...
+espzero.begin("esp32_devkit_v1")   # or "esp32_38pin_nodemcu", "esp32_s3_devkit", "m5stack_atom", etc.
 ```
 
-Use other components after `begin()`:
+### 4. Components & Features
 
 ```python
-from espzero import LED, Button, Servo, WiFi
+from espzero import LED, Button, Servo, WiFi, CapTouch
 
-led = LED("internal")              # built-in LED — profile maps alias to real GPIO
+led = LED(2)                       # or LED("internal")
 btn = Button(0)                    # GPIO 0 (BOOT button)
-led.blink(on_time=0.5, n=5)       # identical API to picozero
+btn.when_pressed = led.toggle
 
 # WiFi (ESP32-specific)
 wifi = WiFi()
 ip = wifi.connect("MySSID", "password")
 print("IP:", ip)
 
-# Capacitive touch (WROOM/WROVER only)
-from espzero import CapTouch
+# Capacitive touch (WROOM/WROVER hardware touch pins)
 touch = CapTouch(pin=4)            # GPIO 4 = T0
 if touch.is_touched:
     esp_led.on()
-
-# Servo
-servo = Servo(13)
-servo.mid()
-servo.value = 0.75                 # 0–1 range, same as picozero
 ```
 
 ---

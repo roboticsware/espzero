@@ -1,22 +1,37 @@
 예제 (Recipes)
 ==============
 
-이 섹션은 ``espzero`` 를 사용하여 다양한 센서와 부품을 제어하는 실전 예제를 다룹니다. 모든 예제는 ``import espzero; espzero.begin()`` 이 호출되었다고 가정합니다.
+이 섹션은 ``espzero`` 를 사용하여 다양한 센서와 부품을 제어하는 실전 예제를 다룹니다.
+``espzero`` 는 첫 사용 시 보드를 자동으로 감지하므로 ``begin()`` 호출 없이 곧바로 사용할 수 있습니다. (라즈베리파이 피코용 ``picozero-rw`` 라이브러리와 100% 동일한 사용 경험을 제공합니다.)
+
+보드 핀맵 확인 (Pinout)
+--------------------
+
+ESP32 보드의 핀맵과 기능을 터미널에 아스키 다이어그램으로 출력합니다. (``picozero-rw`` 호환)
+
+.. code-block:: python
+
+    from espzero import pinout
+
+    pinout() # ESP32 표준 핀아웃 다이어그램 출력
 
 내장 LED (Built-in LED)
 ---------------------
 
-보드에 내장된 LED를 제어하는 가장 간단한 방법입니다.
+보드에 내장된 LED를 제어하는 가장 간단한 방법입니다. ``pico_led`` 별칭도 완벽히 지원됩니다.
 
 .. code-block:: python
 
-    from espzero import esp_led
+    from espzero import esp_led, pico_led
     from time import sleep
 
     esp_led.on()  # 켜기
     sleep(1)
     esp_led.off() # 끄기
     esp_led.blink() # 백그라운드에서 깜빡이기
+
+    # picozero-rw 호환 코드로도 동일하게 작동합니다:
+    pico_led.on()
 
 디지털 출력 (LED)
 ---------------
@@ -113,8 +128,32 @@ RGB LED
 
     pot = Pot(34) # 아날로그 핀 (ADC)
 
-    print("현재 값 (0-1):", pot.value)
+    print("정규화 값 (0.0 - 1.0):", pot.value)
+    print("원시 16비트 ADC 값 (0 - 65535):", pot.raw_value)
     print("전압 (V):", pot.voltage)
+
+서보 모터 (Servo)
+~~~~~~~~~~~~~~~
+
+서보 모터를 0~1 비율 또는 각도(0~180도)로 제어합니다. (``picozero-rw`` 호환)
+
+.. code-block:: python
+
+    from espzero import Servo
+    from time import sleep
+
+    servo = Servo(13)
+
+    # 기본 위치 제어 (0.0: 최소, 0.5: 중간, 1.0: 최대)
+    servo.mid()
+    sleep(1)
+
+    # 각도 단위 직접 제어 (picozero-rw의 move_to_degree API)
+    servo.move_to_degree(90)   # 90도 (중앙)
+    sleep(1)
+    servo.move_to_degree(180)  # 180도 (최대)
+    sleep(1)
+    servo.move_to_degree(0)    # 0도 (최소)
 
 내장 터치 센서 (Capacitive Touch)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

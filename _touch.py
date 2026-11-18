@@ -34,7 +34,7 @@ class CapTouch:
     """
 
     def __init__(self, pin, threshold=300):
-        from machine import TouchPad, Pin
+        from ._hal import TouchPad, Pin
         self._touch     = TouchPad(Pin(pin))
         self._threshold = threshold
         self._pin_num   = pin
