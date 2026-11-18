@@ -71,13 +71,31 @@ RGB LED
 .. code-block:: python
 
     from espzero import RGBLED
+    from time import sleep
 
     # ESP32 및 ESP32-S3 공통 지원 핀 (예: GPIO 4, 5, 6)
     rgb = RGBLED(red=4, green=5, blue=6)
 
     rgb.color = (255, 0, 0)   # 빨간색
+    sleep(0.5)
     rgb.color = (0, 255, 0)   # 초록색
+    sleep(0.5)
     rgb.color = (255, 255, 0) # 노란색 (빨강+초록)
+    sleep(0.5)
+
+    # 개별 채널 강도 조절 (0~255)
+    rgb.red = 128
+    rgb.blue = 255
+
+    # 색상 반전 및 토글
+    rgb.invert()
+    rgb.toggle()
+
+    # 다채로운 자동 애니메이션 (점멸, 페이드, 무지개 순환)
+    rgb.blink(on_times=0.5, colors=((255, 0, 0), (0, 255, 0), (0, 0, 255)), n=2, wait=True)
+    rgb.pulse(fade_times=1, n=2, wait=True)  # 부드럽게 페이드
+    rgb.cycle(fade_times=1, n=2, wait=True)  # 무지개 색상 순환
+
     rgb.off()
 
 온보드 내장 RGB LED (ESP32-S3 WS2812 NeoPixel)
@@ -88,10 +106,17 @@ ESP32-S3 또는 M5Stack 등 보드 자체에 WS2812 NeoPixel RGB LED가 내장�
 .. code-block:: python
 
     from espzero import esp_led
+    from time import sleep
 
     esp_led.color = (255, 0, 0)   # 빨간색
+    sleep(0.5)
     esp_led.color = (0, 255, 0)   # 초록색
+    sleep(0.5)
     esp_led.color = (0, 0, 255)   # 파란색
+    sleep(0.5)
+
+    # 내장 네오픽셀 무지개 순환 효과
+    esp_led.cycle(fade_times=0.5, n=3, wait=True)
     esp_led.off()
 
 부저 및 스피커 (Buzzer & Speaker)
@@ -173,6 +198,72 @@ ESP32-S3 또는 M5Stack 등 보드 자체에 WS2812 NeoPixel RGB LED가 내장�
     servo.move_to_degree(180)  # 180도 (최대)
     sleep(1)
     servo.move_to_degree(0)    # 0도 (최소)
+
+    # 부드러운 왕복 스위핑 (0도 <-> 180도 연속 왕복)
+    servo.pulse(fade_in_time=1, fade_out_time=1)
+
+모터 및 로봇 (Motor & Robot)
+---------------------------
+
+DC 모터 (Motor)
+~~~~~~~~~~~~~~
+
+모터 드라이버(예: L298N, L9110S, DRV8833 등)를 통해 양방향 회전이 가능한 DC 모터를 제어합니다.
+
+.. code-block:: python
+
+    from espzero import Motor
+    from time import sleep
+
+    # forward 핀, backward 핀 지정 (PWM 속도 제어 지원)
+    motor = Motor(forward=4, backward=5)
+
+    # 최고 속도 전진 회전
+    motor.forward()
+    sleep(1)
+
+    # 50% 속도로 후진 회전
+    motor.backward(0.5)
+    sleep(1)
+
+    # 시간 지정 회전 (1초간 정회전 후 자동 정지)
+    motor.forward(speed=0.8, t=1, wait=True)
+
+    # 모터 정지
+    motor.stop()
+
+로봇 로버 (Robot Rover / 2륜 구동 플랫폼)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+좌/우 2개의 모터를 제어하여 전진, 후진, 좌회전, 우회전하는 로봇 플랫폼을 편리하게 구동합니다.
+
+.. code-block:: python
+
+    from espzero import Robot
+    from time import sleep
+
+    # left=(전진핀, 후진핀), right=(전진핀, 후진핀)
+    robot = Robot(left=(4, 5), right=(6, 7))
+
+    # 기본 전진 / 후진
+    robot.forward()
+    sleep(1)
+    robot.backward(0.6)
+    sleep(1)
+
+    # 좌회전 및 우회전
+    robot.left(speed=0.8)
+    sleep(0.5)
+    robot.right(speed=0.8)
+    sleep(0.5)
+
+    # 시간 지정 주행 (1초 전진 -> 0.5초 좌회전 사각 주행)
+    for _ in range(4):
+        robot.forward(t=1, wait=True)
+        robot.left(t=0.5, wait=True)
+
+    # 로봇 정지
+    robot.stop()
 
 내장 터치 센서 (Capacitive Touch)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

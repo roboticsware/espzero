@@ -51,7 +51,7 @@ class ESP32DevKitV1(BoardProfile):
 # --------------------------------------------------------------
 class ESP32S3DevKit(BoardProfile):
     """
-    Espressif ESP32-S3 DevKitC-1 / Freenove ESP32-S3 WROOM CAM (N16R8).
+    Espressif ESP32-S3 DevKitC-1 / ESP32-S3 WROOM CAM (N16R8).
     Built-in LED: GPIO 48 (WS2812 NeoPixel RGB), GPIO 2 (Digital Blue LED IO2).
     ADC1: GPIO 1-10    ADC2: GPIO 11-20 (unusable with WiFi)
     Strapping pins: GPIO 0, 3, 45, 46

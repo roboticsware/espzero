@@ -56,13 +56,31 @@ Turli xil ranglarni yaratish uchun Qizil, Yashil va Moviy pinlarni birlashtiring
 .. code-block:: python
 
     from espzero import RGBLED
+    from time import sleep
 
     # ESP32 va ESP32-S3 uchun umumiy qo'llab-quvvatlanadigan pinlar (masalan, GPIO 4, 5, 6)
     rgb = RGBLED(red=4, green=5, blue=6)
 
     rgb.color = (255, 0, 0)   # Qizil
+    sleep(0.5)
     rgb.color = (0, 255, 0)   # Yashil
+    sleep(0.5)
     rgb.color = (255, 255, 0) # Sariq (Qizil + Yashil)
+    sleep(0.5)
+
+    # Alohida kanal yorqinligini boshqarish (0~255)
+    rgb.red = 128
+    rgb.blue = 255
+
+    # Rangni teskari aylantirish (invert) va holatni almashtirish (toggle)
+    rgb.invert()
+    rgb.toggle()
+
+    # Avtomatik animatsiyalar (miltillash, ravon pulsatsiya, kamalak aylanishi)
+    rgb.blink(on_times=0.5, colors=((255, 0, 0), (0, 255, 0), (0, 0, 255)), n=2, wait=True)
+    rgb.pulse(fade_times=1, n=2, wait=True)  # Ravon o'chib-yonish
+    rgb.cycle(fade_times=1, n=2, wait=True)  # Kamalak ranglari tsikli
+
     rgb.off()
 
 O'rnatilgan RGB LED (ESP32-S3 WS2812 NeoPixel)
@@ -73,10 +91,17 @@ O'rnatilgan WS2812 NeoPixel RGB LED (ESP32-S3 DevKit yoki M5Stack) bo'lgan plata
 .. code-block:: python
 
     from espzero import esp_led
+    from time import sleep
 
     esp_led.color = (255, 0, 0)   # Qizil
+    sleep(0.5)
     esp_led.color = (0, 255, 0)   # Yashil
+    sleep(0.5)
     esp_led.color = (0, 0, 255)   # Moviy
+    sleep(0.5)
+
+    # O'rnatilgan NeoPixel kamalak aylanish effekti
+    esp_led.cycle(fade_times=0.5, n=3, wait=True)
     esp_led.off()
 
 Buzzer va Dinamik (Buzzer & Speaker)
@@ -134,6 +159,95 @@ Potentiometr
 
     print("Joriy qiymat (0-1):", pot.value)
     print("Kuchlanish (V):", pot.voltage)
+
+Servo motor (Servo)
+~~~~~~~~~~~~~~~~~~~
+
+Standart servo motorlarni nisbat (0.0 dan 1.0 gacha) yoki burchak (0 dan 180 gradusgacha) bo'yicha boshqarish (``picozero-rw`` bilan to'liq mos):
+
+.. code-block:: python
+
+    from espzero import Servo
+    from time import sleep
+
+    servo = Servo(13)
+
+    # Holatni boshqarish (0.0: min, 0.5: o'rta, 1.0: maks)
+    servo.mid()
+    sleep(1)
+
+    # Aniq burchakka burish (move_to_degree API)
+    servo.move_to_degree(90)   # 90 gradus (markaz)
+    sleep(1)
+    servo.move_to_degree(180)  # 180 gradus (maks)
+    sleep(1)
+    servo.move_to_degree(0)    # 0 gradus (min)
+
+    # Ravon tebranish (0 <-> 180 gradus uzluksiz harakat)
+    servo.pulse(fade_in_time=1, fade_out_time=1)
+
+Motorlar va Robotlar (Motor & Robot)
+------------------------------------
+
+DC Motor (Motor)
+~~~~~~~~~~~~~~~~
+
+Drayver platalari (masalan, L298N, L9110S, DRV8833) orqali ikki yo'nalishli DC motorni boshqarish:
+
+.. code-block:: python
+
+    from espzero import Motor
+    from time import sleep
+
+    # Oldinga va orqaga pinlarini ko'rsatish (PWM tezlikni boshqarish)
+    motor = Motor(forward=4, backward=5)
+
+    # To'liq tezlikda oldinga aylantirish
+    motor.forward()
+    sleep(1)
+
+    # 50% tezlikda orqaga aylantirish
+    motor.backward(0.5)
+    sleep(1)
+
+    # Vaqt bilan aylantirish (1 soniya aylanib, avtomatik to'xtaydi)
+    motor.forward(speed=0.8, t=1, wait=True)
+
+    # Motorni to'xtatish
+    motor.stop()
+
+Robot Rover (Ikki g'ildirakli robot platformasi)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2 g'ildirakli robot platformasini oldinga, orqaga, chapga va o'ngga boshqarish:
+
+.. code-block:: python
+
+    from espzero import Robot
+    from time import sleep
+
+    # left=(oldinga_pin, orqaga_pin), right=(oldinga_pin, orqaga_pin)
+    robot = Robot(left=(4, 5), right=(6, 7))
+
+    # Asosiy harakatlar
+    robot.forward()
+    sleep(1)
+    robot.backward(0.6)
+    sleep(1)
+
+    # Chapga va o'ngga burilish
+    robot.left(speed=0.8)
+    sleep(0.5)
+    robot.right(speed=0.8)
+    sleep(0.5)
+
+    # Vaqt bo'yicha kvadrat shaklida harakatlanish
+    for _ in range(4):
+        robot.forward(t=1, wait=True)
+        robot.left(t=0.5, wait=True)
+
+    # Robotni to'xtatish
+    robot.stop()
 
 O'rnatilgan sensorli tugma (Capacitive Touch)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

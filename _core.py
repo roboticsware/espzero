@@ -404,12 +404,89 @@ class NeoPixelLED(OutputDevice, PinMixin):
         return self._state_to_value(self._state)
 
     def _write(self, value):
-        self._state = self._value_to_state(value)
+        if isinstance(value, (tuple, list)):
+            self._color = self._parse_color(value)
+            self._state = self._color != (0, 0, 0)
+        else:
+            self._state = self._value_to_state(value)
         out_color = self._color if self._state else (0, 0, 0)
         if self._np is not None:
             self._np[0] = out_color
             self._np.write()
         _hal.record_event("neopixel", self._pin_num, "write", out_color)
+
+    @property
+    def red(self):
+        return self._color[0] if self._state else 0
+
+    @red.setter
+    def red(self, value):
+        r = clamp(int(value), 0, 255)
+        self.color = (r, self._color[1], self._color[2])
+
+    @property
+    def green(self):
+        return self._color[1] if self._state else 0
+
+    @green.setter
+    def green(self, value):
+        g = clamp(int(value), 0, 255)
+        self.color = (self._color[0], g, self._color[2])
+
+    @property
+    def blue(self):
+        return self._color[2] if self._state else 0
+
+    @blue.setter
+    def blue(self, value):
+        b = clamp(int(value), 0, 255)
+        self.color = (self._color[0], self._color[1], b)
+
+    def invert(self):
+        if self._state:
+            self.color = (255 - self._color[0], 255 - self._color[1], 255 - self._color[2])
+        else:
+            self.color = (255, 255, 255)
+
+    def blink(self, on_times=1, fade_times=0,
+              colors=((1, 0, 0), (0, 1, 0), (0, 0, 1)),
+              n=None, wait=False, fps=25):
+        self.off()
+        if type(on_times) is not tuple:
+            on_times = (on_times,) * len(colors)
+        if type(fade_times) is not tuple:
+            fade_times = (fade_times,) * len(colors)
+        if any(v > 1 for v in sum(colors, ())):
+            parsed_colors = tuple(tuple(clamp(int(v), 0, 255) for v in t) for t in colors)
+        else:
+            parsed_colors = tuple(tuple(clamp(round(v * 255), 0, 255) for v in t) for t in colors)
+
+        def blink_generator():
+            lerp = lambda t, c1, c2: tuple(
+                clamp(round((1 - t) * off + t * on), 0, 255)
+                for off, on in zip(c1, c2)
+            )
+            for c in range(len(parsed_colors)):
+                if on_times[c] > 0:
+                    yield (parsed_colors[c], on_times[c])
+                if fade_times[c] > 0:
+                    for i in range(int(fps * fade_times[c])):
+                        v = lerp(i * (1 / fps) / fade_times[c],
+                                 parsed_colors[c],
+                                 parsed_colors[(c + 1) % len(parsed_colors)])
+                        yield (v, 1 / fps)
+
+        self._start_change(list(blink_generator()), n, wait)
+
+    def pulse(self, fade_times=1,
+              colors=((0, 0, 0), (1, 0, 0), (0, 0, 0), (0, 1, 0), (0, 0, 0), (0, 0, 1)),
+              n=None, wait=False, fps=25):
+        self.blink(0, fade_times, colors, n, wait, fps)
+
+    def cycle(self, fade_times=1,
+              colors=((1, 0, 0), (0, 1, 0), (0, 0, 1)),
+              n=None, wait=False, fps=25):
+        self.blink(0, fade_times, colors, n, wait, fps)
 
     def on(self):
         self._state = True
@@ -442,9 +519,26 @@ PWMBuzzer.beep = PWMBuzzer.blink
 
 class Speaker(OutputDevice, PinMixin):
     NOTES = {
-        "c4":262,"d4":294,"e4":330,"f4":349,"g4":392,"a4":440,"b4":494,
-        "c5":523,"d5":587,"e5":659,"f5":698,"g5":784,"a5":880,"b5":988,
-        "c6":1047,"d6":1175,"e6":1319,"f6":1397,"g6":1568,"a6":1760,"b6":1976,
+        "b0": 31,
+        "c1": 33, "c#1": 35, "d1": 37, "d#1": 39, "e1": 41, "f1": 44,
+        "f#1": 46, "g1": 49, "g#1": 52, "a1": 55, "a#1": 58, "b1": 62,
+        "c2": 65, "c#2": 69, "d2": 73, "d#2": 78, "e2": 82, "f2": 87,
+        "f#2": 93, "g2": 98, "g#2": 104, "a2": 110, "a#2": 117, "b2": 123,
+        "c3": 131, "c#3": 139, "d3": 147, "d#3": 156, "e3": 165, "f3": 175,
+        "f#3": 185, "g3": 196, "g#3": 208, "a3": 220, "a#3": 233, "b3": 247,
+        "c4": 262, "c#4": 277, "d4": 294, "d#4": 311, "e4": 330, "f4": 349,
+        "f#4": 370, "g4": 392, "g#4": 415, "a4": 440, "a#4": 466, "b4": 494,
+        "c5": 523, "c#5": 554, "d5": 587, "d#5": 622, "e5": 659, "f5": 698,
+        "f#5": 740, "g5": 784, "g#5": 831, "a5": 880, "a#5": 932, "b5": 988,
+        "c6": 1047, "c#6": 1109, "d6": 1175, "d#6": 1245, "e6": 1319, "f6": 1397,
+        "f#6": 1480, "g6": 1568, "g#6": 1661, "a6": 1760, "a#6": 1865, "b6": 1976,
+        "c7": 2093, "c#7": 2217, "d7": 2349, "d#7": 2489, "e7": 2637, "f7": 2794,
+        "f#7": 2960, "g7": 3136, "g#7": 3322, "a7": 3520, "a#7": 3729, "b7": 3951,
+        "c8": 4186, "c#8": 4435, "d8": 4699, "d#8": 4978,
+    }
+
+    FLAT_MAP = {
+        "db": "c#", "eb": "d#", "gb": "f#", "ab": "g#", "bb": "a#",
     }
 
     def __init__(self, pin, initial_freq=440, initial_volume=0,
@@ -498,7 +592,10 @@ class Speaker(OutputDevice, PinMixin):
     def _to_freq(self, freq):
         if freq is not None and freq != "" and freq != 0:
             if type(freq) is str:
-                return int(self.NOTES.get(freq.lower(), 440))
+                s = freq.lower().strip()
+                if len(s) >= 3 and s[:2] in self.FLAT_MAP:
+                    s = self.FLAT_MAP[s[:2]] + s[2:]
+                return int(self.NOTES.get(s, 440))
             elif 0 < freq <= 128:
                 return int(440 * (2 ** (1/12)) ** (freq - 69))
             else:
@@ -579,13 +676,83 @@ class RGBLED(OutputDevice, PinsMixin):
     def color(self, value):
         self.value = tuple(self._from_255(v) for v in value)
 
+    @property
+    def red(self):
+        return self._to_255(self.value[0])
+
+    @red.setter
+    def red(self, value):
+        r, g, b = self.value
+        self.value = (self._from_255(value), g, b)
+
+    @property
+    def green(self):
+        return self._to_255(self.value[1])
+
+    @green.setter
+    def green(self, value):
+        r, g, b = self.value
+        self.value = (r, self._from_255(value), b)
+
+    @property
+    def blue(self):
+        return self._to_255(self.value[2])
+
+    @blue.setter
+    def blue(self, value):
+        r, g, b = self.value
+        self.value = (r, g, self._from_255(value))
+
     def on(self): self.value = (1, 1, 1)
+
+    def invert(self):
+        r, g, b = self.value
+        self.value = (1 - r, 1 - g, 1 - b)
+
     def toggle(self):
         if self.value == (0,0,0):
             self.value = self._last or (1,1,1)
         else:
             self._last = self.value
             self.value = (0,0,0)
+
+    def blink(self, on_times=1, fade_times=0,
+              colors=((1, 0, 0), (0, 1, 0), (0, 0, 1)),
+              n=None, wait=False, fps=25):
+        self.off()
+        if type(on_times) is not tuple:
+            on_times = (on_times,) * len(colors)
+        if type(fade_times) is not tuple:
+            fade_times = (fade_times,) * len(colors)
+        if any(v > 1 for v in sum(colors, ())):
+            colors = tuple(tuple(self._from_255(v) for v in t) for t in colors)
+
+        def blink_generator():
+            lerp = lambda t, c1, c2: tuple(
+                (1 - t) * off + t * on
+                for off, on in zip(c1, c2)
+            )
+            for c in range(len(colors)):
+                if on_times[c] > 0:
+                    yield (colors[c], on_times[c])
+                if fade_times[c] > 0:
+                    for i in range(int(fps * fade_times[c])):
+                        v = lerp(i * (1 / fps) / fade_times[c],
+                                 colors[c],
+                                 colors[(c + 1) % len(colors)])
+                        yield (v, 1 / fps)
+
+        self._start_change(list(blink_generator()), n, wait)
+
+    def pulse(self, fade_times=1,
+              colors=((0, 0, 0), (1, 0, 0), (0, 0, 0), (0, 1, 0), (0, 0, 0), (0, 0, 1)),
+              n=None, wait=False, fps=25):
+        self.blink(0, fade_times, colors, n, wait, fps)
+
+    def cycle(self, fade_times=1,
+              colors=((1, 0, 0), (0, 1, 0), (0, 0, 1)),
+              n=None, wait=False, fps=25):
+        self.blink(0, fade_times, colors, n, wait, fps)
 
     def close(self):
         super().close()
@@ -632,6 +799,14 @@ class Robot:
     def __init__(self, left, right, pwm=True):
         self._left  = Motor(left[0],  left[1],  pwm)
         self._right = Motor(right[0], right[1], pwm)
+
+    @property
+    def left_motor(self):
+        return self._left
+
+    @property
+    def right_motor(self):
+        return self._right
 
     @property
     def value(self): return (self._left.value, self._right.value)

@@ -56,13 +56,31 @@ Combine Red, Green, and Blue pins to create various colors.
 .. code-block:: python
 
     from espzero import RGBLED
+    from time import sleep
 
     # Universally supported pins for ESP32 and ESP32-S3 (e.g. GPIO 4, 5, 6)
     rgb = RGBLED(red=4, green=5, blue=6)
 
     rgb.color = (255, 0, 0)   # Red
+    sleep(0.5)
     rgb.color = (0, 255, 0)   # Green
+    sleep(0.5)
     rgb.color = (255, 255, 0) # Yellow (Red + Green)
+    sleep(0.5)
+
+    # Adjust individual channel brightness (0~255)
+    rgb.red = 128
+    rgb.blue = 255
+
+    # Color inversion and toggle
+    rgb.invert()
+    rgb.toggle()
+
+    # Dynamic animations (blink, pulse fade, rainbow cycle)
+    rgb.blink(on_times=0.5, colors=((255, 0, 0), (0, 255, 0), (0, 0, 255)), n=2, wait=True)
+    rgb.pulse(fade_times=1, n=2, wait=True)  # Smooth fade pulse
+    rgb.cycle(fade_times=1, n=2, wait=True)  # Rainbow color cycle
+
     rgb.off()
 
 Built-in Onboard RGB LED (ESP32-S3 WS2812 NeoPixel)
@@ -73,10 +91,17 @@ For boards with a built-in WS2812 NeoPixel RGB LED (such as ESP32-S3 DevKit or M
 .. code-block:: python
 
     from espzero import esp_led
+    from time import sleep
 
     esp_led.color = (255, 0, 0)   # Red
+    sleep(0.5)
     esp_led.color = (0, 255, 0)   # Green
+    sleep(0.5)
     esp_led.color = (0, 0, 255)   # Blue
+    sleep(0.5)
+
+    # On-board NeoPixel rainbow cycle animation
+    esp_led.cycle(fade_times=0.5, n=3, wait=True)
     esp_led.off()
 
 Buzzer & Speaker
@@ -134,6 +159,95 @@ Potentiometer
 
     print("Current value (0-1):", pot.value)
     print("Voltage (V):", pot.voltage)
+
+Servo Motor (Servo)
+~~~~~~~~~~~~~~~~~~~
+
+Control standard servo motors via ratio (0.0 to 1.0) or angles (0 to 180 degrees) with ``picozero-rw`` compatibility.
+
+.. code-block:: python
+
+    from espzero import Servo
+    from time import sleep
+
+    servo = Servo(13)
+
+    # Position control (0.0: min, 0.5: mid, 1.0: max)
+    servo.mid()
+    sleep(1)
+
+    # Move to specific angle (move_to_degree API)
+    servo.move_to_degree(90)   # 90 degrees (mid)
+    sleep(1)
+    servo.move_to_degree(180)  # 180 degrees (max)
+    sleep(1)
+    servo.move_to_degree(0)    # 0 degrees (min)
+
+    # Smooth sweeping back and forth (0 deg <-> 180 deg)
+    servo.pulse(fade_in_time=1, fade_out_time=1)
+
+Motors & Robots (Motor & Robot)
+-------------------------------
+
+DC Motor (Motor)
+~~~~~~~~~~~~~~~~
+
+Control bidirectional DC motors via motor driver boards (e.g. L298N, L9110S, DRV8833).
+
+.. code-block:: python
+
+    from espzero import Motor
+    from time import sleep
+
+    # Specify forward and backward GPIO pins (supports PWM speed control)
+    motor = Motor(forward=4, backward=5)
+
+    # Rotate forward at full speed
+    motor.forward()
+    sleep(1)
+
+    # Rotate backward at 50% speed
+    motor.backward(0.5)
+    sleep(1)
+
+    # Timed rotation (runs for 1s then stops automatically)
+    motor.forward(speed=0.8, t=1, wait=True)
+
+    # Stop motor
+    motor.stop()
+
+Robot Rover (Two-Wheel Drive Platform)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Easily steer a 2-wheeled robot rover with forward, backward, left, and right movements.
+
+.. code-block:: python
+
+    from espzero import Robot
+    from time import sleep
+
+    # left=(fwd_pin, bwd_pin), right=(fwd_pin, bwd_pin)
+    robot = Robot(left=(4, 5), right=(6, 7))
+
+    # Basic movements
+    robot.forward()
+    sleep(1)
+    robot.backward(0.6)
+    sleep(1)
+
+    # Turning left and right
+    robot.left(speed=0.8)
+    sleep(0.5)
+    robot.right(speed=0.8)
+    sleep(0.5)
+
+    # Timed movements (drive in a square pattern)
+    for _ in range(4):
+        robot.forward(t=1, wait=True)
+        robot.left(t=0.5, wait=True)
+
+    # Stop rover
+    robot.stop()
 
 Built-in Touch Sensor (Capacitive Touch)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
