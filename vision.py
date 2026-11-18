@@ -2,6 +2,7 @@
 espzero/vision.py
 Provides camera streaming and AI vision utilities for ESP32 camera boards.
 Uses high-performance YUV422 -> YCbYCr accelerated JPEG pipeline (20+ FPS, crystal-clear true color).
+Supports non-blocking background streaming via _thread so user code can run concurrently.
 """
 import sys
 import time
@@ -16,16 +17,89 @@ try:
 except ImportError:
     jpeg = None
 
+try:
+    import _thread
+except ImportError:
+    _thread = None
+
+# Global streaming state
+_streaming_active = False
+_stream_thread = None
+_latest_ai_data = {"hand_x": 0, "hand_y": 0, "hand_detected": False}
+
+
+def get_pc_ai():
+    """
+    Returns the latest AI tracking data received from PC:
+    {'hand_x': int, 'hand_y': int, 'hand_detected': bool}
+    """
+    global _latest_ai_data
+    return _latest_ai_data
+
+
+get_hand = get_pc_ai
+
+
+def _process_ai_line(line):
+    global _latest_ai_data
+    try:
+        line = line.strip()
+        if "[AI]:" in line:
+            idx = line.find("[AI]:")
+            vals = line[idx + 5 :].split(",")
+            if len(vals) >= 3:
+                hx = int(vals[0])
+                hy = int(vals[1])
+                det = vals[2] == "1" or vals[2].lower() == "true"
+                ai_dict = {
+                    "hand_x": hx,
+                    "hand_y": hy,
+                    "hand_detected": det,
+                }
+                _latest_ai_data = ai_dict
+
+                # Also inject into __main__ so user code checking "__pc_ai_data" in globals() works seamlessly
+                try:
+                    import __main__
+                    setattr(__main__, "__pc_ai_data", ai_dict)
+                except Exception:
+                    pass
+    except Exception:
+        pass
+
+
 class _ModernCameraStreamer:
-    def __init__(self, fps=10):
+    def __init__(self, framesize=None, quality=35):
         PixelFormat = getattr(camera, 'PixelFormat')
         FrameSize = getattr(camera, 'FrameSize')
 
-        # OV2640 native output is YUV422 (320x240)
-        # Bypasses sensor RGB conversion and feeds directly into mp_jpeg YCbYCr encoder
+        # Frame size selection: default QVGA (320x240)
+        fs = getattr(FrameSize, 'QVGA', 3)
+        w, h = 320, 240
+        if isinstance(framesize, str):
+            sz = framesize.upper()
+            if sz == "QQVGA":
+                fs = getattr(FrameSize, "QQVGA", fs)
+                w, h = 160, 120
+            elif sz == "HQVGA":
+                fs = getattr(FrameSize, "HQVGA", fs)
+                w, h = 240, 176
+            elif sz == "VGA":
+                fs = getattr(FrameSize, "VGA", fs)
+                w, h = 640, 480
+        elif framesize is not None:
+            fs = framesize
+            if hasattr(FrameSize, "QQVGA") and fs == FrameSize.QQVGA:
+                w, h = 160, 120
+            elif hasattr(FrameSize, "HQVGA") and fs == FrameSize.HQVGA:
+                w, h = 240, 176
+            elif hasattr(FrameSize, "VGA") and fs == FrameSize.VGA:
+                w, h = 640, 480
+
+        # OV2640 native output is YUV422
         self.cam = camera.Camera(
             pixel_format=PixelFormat.YUV422,
-            frame_size=FrameSize.QVGA
+            frame_size=fs
         )
 
         # Correct camera orientation for standard ESP32-S3 CAM boards
@@ -36,13 +110,12 @@ class _ModernCameraStreamer:
             pass
 
         # Native hardware/C accelerated YCbYCr -> JPEG encoder
-        # Takes ~40ms per frame, yielding up to 20-25 FPS with crystal-clear color
         if jpeg and hasattr(jpeg, 'Encoder'):
-            self.enc = jpeg.Encoder(height=240, width=320, pixel_format="YCbYCr", quality=70)
+            self.enc = jpeg.Encoder(height=h, width=w, pixel_format="YCbYCr", quality=quality)
         else:
             self.enc = None
 
-        print("[Vision] Modern Camera initialized in YUV422 -> YCbYCr mode (QVGA 320x240)")
+        print("[Vision] Camera initialized in YUV422 -> YCbYCr mode ({}x{}, q={})".format(w, h, quality))
 
     def capture_jpeg(self):
         raw = self.cam.capture()
@@ -61,14 +134,14 @@ class _ModernCameraStreamer:
         return jpg
 
 
-def _get_streamer():
+def _get_streamer(framesize=None, quality=35):
     if camera is None:
         return None
 
     # Check for modern micropython-camera-API
     if hasattr(camera, 'Camera'):
         try:
-            return _ModernCameraStreamer()
+            return _ModernCameraStreamer(framesize=framesize, quality=quality)
         except Exception as e:
             print("[Vision] Modern Camera Init Error:", e)
 
@@ -87,27 +160,23 @@ def _get_streamer():
     return None
 
 
-def start_stream_to_pc(framesize=None, fps=10):
+def _stream_loop(streamer, delay, is_modern):
     """
-    Captures JPEG frames from the camera and streams them over serial stdout.
-    The PC-side viewer / editor receives the JPEG packets and displays the live feed.
+    Internal streaming loop executed either in a background thread or synchronously.
+    Streams JPEG frames over stdout and non-blockingly reads AI feedback packets from stdin.
     """
-    if camera is None:
-        print("[Vision] Error: Camera module is missing. Are you using a camera-enabled firmware?")
-        return
-
-    streamer = _get_streamer()
-    if streamer is None:
-        print("[Vision] Camera Init Error: Could not initialize camera on this board.")
-        return
-
-    delay = 1.0 / fps
-    print("[Vision] Starting PC stream ({} fps)... Press Stop in Editor to halt.".format(fps))
+    global _streaming_active
     writer = getattr(sys.stdout, 'buffer', sys.stdout)
 
-    is_modern = hasattr(streamer, 'capture_jpeg')
+    poller = None
+    try:
+        import select
+        poller = select.poll()
+        poller.register(sys.stdin, select.POLLIN)
+    except Exception:
+        pass
 
-    while True:
+    while _streaming_active:
         try:
             if is_modern:
                 buf = streamer.capture_jpeg()
@@ -116,10 +185,252 @@ def start_stream_to_pc(framesize=None, fps=10):
 
             if buf:
                 writer.write(buf)
+
+            # Read incoming AI feedback from PC: [AI]:x,y,det\n
+            if poller:
+                try:
+                    events = poller.poll(0)
+                    if events:
+                        line = sys.stdin.readline()
+                        if line:
+                            _process_ai_line(line)
+                except Exception:
+                    pass
+
             time.sleep(delay)
-        except KeyboardInterrupt:
-            print("\n[Vision] Stream stopped by user.")
-            break
+        except Exception:
+            time.sleep(0.2)
+
+
+def start_stream_to_pc(framesize=None, fps=10, background=True, quality=35):
+    """
+    Captures JPEG frames from the camera and streams them over serial stdout.
+    The PC-side viewer / editor receives the JPEG packets and displays the live feed.
+
+    :param framesize: 'QVGA' (320x240, default) or 'QQVGA' (160x120 for higher FPS on 115200 baud).
+    :param fps: Target streaming frame rate (default: 10 FPS).
+    :param background: If True (default), runs streaming in a background thread so
+                       user code (e.g. AI coordinate reading loops) can execute concurrently.
+    :param quality: JPEG compression quality (default: 35 for optimal serial throughput).
+    """
+    global _streaming_active, _stream_thread
+
+    if camera is None:
+        print("[Vision] Error: Camera module is missing. Are you using a camera-enabled firmware?")
+        return
+
+    if _streaming_active:
+        print("[Vision] Stream is already running.")
+        return
+
+    streamer = _get_streamer(framesize=framesize, quality=quality)
+    if streamer is None:
+        print("[Vision] Camera Init Error: Could not initialize camera on this board.")
+        return
+
+    delay = 1.0 / fps
+    print("[Vision] Starting PC stream ({} fps)... Press Stop in Editor to halt.".format(fps))
+
+    is_modern = hasattr(streamer, 'capture_jpeg')
+    _streaming_active = True
+
+    if background and _thread is not None:
+        try:
+            _thread.stack_size(8192)
+            _stream_thread = _thread.start_new_thread(_stream_loop, (streamer, delay, is_modern))
+            return
         except Exception as e:
-            print("[Vision] Capture Error:", e)
-            time.sleep(0.5)
+            print("[Vision] Background thread start failed ({}), falling back to blocking mode.".format(e))
+
+    # Synchronous fallback if background=False or thread failed
+    try:
+        _stream_loop(streamer, delay, is_modern)
+    except KeyboardInterrupt:
+        print("\n[Vision] Stream stopped by user.")
+    finally:
+        _streaming_active = False
+
+
+
+
+def _wifi_server_loop(streamer, port, delay, is_modern):
+    """
+    Internal HTTP MJPEG streaming server loop over Wi-Fi.
+    Also handles /ai endpoint for receiving MediaPipe AI coordinates wirelessly.
+    """
+    global _streaming_active
+    import socket
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    try:
+        s.bind(('0.0.0.0', port))
+        s.listen(2)
+        s.settimeout(1.0)
+    except Exception as e:
+        print("[Vision] Socket bind error:", e)
+        return
+
+    while _streaming_active:
+        try:
+            client, addr = s.accept()
+        except OSError:
+            continue
+        except Exception:
+            break
+
+        try:
+            client.settimeout(2.0)
+            req = client.recv(1024)
+            if not req:
+                client.close()
+                continue
+
+            req_str = req.decode('latin1', 'ignore')
+
+            # Handle AI coordinate feedback endpoint: GET /ai?x=120&y=80&det=1
+            if "/ai" in req_str:
+                try:
+                    q_idx = req_str.find("?")
+                    if q_idx != -1:
+                        params = req_str[q_idx+1:].split(" ")[0].split("&")
+                        p_dict = {}
+                        for p in params:
+                            if "=" in p:
+                                k, v = p.split("=", 1)
+                                p_dict[k] = int(v) if v.isdigit() else v
+
+                        hx = p_dict.get("hand_x", p_dict.get("x", 0))
+                        hy = p_dict.get("hand_y", p_dict.get("y", 0))
+                        det = bool(p_dict.get("det", p_dict.get("detected", 1)))
+
+                        import __main__
+                        ai_dict = getattr(__main__, "__pc_ai_data", {})
+                        if not isinstance(ai_dict, dict):
+                            ai_dict = {}
+                        ai_dict["hand_x"] = hx
+                        ai_dict["hand_y"] = hy
+                        ai_dict["hand_detected"] = det
+                        __main__.__pc_ai_data = ai_dict
+                        global _latest_ai_data
+                        _latest_ai_data = ai_dict
+                except Exception:
+                    pass
+
+                client.sendall(b"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nAccess-Control-Allow-Origin: *\r\n\r\nOK")
+                client.close()
+                continue
+
+            # Standard MJPEG streaming endpoint
+            client.sendall(
+                b"HTTP/1.1 200 OK\r\n"
+                b"Connection: close\r\n"
+                b"Server: espzero-vision\r\n"
+                b"Content-Type: multipart/x-mixed-replace; boundary=frame\r\n"
+                b"Access-Control-Allow-Origin: *\r\n\r\n"
+            )
+
+            client.settimeout(1.0)
+            while _streaming_active:
+                if is_modern:
+                    buf = streamer.capture_jpeg()
+                else:
+                    buf = streamer.capture()
+
+                if buf:
+                    header = (
+                        b"--frame\r\n"
+                        b"Content-Type: image/jpeg\r\n"
+                        b"Content-Length: " + str(len(buf)).encode() + b"\r\n\r\n"
+                    )
+                    client.sendall(header + buf + b"\r\n")
+                time.sleep(delay)
+
+        except Exception:
+            pass
+        finally:
+            try:
+                client.close()
+            except Exception:
+                pass
+
+    try:
+        s.close()
+    except Exception:
+        pass
+
+
+def start_wifi_stream(port=8080, fps=10, background=True, framesize=None, quality=70):
+    """
+    Captures JPEG frames and serves them as an MJPEG HTTP stream over Wi-Fi.
+    Allows Mu Editor, browsers, or other devices on the same Wi-Fi network
+    to view live camera feed and send/receive real-time AI coordinate data.
+
+    :param port: HTTP server port (default: 8080).
+    :param fps: Target streaming frame rate (default: 10 FPS).
+    :param background: Run the HTTP server in a background thread (default: True).
+    :param framesize: 'QVGA' (320x240, default) or 'QQVGA' (160x120).
+    :param quality: JPEG quality (default: 70 for high clarity over Wi-Fi).
+    """
+    global _streaming_active, _stream_thread
+
+    if camera is None:
+        print("[Vision] Error: Camera module is missing. Are you using a camera-enabled firmware?")
+        return
+
+    if _streaming_active:
+        print("[Vision] Stream is already running.")
+        return
+
+    # Determine Wi-Fi IP address
+    ip = None
+    try:
+        import network
+        sta = network.WLAN(network.STA_IF)
+        if sta.isconnected():
+            ip = sta.ifconfig()[0]
+        else:
+            ap = network.WLAN(network.AP_IF)
+            if ap.active():
+                ip = ap.ifconfig()[0]
+    except Exception:
+        pass
+
+    if not ip or ip == "0.0.0.0":
+        print("[Vision] Error: WiFi is not connected. Connect using WiFi().connect('SSID', 'password') first.")
+        return
+
+    streamer = _get_streamer(framesize=framesize, quality=quality)
+    if streamer is None:
+        print("[Vision] Camera Init Error: Could not initialize camera on this board.")
+        return
+
+    delay = 1.0 / fps
+    print("[Vision] Starting WiFi stream at http://{}:{}/ ({} fps)... Press Stop in Editor to halt.".format(ip, port, fps))
+
+    is_modern = hasattr(streamer, 'capture_jpeg')
+    _streaming_active = True
+
+    if background and _thread is not None:
+        try:
+            _thread.stack_size(8192)
+            _stream_thread = _thread.start_new_thread(_wifi_server_loop, (streamer, port, delay, is_modern))
+            return
+        except Exception as e:
+            print("[Vision] Background WiFi thread start failed ({}), falling back to blocking mode.".format(e))
+
+    try:
+        _wifi_server_loop(streamer, port, delay, is_modern)
+    except KeyboardInterrupt:
+        print("\n[Vision] Stream stopped by user.")
+    finally:
+        _streaming_active = False
+
+
+def stop_stream():
+    """
+    Stops the background camera streaming loop.
+    """
+    global _streaming_active
+    _streaming_active = False
+    time.sleep(0.2)

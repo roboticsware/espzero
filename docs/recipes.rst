@@ -383,16 +383,105 @@ ESP32 카메라 영상을 PC(에디터)로 전송하고, PC의 MediaPipe 라이�
     from espzero import vision
     from time import sleep
 
-    # PC로 실시간 카메라 영상 전송 시작
+    # PC로 실시간 카메라 영상 전송 시작 (백그라운드 비동기 실행)
     vision.start_stream_to_pc()
 
     while True:
-        # 에디터가 분석하여 주입해 준 손가락 좌표 읽기
+        # 에디터(PC)가 분석하여 주입해 준 손가락 좌표 읽기
         if "__pc_ai_data" in globals():
             x = __pc_ai_data.get("hand_x", 0)
             y = __pc_ai_data.get("hand_y", 0)
-            print("손가락 위치 -> X:", x, "Y:", y)
+            detected = __pc_ai_data.get("hand_detected", False)
+            if detected:
+                print("손가락 감지됨 -> X:", x, "Y:", y)
         sleep(0.1)
+
+무선 WiFi 영상 전송 및 PC YOLO 자율주행
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ESP32-S3 카메라 영상을 무선 WiFi(MJPEG 스트림)로 PC에 전송하고, PC에서 **YOLOv8** 모델로 실시간 사물/사람을 감지하여 자율주행 자동차를 제어합니다.
+
+1. **ESP32 로봇 자동차 측 코드 (MicroPython)**:
+
+.. code-block:: python
+
+    from espzero import WiFi, vision, Robot
+    from time import sleep
+
+    # 1. WiFi 공유기 연결
+    wifi = WiFi()
+    wifi.connect("내_와이파이_이름", "비밀번호")
+
+    # 2. 2륜 구동 로봇 모터 설정 (왼쪽 모터 GPIO 4, 5 / 오른쪽 모터 GPIO 6, 7)
+    car = Robot(left=(4, 5), right=(6, 7))
+
+    # 3. 무선 카메라 스트리밍 시작 (기본 포트: 8080)
+    vision.start_wifi_stream(port=8080)
+
+    # 4. PC AI 판단 데이터 수신 및 주행 루프
+    while True:
+        if "__pc_ai_data" in globals():
+            action = __pc_ai_data.get("action", "STOP")
+            if action == "GO":
+                car.forward(0.6) # 전방 안전 시 전진
+            else:
+                car.stop()       # 사람/장애물 감지 시 정지
+        sleep(0.05)
+
+2. **PC 측 실시간 YOLO 자율주행 컨트롤러 (Python)**:
+
+PC에서 실행하여 ESP32의 WiFi 스트림을 읽고, YOLOv8로 사람(Person)을 감지하면 즉시 무선 제어 명령을 전송합니다.
+
+.. note::
+    PC에서 YOLO 실시간 객체 인식을 실행하려면 터미널(CMD 또는 PowerShell)에서 필요한 라이브러리를 먼저 설치해야 합니다.
+
+    .. code-block:: bash
+
+        pip install ultralytics opencv-python requests
+
+.. code-block:: python
+
+    import cv2
+    import requests
+    from ultralytics import YOLO
+
+    # 경량 고속 모델 로드 및 ESP32 카메라 스트림 주소 설정
+    model = YOLO("yolov8n.pt")
+    STREAM_URL = "http://192.168.0.50:8080/"  # ESP32 IP 주소
+    CMD_URL = "http://192.168.0.50:8080/ai"
+
+    cap = cv2.VideoCapture(STREAM_URL)
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # YOLOv8 실시간 객체 추론 (0: 사람, 9: 신호등)
+        results = model(frame, verbose=False)
+        person_detected = False
+
+        for r in results:
+            for box in r.boxes:
+                cls_id = int(box.cls[0])
+                if cls_id == 0: # 사람 감지
+                    person_detected = True
+
+        # 사람 감지 시 즉시 정지, 없으면 주행 명령 전송
+        cmd = "STOP" if person_detected else "GO"
+        try:
+            requests.get(f"{CMD_URL}?action={cmd}", timeout=0.1)
+        except Exception:
+            pass
+
+        # 화면에 바운딩 박스 표시
+        annotated = results[0].plot()
+        cv2.imshow("ESP32-S3 YOLO AI Auto-Driving", annotated)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
 
 기기 단독 AI (On-Device TFLite)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -367,7 +367,7 @@ Streams camera images to the PC (Pico Editor), which uses Google's MediaPipe lib
     from espzero import vision
     from time import sleep
 
-    # Start streaming camera frames to the PC
+    # Start streaming camera frames to the PC (non-blocking background thread)
     vision.start_stream_to_pc()
 
     while True:
@@ -375,8 +375,97 @@ Streams camera images to the PC (Pico Editor), which uses Google's MediaPipe lib
         if "__pc_ai_data" in globals():
             x = __pc_ai_data.get("hand_x", 0)
             y = __pc_ai_data.get("hand_y", 0)
-            print("Hand position -> X:", x, "Y:", y)
+            detected = __pc_ai_data.get("hand_detected", False)
+            if detected:
+                print("Hand detected -> X:", x, "Y:", y)
         sleep(0.1)
+
+Wi-Fi Video Streaming & PC YOLO Autonomous Driving
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Streams ESP32-S3 camera video wirelessly over Wi-Fi (MJPEG stream) to a PC. The PC runs a **YOLOv8** model in real time to detect objects/pedestrians and sends driving commands back to the ESP32.
+
+1. **ESP32 Robot Car Script (MicroPython)**:
+
+.. code-block:: python
+
+    from espzero import WiFi, vision, Robot
+    from time import sleep
+
+    # 1. Connect to Wi-Fi access point
+    wifi = WiFi()
+    wifi.connect("My_WiFi_SSID", "password")
+
+    # 2. Configure 2-wheel robot motors (Left: GPIO 4, 5 / Right: GPIO 6, 7)
+    car = Robot(left=(4, 5), right=(6, 7))
+
+    # 3. Start wireless camera stream (default port: 8080)
+    vision.start_wifi_stream(port=8080)
+
+    # 4. Driving loop reading AI decisions from PC
+    while True:
+        if "__pc_ai_data" in globals():
+            action = __pc_ai_data.get("action", "STOP")
+            if action == "GO":
+                car.forward(0.6) # Move forward when clear
+            else:
+                car.stop()       # Stop if pedestrian or obstacle detected
+        sleep(0.05)
+
+2. **PC-Side Real-Time YOLO Controller (Python)**:
+
+Run this on your PC to fetch the ESP32's Wi-Fi video stream, run YOLOv8 object detection, and send wireless driving commands.
+
+.. note::
+    To run YOLO real-time object detection on your PC, install the required packages in your terminal:
+
+    .. code-block:: bash
+
+        pip install ultralytics opencv-python requests
+
+.. code-block:: python
+
+    import cv2
+    import requests
+    from ultralytics import YOLO
+
+    # Load lightweight YOLOv8 nano model and configure ESP32 stream URL
+    model = YOLO("yolov8n.pt")
+    STREAM_URL = "http://192.168.0.50:8080/"  # ESP32 IP address
+    CMD_URL = "http://192.168.0.50:8080/ai"
+
+    cap = cv2.VideoCapture(STREAM_URL)
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # Real-time object inference (Class 0: Person, 9: Traffic Light)
+        results = model(frame, verbose=False)
+        person_detected = False
+
+        for r in results:
+            for box in r.boxes:
+                cls_id = int(box.cls[0])
+                if cls_id == 0: # Person detected
+                    person_detected = True
+
+        # Send GO / STOP action wirelessly
+        cmd = "STOP" if person_detected else "GO"
+        try:
+            requests.get(f"{CMD_URL}?action={cmd}", timeout=0.1)
+        except Exception:
+            pass
+
+        # Display annotated bounding box video
+        annotated = results[0].plot()
+        cv2.imshow("ESP32-S3 YOLO AI Auto-Driving", annotated)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
 
 On-Device AI (On-Device TFLite)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

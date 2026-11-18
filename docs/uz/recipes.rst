@@ -367,7 +367,7 @@ Kamera tasvirlarini kompyuterga (Pico Editor) uzatadi va u real vaqt rejimida qo
     from espzero import vision
     from time import sleep
 
-    # Kamera kadrlarini kompyuterga uzatishni boshlash
+    # Kamera kadrlarini kompyuterga uzatishni boshlash (asinxron fon oqimi)
     vision.start_stream_to_pc()
 
     while True:
@@ -375,8 +375,97 @@ Kamera tasvirlarini kompyuterga (Pico Editor) uzatadi va u real vaqt rejimida qo
         if "__pc_ai_data" in globals():
             x = __pc_ai_data.get("hand_x", 0)
             y = __pc_ai_data.get("hand_y", 0)
-            print("Qo'l holati -> X:", x, "Y:", y)
+            detected = __pc_ai_data.get("hand_detected", False)
+            if detected:
+                print("Qo'l aniqlandi -> X:", x, "Y:", y)
         sleep(0.1)
+
+Wi-Fi orqali video uzatish va kompyuterda YOLO avtonom boshqaruvi
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ESP32-S3 kamera videosini Wi-Fi orqali (MJPEG oqimi) simsiz kompyuterga uzatadi. Kompyuter real vaqtda obyektlar/odamlarni aniqlash uchun **YOLOv8** modelini ishga tushiradi va ESP32 ga avtonom haydash buyruqlarini yuboradi.
+
+1. **ESP32 Robot Mashina Kodingiz (MicroPython)**:
+
+.. code-block:: python
+
+    from espzero import WiFi, vision, Robot
+    from time import sleep
+
+    # 1. Wi-Fi ga ulanish
+    wifi = WiFi()
+    wifi.connect("Mening_WiFi_Nomi", "parol1234")
+
+    # 2. 2 g'ildirakli robot motorini sozlash (Chap: GPIO 4, 5 / O'ng: GPIO 6, 7)
+    car = Robot(left=(4, 5), right=(6, 7))
+
+    # 3. Simsiz kamera oqimini boshlash (standart port: 8080)
+    vision.start_wifi_stream(port=8080)
+
+    # 4. Kompyuter AI qarorlarini qabul qilish va boshqarish davri
+    while True:
+        if "__pc_ai_data" in globals():
+            action = __pc_ai_data.get("action", "STOP")
+            if action == "GO":
+                car.forward(0.6) # Yo'l bo'sh bo'lsa oldinga harakatlanish
+            else:
+                car.stop()       # Odam yoki to'siq aniqlanganda to'xtash
+        sleep(0.05)
+
+2. **Kompyuter uchun Real-vaqtli YOLO Nazoratchisi (Python)**:
+
+ESP32 ning Wi-Fi video oqimini o'qish, YOLOv8 yordamida obyektlarni aniqlash va simsiz boshqaruv buyruqlarini yuborish uchun kompyuteringizda ishga tushiring.
+
+.. note::
+    Kompyuterda YOLO real vaqtdagi obyektlarni aniqlash dasturini ishga tushirish uchun avval terminalda kerakli kutubxonalarni o'rnating:
+
+    .. code-block:: bash
+
+        pip install ultralytics opencv-python requests
+
+.. code-block:: python
+
+    import cv2
+    import requests
+    from ultralytics import YOLO
+
+    # Yengil YOLOv8 modelini yuklash va ESP32 oqim manzilini belgilash
+    model = YOLO("yolov8n.pt")
+    STREAM_URL = "http://192.168.0.50:8080/"  # ESP32 IP manzili
+    CMD_URL = "http://192.168.0.50:8080/ai"
+
+    cap = cv2.VideoCapture(STREAM_URL)
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # Real vaqtda obyektni aniqlash (0: Odam, 9: Svetofor)
+        results = model(frame, verbose=False)
+        person_detected = False
+
+        for r in results:
+            for box in r.boxes:
+                cls_id = int(box.cls[0])
+                if cls_id == 0: # Odam aniqlandi
+                    person_detected = True
+
+        # Buyruq yuborish (STOP yoki GO)
+        cmd = "STOP" if person_detected else "GO"
+        try:
+            requests.get(f"{CMD_URL}?action={cmd}", timeout=0.1)
+        except Exception:
+            pass
+
+        # Natijani ekranda ko'rsatish
+        annotated = results[0].plot()
+        cv2.imshow("ESP32-S3 YOLO AI Auto-Driving", annotated)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
 
 Qurilmadagi AI (On-Device TFLite)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
