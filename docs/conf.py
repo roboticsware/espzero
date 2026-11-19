@@ -27,7 +27,7 @@ if on_rtd:
 project = 'espzero'
 copyright = '2024, Roboticsware'
 author = 'Roboticsware'
-release = '0.0.7'
+release = '0.0.8'
 
 # -- General configuration ---------------------------------------------------
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.viewcode", "sphinx.ext.intersphinx"]

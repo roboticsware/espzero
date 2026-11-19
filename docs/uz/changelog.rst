@@ -3,8 +3,13 @@ O'zgarishlar tarixi
 
 .. currentmodule:: espzero
 
-0.0.8 - chiqarilmagan (unreleased)
-----------------------------------
+0.0.8 - 2026-11-20
+------------------
++ 10 xil his-tuyg'uni aks ettiruvchi robot yuz ifodalari (`show_face`) va nigohni boshqarish (`look_at`) qo'shildi
++ 8 ta OLED robot ifodasini tasvirlovchi vektorli SVG diagrammasi (`oled_robot_faces.svg`) yaratildi
++ Kompyuter mikrofoni orqali ovoz bilan boshqariladigan aqlli avtomobil retsepti bilan **AI Ovoz (AI Voice)** bo'limi ochildi
++ Mu muharririning onlayn bulutli proshivka qiluvchisi ([ESP Online Flasher]) va oflayn fleshri bo'yicha ko'rsatmalar kengaytirildi
++ Mu muharriri va standart Python muhitlarini (VS Code, Thonny, mpremote) aniq ajratgan holda o'rnatish qo'llanmasi yaxshilandi
 + SSD1306 va SH1106 I2C displeylarini qo'llab-quvvatlovchi ``OLED`` klassi joriy etildi
 + Ultratovush (HC-SR04P 3.3V) va LCD (daraja o'zgartirgichli PCF8574) ulanish diagrammalari xavfsiz 3.3V sxemalarga almashtirildi
 + Freenove ESP32-S3 WROOM CAM (N16R8) kamera xavfsiz pinlari asosida yuqori aniqlikdagi SVG sxemalari yaratildi

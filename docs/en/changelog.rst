@@ -3,9 +3,14 @@ Change log
 
 .. currentmodule:: espzero
 
-0.0.8 - unreleased
+0.0.8 - 2026-11-20
 ------------------
 + Introduced ``OLED`` class supporting SSD1306 and SH1106 I2C displays
++ Added expressive robot facial animations (``show_face`` with 10 emotion presets) and gaze tracking (``look_at``)
++ Designed vector SVG diagram (``oled_robot_faces.svg``) illustrating 8 OLED robot expressions
++ Added **AI Voice** section with PC-microphone voice-controlled smart car recipes
++ Enhanced firmware flashing guide covering Mu Editor's online cloud flasher ([ESP Online Flasher]) and offline flasher
++ Clarified environment setup distinguishing Mu Editor built-in packages from standard Python environments (VS Code, Thonny, mpremote)
 + Updated Ultrasonic (HC-SR04P) and LCD (PCF8574 with level shifter) circuit diagrams for safe 3.3V operation
 + Redesigned circuit wiring diagrams for Freenove ESP32-S3 WROOM CAM (N16R8) with camera-safe pins
 + Added PyPI and ReadTheDocs badges and version tracking to documentation index
