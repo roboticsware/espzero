@@ -2,7 +2,7 @@ Ishni boshlash
 ==============
 
 Mu yordamida o'rnatish
----------------------
+-----------------------
 
 Talablar
 ~~~~~~~~
@@ -12,15 +12,18 @@ Windows yoki macOS kompyuteri (`Mu Editor`_\ o'rnatilgan).
 .. _Mu Editor: https://github.com/roboticsware/mu/releases/latest
 
 MicroPython rejimini tanlash
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Mu-ni oching va yuqori chap burchakdagi **Mode** tugmasini bosing. **ESP32**\ ni tanlang va **OK** tugmasini bosing.
 
 .. image:: /images/mu-select-mode-esp32.jpg
     :alt: Mu Editor-da ESP32 rejimini tanlash
 
-Mu-da espzero-ni o'rnatish
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Avtomatik o'rnatish (Paket menejeri)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. important::
+    **Internet ulanishi zarur**: Mu paket menejeri orqali kutubxonani onlayn (PyPI/MIP) qidirib yuklab olganligi sababli, kompyuteringiz internetga ulangan bo'lishi kerak.
 
 Mu-da espzero-ni o'rnatish uchun **Packages** tugmasini bosing.
 
@@ -38,7 +41,7 @@ Paketni yuklab olish va qurilmangizga o'rnatish uchun **Install** tugmasini bosi
     :alt: Mu paket menejerida o'rnatish tugmasini bosish
 
 Qo'lda o'rnatish (Drag & Drop)
------------------------------
+------------------------------
 
 espzero-ni Mu fayl menejeri yordamida ``espzero_lib`` papkasi ichidagi ``espzero`` kutubxonasini ESP32-ga nusxalash orqali o'rnatish mumkin.
 

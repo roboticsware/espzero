@@ -19,8 +19,11 @@ Open Mu and click on the **Mode** button in the top left. Select **ESP32** and c
 .. image:: /images/mu-select-mode-esp32.jpg
     :alt: Selecting ESP32 mode in Mu Editor
 
-Install espzero from PyPI/MIP in Mu
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Automatic Installation (Package Manager)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. important::
+    **Internet Connection Required**: Since Mu searches and downloads the latest package online from PyPI/MIP, your computer must be connected to the internet.
 
 To install espzero within Mu, click on the **Packages** button.
 
