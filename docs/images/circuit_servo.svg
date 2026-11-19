@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 420" width="100%" height="100%">
+  <defs>
+    <style>
+      .label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 13px; fill: #2c3e50; font-weight: 500; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #1a252f; }
+      .pin-label { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 11px; fill: #ffffff; font-weight: bold; }
+    </style>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#fcfcfc" rx="8"/>
+  <rect x="10" y="10" width="730" height="400" fill="none" stroke="#e1e8ed" stroke-width="1.5" rx="6"/>
+
+  <!-- ESP32 Board Graphic -->
+  <g transform="translate(60, 60)" filter="url(#shadow)">
+    <rect width="160" height="280" rx="8" fill="#1e272e"/>
+    <rect x="25" y="60" width="110" height="90" rx="4" fill="#d2dae2" stroke="#808e9b" stroke-width="1.5"/>
+    <text x="80" y="100" text-anchor="middle" font-family="sans-serif" font-size="11px" font-weight="bold" fill="#485460">ESP32-WROOM</text>
+    <text x="80" y="118" text-anchor="middle" font-family="sans-serif" font-size="9px" fill="#808e9b">WiFi + BLE SoC</text>
+    <circle cx="115" cy="80" r="4" fill="#b0bec5"/>
+    <rect x="35" y="10" width="90" height="35" rx="3" fill="#000000"/>
+    <path d="M 45 40 L 45 20 L 55 20 L 55 35 L 65 35 L 65 20 L 75 20 L 75 35 L 85 35 L 85 20 L 95 20 L 95 35 L 105 35 L 105 20 L 115 20 L 115 40" fill="none" stroke="#f1c40f" stroke-width="2"/>
+    <rect x="55" y="260" width="50" height="24" rx="3" fill="#718093" stroke="#2f3640" stroke-width="1"/>
+    
+    <!-- Pin Headers -->
+    <g fill="#f5f6fa" stroke="#7f8fa6">
+      <circle cx="12" cy="70" r="4.5"/><circle cx="12" cy="90" r="4.5"/><circle cx="12" cy="110" r="4.5"/>
+      <circle cx="12" cy="130" r="4.5"/><circle cx="12" cy="150" r="4.5"/><circle cx="12" cy="170" r="4.5"/>
+      <circle cx="12" cy="190" r="4.5"/><circle cx="12" cy="210" r="4.5"/><circle cx="12" cy="230" r="4.5"/>
+      <circle cx="148" cy="70" r="4.5"/><circle cx="148" cy="90" r="4.5"/><circle cx="148" cy="110" r="4.5"/>
+      <circle cx="148" cy="130" r="4.5"/><circle cx="148" cy="150" r="4.5"/><circle cx="148" cy="170" r="4.5"/>
+      <circle cx="148" cy="190" r="4.5"/><circle cx="148" cy="210" r="4.5"/><circle cx="148" cy="230" r="4.5"/>
+    </g>
+    <text x="80" y="248" text-anchor="middle" class="pin-label" fill="#f5cd79">ESP32 DevKit</text>
+  </g>
+
+  <!-- Pin Callouts -->
+  <!-- 5V / VIN (Left, cy=230 -> absolute 290) -->
+  <g transform="translate(8, 280)">
+    <rect width="50" height="20" rx="3" fill="#c0392b"/>
+    <text x="25" y="14" text-anchor="middle" class="pin-label">5V (VIN)</text>
+  </g>
+  <!-- GND (Left, cy=190 -> absolute 250) -->
+  <g transform="translate(8, 240)">
+    <rect width="50" height="20" rx="3" fill="#2f3640"/>
+    <text x="25" y="14" text-anchor="middle" class="pin-label">GND</text>
+  </g>
+  <!-- GPIO 13 (Right, cy=170 -> absolute 230) -->
+  <g transform="translate(208, 220)">
+    <rect width="70" height="20" rx="3" fill="#f39c12"/>
+    <text x="35" y="14" text-anchor="middle" class="pin-label">GPIO 13</text>
+  </g>
+
+  <!-- SG90 Servo Motor Graphic -->
+  <g transform="translate(460, 160)" filter="url(#shadow)">
+    <!-- Blue Plastic Body -->
+    <rect width="130" height="90" rx="6" fill="#0984e3" stroke="#0652dd" stroke-width="2"/>
+    <!-- Mounting Ears -->
+    <rect x="-18" y="25" width="20" height="40" rx="3" fill="#0984e3" stroke="#0652dd" stroke-width="1.5"/>
+    <circle cx="-8" cy="45" r="3.5" fill="#ffffff"/>
+    <rect x="128" y="25" width="20" height="40" rx="3" fill="#0984e3" stroke="#0652dd" stroke-width="1.5"/>
+    <circle cx="138" cy="45" r="3.5" fill="#ffffff"/>
+    
+    <!-- Servo Gear Output Cylinder -->
+    <circle cx="35" cy="45" r="24" fill="#dfe6e9" stroke="#b2bec3" stroke-width="2"/>
+    <!-- Horn (White Plastic Arm) -->
+    <path d="M 35 30 L 105 40 A 6 6 0 0 1 105 50 L 35 60 Z" fill="#ffffff" stroke="#b2bec3" stroke-width="1.5"/>
+    <circle cx="35" cy="45" r="7" fill="#747d8c"/>
+    <circle cx="55" cy="45" r="2.5" fill="#747d8c"/>
+    <circle cx="75" cy="45" r="2.5" fill="#747d8c"/>
+    <circle cx="95" cy="45" r="2.5" fill="#747d8c"/>
+
+    <!-- Label on Servo -->
+    <text x="95" y="22" font-family="sans-serif" font-weight="bold" font-size="12px" fill="#ffffff">SG90</text>
+    <text x="95" y="78" font-family="sans-serif" font-size="10px" fill="#dff9fb">SERVO</text>
+    
+    <!-- 3-Pin Cable Header coming out bottom -->
+    <rect x="15" y="90" width="40" height="15" fill="#2d3436"/>
+    <line x1="22" y1="105" x2="22" y2="120" stroke="#f39c12" stroke-width="4"/> <!-- Orange/Signal -->
+    <line x1="35" y1="105" x2="35" y2="120" stroke="#c0392b" stroke-width="4"/> <!-- Red/VCC -->
+    <line x1="48" y1="105" x2="48" y2="120" stroke="#535c68" stroke-width="4"/> <!-- Brown/GND -->
+    <text x="22" y="134" text-anchor="middle" font-size="9px" font-weight="bold" fill="#f39c12">SIG</text>
+    <text x="35" y="134" text-anchor="middle" font-size="9px" font-weight="bold" fill="#c0392b">VCC</text>
+    <text x="48" y="134" text-anchor="middle" font-size="9px" font-weight="bold" fill="#535c68">GND</text>
+  </g>
+
+  <!-- Wires -->
+  <!-- Signal Wire (Orange): GPIO 13 -> Servo SIG -->
+  <path d="M 278 230 L 410 230 L 410 280 L 482 280" fill="none" stroke="#f39c12" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Power Wire (Red): 5V (VIN) -> Servo VCC -->
+  <path d="M 68 290 L 45 290 L 45 350 L 495 350 L 495 280" fill="none" stroke="#c0392b" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- GND Wire (Brown/Black): GND -> Servo GND -->
+  <path d="M 68 250 L 30 250 L 30 365 L 508 365 L 508 280" fill="none" stroke="#535c68" stroke-width="3.5" stroke-linecap="round"/>
+
+  <!-- Info Box -->
+  <g transform="translate(350, 40)">
+    <rect width="360" height="85" rx="6" fill="#f8f9fa" stroke="#ced6e0" stroke-width="1"/>
+    <text x="15" y="24" class="title" font-size="14px">서보 모터 (Servo) 연결도</text>
+    <circle cx="22" cy="46" r="5" fill="#f39c12"/>
+    <text x="35" y="50" class="label" font-size="12px">GPIO 13 → 서보 주황색/흰색 선 (신호/PWM)</text>
+    <circle cx="22" cy="62" r="5" fill="#c0392b"/>
+    <text x="35" y="66" class="label" font-size="12px">5V (VIN) → 서보 빨간색 선 (전원 VCC)</text>
+    <circle cx="22" cy="78" r="5" fill="#535c68"/>
+    <text x="35" y="82" class="label" font-size="12px">GND → 서보 갈색/검정색 선 (접지 GND)</text>
+  </g>
+</svg>

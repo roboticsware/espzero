@@ -23,6 +23,10 @@ Digital Output (LED)
 
 Control a regular LED connected to a specific pin.
 
+.. image:: /images/circuit_led.svg
+    :alt: ESP32 LED Circuit Wiring Diagram
+    :align: center
+
 .. code-block:: python
 
     from espzero import LED
@@ -52,6 +56,10 @@ External 4-pin RGB LED
 
 Combine Red, Green, and Blue pins to create various colors.
 (Note: ESP32-S3 boards lack pins 22–34, so use universally supported pins such as GPIO 4, 5, 6.)
+
+.. image:: /images/circuit_rgb.svg
+    :alt: ESP32 RGB LED Circuit Wiring Diagram
+    :align: center
 
 .. code-block:: python
 
@@ -139,6 +147,10 @@ Input Devices
 Button
 ~~~~~~
 
+.. image:: /images/circuit_button.svg
+    :alt: ESP32 Button Circuit Wiring Diagram
+    :align: center
+
 .. code-block:: python
 
     from espzero import Button
@@ -150,6 +162,10 @@ Button
 
 Potentiometer
 ~~~~~~~~~~~~~
+
+.. image:: /images/circuit_potentiometer.svg
+    :alt: ESP32 Potentiometer Circuit Wiring Diagram
+    :align: center
 
 .. code-block:: python
 
@@ -164,6 +180,10 @@ Servo Motor (Servo)
 ~~~~~~~~~~~~~~~~~~~
 
 Control standard servo motors via ratio (0.0 to 1.0) or angles (0 to 180 degrees) with ``picozero-rw`` compatibility.
+
+.. image:: /images/circuit_servo.svg
+    :alt: ESP32 Servo Motor Circuit Wiring Diagram
+    :align: center
 
 .. code-block:: python
 
@@ -194,6 +214,10 @@ DC Motor (Motor)
 
 Control bidirectional DC motors via motor driver boards (e.g. L298N, L9110S, DRV8833).
 
+.. image:: /images/circuit_motor.svg
+    :alt: ESP32 DC Motor Driver Circuit Wiring Diagram
+    :align: center
+
 .. code-block:: python
 
     from espzero import Motor
@@ -220,6 +244,10 @@ Robot Rover (Two-Wheel Drive Platform)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Easily steer a 2-wheeled robot rover with forward, backward, left, and right movements.
+
+.. image:: /images/circuit_robot.svg
+    :alt: ESP32 2-Wheel Robot Rover Circuit Wiring Diagram
+    :align: center
 
 .. code-block:: python
 
@@ -272,6 +300,10 @@ Distance Sensor
 ---------------
 
 Measure distance using an ultrasonic sensor like HC-SR04.
+
+.. image:: /images/circuit_distance.svg
+    :alt: ESP32 Ultrasonic Distance Sensor Circuit Wiring Diagram
+    :align: center
 
 .. code-block:: python
 
@@ -340,6 +372,10 @@ LCD Display
 
 Print characters on LiquidCrystal displays (LCD) by using the I2C bus and a PCF8574 I2C adapter.
 
+.. image:: /images/circuit_i2c_lcd.svg
+    :alt: ESP32 I2C LCD Display Circuit Wiring Diagram
+    :align: center
+
 .. literalinclude:: examples/i2c_lcd.py
 
 Print characters on LiquidCrystal displays (LCD) by using GPIO pins only.
@@ -356,6 +392,11 @@ Examples for using the ESP32-S3 camera with PC-assisted AI and standalone on-dev
     **Camera-Enabled Firmware Required**:
     The official generic MicroPython firmware does not include the camera C driver (``camera`` module).
     To use vision features, ensure your board (e.g. ESP32-S3 WROOM CAM) is flashed with a **Camera-enabled MicroPython firmware**.
+
+    .. note::
+        **Direct 1-Click Firmware Flashing in Mu Editor**:
+        You do not need external tools (like esptool) to flash your board. Mu Editor has a built-in firmware flasher:
+        Click **Settings (gear icon)** at the bottom-right → **[ESP Firmware flasher]** tab (or **[ESP Online Flasher]** tab), select your device type (ESP32-S3), pick your camera-enabled firmware (``.bin`` file), and click **[Erase & write firmware]** to flash directly.
 
 PC-Side AI (with MediaPipe)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

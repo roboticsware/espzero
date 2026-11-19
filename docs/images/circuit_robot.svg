@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 480" width="100%" height="100%">
+  <defs>
+    <style>
+      .label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 13px; fill: #2c3e50; font-weight: 500; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #1a252f; }
+      .pin-label { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 11px; fill: #ffffff; font-weight: bold; }
+    </style>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#fcfcfc" rx="8"/>
+  <rect x="10" y="10" width="820" height="460" fill="none" stroke="#e1e8ed" stroke-width="1.5" rx="6"/>
+
+  <!-- ESP32 Board Graphic -->
+  <g transform="translate(50, 80)" filter="url(#shadow)">
+    <rect width="150" height="270" rx="8" fill="#1e272e"/>
+    <rect x="20" y="55" width="110" height="85" rx="4" fill="#d2dae2" stroke="#808e9b" stroke-width="1.5"/>
+    <text x="75" y="95" text-anchor="middle" font-family="sans-serif" font-size="11px" font-weight="bold" fill="#485460">ESP32-WROOM</text>
+    <text x="75" y="112" text-anchor="middle" font-family="sans-serif" font-size="9px" fill="#808e9b">WiFi + BLE SoC</text>
+    <circle cx="110" cy="75" r="4" fill="#b0bec5"/>
+    <rect x="30" y="10" width="90" height="32" rx="3" fill="#000000"/>
+    <path d="M 40 38 L 40 20 L 50 20 L 50 35 L 60 35 L 60 20 L 70 20 L 70 35 L 80 35 L 80 20 L 90 20 L 90 35 L 100 35 L 100 20 L 110 20 L 110 38" fill="none" stroke="#f1c40f" stroke-width="2"/>
+    <rect x="50" y="250" width="50" height="24" rx="3" fill="#718093" stroke="#2f3640" stroke-width="1"/>
+    
+    <g fill="#f5f6fa" stroke="#7f8fa6">
+      <circle cx="12" cy="70" r="4.5"/><circle cx="12" cy="90" r="4.5"/><circle cx="12" cy="110" r="4.5"/>
+      <circle cx="12" cy="130" r="4.5"/><circle cx="12" cy="150" r="4.5"/><circle cx="12" cy="170" r="4.5"/>
+      <circle cx="12" cy="190" r="4.5"/><circle cx="12" cy="210" r="4.5"/><circle cx="12" cy="230" r="4.5"/>
+      <circle cx="138" cy="70" r="4.5"/><circle cx="138" cy="90" r="4.5"/><circle cx="138" cy="110" r="4.5"/>
+      <circle cx="138" cy="130" r="4.5"/><circle cx="138" cy="150" r="4.5"/><circle cx="138" cy="170" r="4.5"/>
+      <circle cx="138" cy="190" r="4.5"/><circle cx="138" cy="210" r="4.5"/><circle cx="138" cy="230" r="4.5"/>
+    </g>
+    <text x="75" y="240" text-anchor="middle" class="pin-label" fill="#f5cd79">ESP32 DevKit</text>
+  </g>
+
+  <!-- Pin Callouts -->
+  <g transform="translate(190, 190)"><rect width="65" height="18" rx="3" fill="#0984e3"/><text x="32" y="13" text-anchor="middle" class="pin-label">GPIO 4</text></g>
+  <g transform="translate(190, 212)"><rect width="65" height="18" rx="3" fill="#00b894"/><text x="32" y="13" text-anchor="middle" class="pin-label">GPIO 5</text></g>
+  <g transform="translate(190, 234)"><rect width="65" height="18" rx="3" fill="#e17055"/><text x="32" y="13" text-anchor="middle" class="pin-label">GPIO 6</text></g>
+  <g transform="translate(190, 256)"><rect width="65" height="18" rx="3" fill="#fdcb6e"/><text x="32" y="13" text-anchor="middle" class="pin-label" fill="#2d3436">GPIO 7</text></g>
+  <g transform="translate(5, 260)"><rect width="45" height="20" rx="3" fill="#2f3640"/><text x="22" y="14" text-anchor="middle" class="pin-label">GND</text></g>
+
+  <!-- L298N Dual Motor Driver Board Graphic -->
+  <g transform="translate(340, 160)" filter="url(#shadow)">
+    <!-- Red PCB -->
+    <rect width="210" height="190" rx="6" fill="#c0392b" stroke="#962d22" stroke-width="2"/>
+    <!-- Large Black Aluminum Heat Sink in Center -->
+    <rect x="55" y="30" width="100" height="60" rx="4" fill="#2d3436" stroke="#1e272e" stroke-width="2"/>
+    <!-- Fins -->
+    <line x1="75" y1="30" x2="75" y2="90" stroke="#636e72" stroke-width="2"/>
+    <line x1="95" y1="30" x2="95" y2="90" stroke="#636e72" stroke-width="2"/>
+    <line x1="115" y1="30" x2="115" y2="90" stroke="#636e72" stroke-width="2"/>
+    <line x1="135" y1="30" x2="135" y2="90" stroke="#636e72" stroke-width="2"/>
+    <text x="105" y="22" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="12px" fill="#ecf0f1">L298N 모터 드라이버</text>
+
+    <!-- Left Motor Terminals (Blue Screw Block) -->
+    <rect x="-10" y="50" width="25" height="50" rx="3" fill="#2980b9" stroke="#1f618d"/>
+    <circle cx="2" cy="65" r="4" fill="#f1c40f"/><circle cx="2" cy="85" r="4" fill="#f1c40f"/>
+    <text x="22" y="76" font-size="9px" font-weight="bold" fill="#ecf0f1">OUT 1,2</text>
+
+    <!-- Right Motor Terminals (Blue Screw Block) -->
+    <rect x="195" y="50" width="25" height="50" rx="3" fill="#2980b9" stroke="#1f618d"/>
+    <circle cx="208" cy="65" r="4" fill="#f1c40f"/><circle cx="208" cy="85" r="4" fill="#f1c40f"/>
+    <text x="188" y="76" text-anchor="end" font-size="9px" font-weight="bold" fill="#ecf0f1">OUT 3,4</text>
+
+    <!-- Power Terminal Block Bottom Left (12V, GND, 5V) -->
+    <rect x="20" y="145" width="55" height="30" rx="3" fill="#2980b9" stroke="#1f618d"/>
+    <circle cx="32" cy="160" r="4" fill="#f1c40f"/><circle cx="47" cy="160" r="4" fill="#f1c40f"/><circle cx="62" cy="160" r="4" fill="#f1c40f"/>
+    <text x="32" y="185" text-anchor="middle" font-size="8px" font-weight="bold" fill="#f1c40f">VCC</text>
+    <text x="47" y="185" text-anchor="middle" font-size="8px" font-weight="bold" fill="#bdc3c7">GND</text>
+    <text x="62" y="185" text-anchor="middle" font-size="8px" font-weight="bold" fill="#f1c40f">5V</text>
+
+    <!-- Control Logic Pins Bottom Right (IN1, IN2, IN3, IN4) -->
+    <g transform="translate(110, 150)">
+      <circle cx="10" cy="12" r="3.5" fill="#0984e3"/><circle cx="25" cy="12" r="3.5" fill="#00b894"/>
+      <circle cx="40" cy="12" r="3.5" fill="#e17055"/><circle cx="55" cy="12" r="3.5" fill="#fdcb6e"/>
+      <text x="10" y="30" text-anchor="middle" font-size="8px" font-weight="bold" fill="#ecf0f1">IN1</text>
+      <text x="25" y="30" text-anchor="middle" font-size="8px" font-weight="bold" fill="#ecf0f1">IN2</text>
+      <text x="40" y="30" text-anchor="middle" font-size="8px" font-weight="bold" fill="#ecf0f1">IN3</text>
+      <text x="55" y="30" text-anchor="middle" font-size="8px" font-weight="bold" fill="#ecf0f1">IN4</text>
+    </g>
+  </g>
+
+  <!-- Left Motor (Left Wheel) -->
+  <g transform="translate(260, 40)" filter="url(#shadow)">
+    <rect width="65" height="50" rx="8" fill="#bdc3c7" stroke="#7f8c8d" stroke-width="1.5"/>
+    <rect x="-8" y="8" width="8" height="34" rx="2" fill="#e74c3c"/>
+    <rect x="65" y="20" width="18" height="10" fill="#95a5a6"/>
+    <text x="32" y="28" text-anchor="middle" font-size="10px" font-weight="bold" fill="#2c3e50">왼쪽 모터</text>
+    <circle cx="-3" cy="16" r="2.5" fill="#f1c40f"/><circle cx="-3" cy="34" r="2.5" fill="#f1c40f"/>
+  </g>
+  <!-- Right Motor (Right Wheel) -->
+  <g transform="translate(680, 200)" filter="url(#shadow)">
+    <rect width="65" height="50" rx="8" fill="#bdc3c7" stroke="#7f8c8d" stroke-width="1.5"/>
+    <rect x="-8" y="8" width="8" height="34" rx="2" fill="#e74c3c"/>
+    <rect x="65" y="20" width="18" height="10" fill="#95a5a6"/>
+    <text x="32" y="28" text-anchor="middle" font-size="10px" font-weight="bold" fill="#2c3e50">오른쪽 모터</text>
+    <circle cx="-3" cy="16" r="2.5" fill="#f1c40f"/><circle cx="-3" cy="34" r="2.5" fill="#f1c40f"/>
+  </g>
+
+  <!-- Wires -->
+  <!-- GPIO 4,5,6,7 to IN1,2,3,4 -->
+  <path d="M 255 200 L 450 200 L 450 312" fill="none" stroke="#0984e3" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 255 221 L 465 221 L 465 312" fill="none" stroke="#00b894" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 255 243 L 480 243 L 480 312" fill="none" stroke="#e17055" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 255 265 L 495 265 L 495 312" fill="none" stroke="#fdcb6e" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- GND to Driver GND -->
+  <path d="M 50 270 L 25 270 L 25 420 L 387 420 L 387 325" fill="none" stroke="#2f3640" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Left Motor Wires -->
+  <path d="M 342 225 L 257 56" fill="none" stroke="#f39c12" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 342 245 L 257 74" fill="none" stroke="#d35400" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Right Motor Wires -->
+  <path d="M 548 225 L 672 216" fill="none" stroke="#f39c12" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 548 245 L 672 234" fill="none" stroke="#d35400" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Info Box -->
+  <g transform="translate(380, 30)">
+    <rect width="430" height="95" rx="6" fill="#f8f9fa" stroke="#ced6e0" stroke-width="1"/>
+    <text x="15" y="24" class="title" font-size="14px">2륜 로봇 로버 (Robot Rover) 결선도</text>
+    <text x="15" y="46" class="label" font-size="11.5px">왼쪽 모터(Left) : GPIO 4 (전진 IN1), GPIO 5 (후진 IN2)</text>
+    <text x="15" y="66" class="label" font-size="11.5px">오른쪽 모터(Right): GPIO 6 (전진 IN3), GPIO 7 (후진 IN4)</text>
+    <text x="15" y="86" class="label" font-size="11.5px" fill="#c0392b">공통 접지(GND): ESP32 GND ↔ 드라이버 GND ↔ 배터리(-)</text>
+  </g>
+</svg>

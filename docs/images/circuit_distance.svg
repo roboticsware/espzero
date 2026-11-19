@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 420" width="100%" height="100%">
+  <defs>
+    <style>
+      .label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 13px; fill: #2c3e50; font-weight: 500; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #1a252f; }
+      .pin-label { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 11px; fill: #ffffff; font-weight: bold; }
+    </style>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#fcfcfc" rx="8"/>
+  <rect x="10" y="10" width="730" height="400" fill="none" stroke="#e1e8ed" stroke-width="1.5" rx="6"/>
+
+  <!-- ESP32 Board Graphic -->
+  <g transform="translate(60, 60)" filter="url(#shadow)">
+    <rect width="160" height="280" rx="8" fill="#1e272e"/>
+    <rect x="25" y="60" width="110" height="90" rx="4" fill="#d2dae2" stroke="#808e9b" stroke-width="1.5"/>
+    <text x="80" y="100" text-anchor="middle" font-family="sans-serif" font-size="11px" font-weight="bold" fill="#485460">ESP32-WROOM</text>
+    <text x="80" y="118" text-anchor="middle" font-family="sans-serif" font-size="9px" fill="#808e9b">WiFi + BLE SoC</text>
+    <circle cx="115" cy="80" r="4" fill="#b0bec5"/>
+    <rect x="35" y="10" width="90" height="35" rx="3" fill="#000000"/>
+    <path d="M 45 40 L 45 20 L 55 20 L 55 35 L 65 35 L 65 20 L 75 20 L 75 35 L 85 35 L 85 20 L 95 20 L 95 35 L 105 35 L 105 20 L 115 20 L 115 40" fill="none" stroke="#f1c40f" stroke-width="2"/>
+    <rect x="55" y="260" width="50" height="24" rx="3" fill="#718093" stroke="#2f3640" stroke-width="1"/>
+    
+    <g fill="#f5f6fa" stroke="#7f8fa6">
+      <circle cx="12" cy="70" r="4.5"/><circle cx="12" cy="90" r="4.5"/><circle cx="12" cy="110" r="4.5"/>
+      <circle cx="12" cy="130" r="4.5"/><circle cx="12" cy="150" r="4.5"/><circle cx="12" cy="170" r="4.5"/>
+      <circle cx="12" cy="190" r="4.5"/><circle cx="12" cy="210" r="4.5"/><circle cx="12" cy="230" r="4.5"/>
+      <circle cx="148" cy="70" r="4.5"/><circle cx="148" cy="90" r="4.5"/><circle cx="148" cy="110" r="4.5"/>
+      <circle cx="148" cy="130" r="4.5"/><circle cx="148" cy="150" r="4.5"/><circle cx="148" cy="170" r="4.5"/>
+      <circle cx="148" cy="190" r="4.5"/><circle cx="148" cy="210" r="4.5"/><circle cx="148" cy="230" r="4.5"/>
+    </g>
+    <text x="80" y="248" text-anchor="middle" class="pin-label" fill="#f5cd79">ESP32 DevKit</text>
+  </g>
+
+  <!-- Pin Callouts -->
+  <!-- 5V (Left, cy=230 -> absolute 290) -->
+  <g transform="translate(8, 280)">
+    <rect width="50" height="20" rx="3" fill="#c0392b"/>
+    <text x="25" y="14" text-anchor="middle" class="pin-label">5V (VIN)</text>
+  </g>
+  <!-- GND (Left, cy=190 -> absolute 250) -->
+  <g transform="translate(8, 240)">
+    <rect width="50" height="20" rx="3" fill="#2f3640"/>
+    <text x="25" y="14" text-anchor="middle" class="pin-label">GND</text>
+  </g>
+  <!-- GPIO 13 (Trigger) (Right, cy=170 -> absolute 230) -->
+  <g transform="translate(208, 215)">
+    <rect width="70" height="20" rx="3" fill="#f39c12"/>
+    <text x="35" y="14" text-anchor="middle" class="pin-label">GPIO 13</text>
+  </g>
+  <!-- GPIO 14 (Echo) (Right, cy=190 -> absolute 250) -->
+  <g transform="translate(208, 245)">
+    <rect width="70" height="20" rx="3" fill="#3498db"/>
+    <text x="35" y="14" text-anchor="middle" class="pin-label">GPIO 14</text>
+  </g>
+
+  <!-- HC-SR04 Sensor Graphic -->
+  <g transform="translate(450, 160)" filter="url(#shadow)">
+    <!-- Blue PCB -->
+    <rect width="210" height="95" rx="6" fill="#1b4f72" stroke="#154360" stroke-width="2"/>
+    <!-- Transducer 1 (Transmitter T) -->
+    <circle cx="55" cy="48" r="34" fill="#95a5a6" stroke="#7f8c8d" stroke-width="2.5"/>
+    <circle cx="55" cy="48" r="28" fill="#bdc3c7"/>
+    <circle cx="55" cy="48" r="14" fill="#7f8c8d"/>
+    <text x="55" y="52" text-anchor="middle" font-weight="bold" font-size="11px" fill="#2c3e50">T</text>
+    <!-- Transducer 2 (Receiver R) -->
+    <circle cx="155" cy="48" r="34" fill="#95a5a6" stroke="#7f8c8d" stroke-width="2.5"/>
+    <circle cx="155" cy="48" r="28" fill="#bdc3c7"/>
+    <circle cx="155" cy="48" r="14" fill="#7f8c8d"/>
+    <text x="155" y="52" text-anchor="middle" font-weight="bold" font-size="11px" fill="#2c3e50">R</text>
+
+    <!-- Crystal Oscillator -->
+    <rect x="97" y="15" width="16" height="28" rx="3" fill="#ecf0f1" stroke="#bdc3c7"/>
+    
+    <!-- 4-Pin Header at Bottom -->
+    <g transform="translate(75, 95)">
+      <!-- VCC -->
+      <rect x="0" y="0" width="10" height="20" fill="#c0392b"/>
+      <!-- Trig -->
+      <rect x="18" y="0" width="10" height="20" fill="#f39c12"/>
+      <!-- Echo -->
+      <rect x="36" y="0" width="10" height="20" fill="#3498db"/>
+      <!-- GND -->
+      <rect x="54" y="0" width="10" height="20" fill="#2f3640"/>
+      <text x="5" y="32" text-anchor="middle" font-size="9px" font-weight="bold" fill="#c0392b">VCC</text>
+      <text x="23" y="32" text-anchor="middle" font-size="9px" font-weight="bold" fill="#f39c12">TRIG</text>
+      <text x="41" y="32" text-anchor="middle" font-size="9px" font-weight="bold" fill="#3498db">ECHO</text>
+      <text x="59" y="32" text-anchor="middle" font-size="9px" font-weight="bold" fill="#2f3640">GND</text>
+    </g>
+
+    <text x="105" y="-10" text-anchor="middle" class="title">초음파 거리 센서 (HC-SR04)</text>
+  </g>
+
+  <!-- Wires -->
+  <!-- 5V -> VCC -->
+  <path d="M 68 290 L 45 290 L 45 350 L 530 350 L 530 275" fill="none" stroke="#c0392b" stroke-width="3" stroke-linecap="round"/>
+  <!-- Trigger -> GPIO 13 -->
+  <path d="M 278 225 L 390 225 L 390 275 L 548 275" fill="none" stroke="#f39c12" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Echo -> GPIO 14 -->
+  <path d="M 278 255 L 370 255 L 370 295 L 566 295 L 566 275" fill="none" stroke="#3498db" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- GND -> GND -->
+  <path d="M 68 250 L 30 250 L 30 365 L 584 365 L 584 275" fill="none" stroke="#2f3640" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Info Box -->
+  <g transform="translate(350, 40)">
+    <rect width="360" height="90" rx="6" fill="#f8f9fa" stroke="#ced6e0" stroke-width="1"/>
+    <text x="15" y="24" class="title" font-size="14px">초음파 센서 (Distance Sensor) 연결도</text>
+    <circle cx="22" cy="44" r="5" fill="#c0392b"/>
+    <text x="35" y="48" class="label" font-size="12px">5V (VIN) → 센서 VCC</text>
+    <circle cx="22" cy="58" r="5" fill="#f39c12"/>
+    <text x="35" y="62" class="label" font-size="12px">GPIO 13 → 센서 TRIG (트리거 펄스 출력)</text>
+    <circle cx="22" cy="72" r="5" fill="#3498db"/>
+    <text x="35" y="76" class="label" font-size="12px">GPIO 14 → 센서 ECHO (반사파 수신)</text>
+    <circle cx="22" cy="86" r="5" fill="#2f3640"/>
+    <text x="35" y="90" class="label" font-size="12px">GND → 센서 GND</text>
+  </g>
+</svg>

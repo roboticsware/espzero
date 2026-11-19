@@ -23,6 +23,10 @@ Raqamli chiqish (LED)
 
 Muayyan pinga ulangan oddiy LEDni boshqarish.
 
+.. image:: /images/circuit_led.svg
+    :alt: ESP32 LED sxemasi
+    :align: center
+
 .. code-block:: python
 
     from espzero import LED
@@ -52,6 +56,10 @@ Tashqi 4-pinli RGB LED
 
 Turli xil ranglarni yaratish uchun Qizil, Yashil va Moviy pinlarni birlashtiring.
 (Eslatma: ESP32-S3 platalarida 22–34 pinlar mavjud emas, shuning uchun GPIO 4, 5, 6 kabi pinlardan foydalaning.)
+
+.. image:: /images/circuit_rgb.svg
+    :alt: ESP32 RGB LED sxemasi
+    :align: center
 
 .. code-block:: python
 
@@ -139,6 +147,10 @@ Kirish qurilmalari (Input Devices)
 Tugma (Button)
 ~~~~~~~~~~~~~~
 
+.. image:: /images/circuit_button.svg
+    :alt: ESP32 Tugma sxemasi
+    :align: center
+
 .. code-block:: python
 
     from espzero import Button
@@ -150,6 +162,10 @@ Tugma (Button)
 
 Potentiometr
 ~~~~~~~~~~~~
+
+.. image:: /images/circuit_potentiometer.svg
+    :alt: ESP32 Potentiometr sxemasi
+    :align: center
 
 .. code-block:: python
 
@@ -164,6 +180,10 @@ Servo motor (Servo)
 ~~~~~~~~~~~~~~~~~~~
 
 Standart servo motorlarni nisbat (0.0 dan 1.0 gacha) yoki burchak (0 dan 180 gradusgacha) bo'yicha boshqarish (``picozero-rw`` bilan to'liq mos):
+
+.. image:: /images/circuit_servo.svg
+    :alt: ESP32 Servo motor sxemasi
+    :align: center
 
 .. code-block:: python
 
@@ -194,6 +214,10 @@ DC Motor (Motor)
 
 Drayver platalari (masalan, L298N, L9110S, DRV8833) orqali ikki yo'nalishli DC motorni boshqarish:
 
+.. image:: /images/circuit_motor.svg
+    :alt: ESP32 DC Motor sxemasi
+    :align: center
+
 .. code-block:: python
 
     from espzero import Motor
@@ -220,6 +244,10 @@ Robot Rover (Ikki g'ildirakli robot platformasi)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2 g'ildirakli robot platformasini oldinga, orqaga, chapga va o'ngga boshqarish:
+
+.. image:: /images/circuit_robot.svg
+    :alt: ESP32 2 g'ildirakli robot sxemasi
+    :align: center
 
 .. code-block:: python
 
@@ -272,6 +300,10 @@ Masofa sensori (Distance Sensor)
 --------------------------------
 
 HC-SR04 kabi ultratovushli sensor yordamida masofani o'lchang.
+
+.. image:: /images/circuit_distance.svg
+    :alt: ESP32 Masofa sensori sxemasi
+    :align: center
 
 .. code-block:: python
 
@@ -340,6 +372,10 @@ LCD Displey (LCD Display)
 
 I2C shinasidan va PCF8574 I2C adapteridan foydalanib LiquidCrystal displeylarida (LCD) belgilarni chop etish.
 
+.. image:: /images/circuit_i2c_lcd.svg
+    :alt: ESP32 I2C LCD Displey sxemasi
+    :align: center
+
 .. literalinclude:: examples/i2c_lcd.py
 
 Faqat GPIO pinlari yordamida LiquidCrystal displeylarida (LCD) belgilarni chop etish.
@@ -356,6 +392,11 @@ ESP32-S3 kamerasi yordamida kompyuter ko'magidagi AI va mustaqil ishlaydigan qur
     **Kamerani qo'llab-quvvatlovchi proshivka zarur**:
     Rasmiy standart MicroPython proshivkasida xotira cheklovlari tufayli kamera drayveri (``camera`` moduli) mavjud emas.
     Vizual funksiyalardan foydalanish uchun platangizga (ESP32-S3 WROOM CAM) **Kamera drayveri bilan yig'ilgan MicroPython proshivkasi (Camera-enabled Firmware)** o'rnatilgan bo'lishi kerak.
+
+    .. note::
+        **Mu muharririda to'g'ridan-to'g'ri proshivka o'rnatish**:
+        Qo'shimcha murakkab dasturlarni (masalan, esptool) o'rnatish shart emas. Mu muharririning o'zida proshivka qilish imkoni mavjud:
+        Mu ning pastki o'ng burchagidagi **Sozlamalar (tishli g'ildirak)** tugmasini bosing → **[ESP Firmware flasher]** (yoki **[ESP Online Flasher]**) bo'limiga o'ting, plata turini (ESP32-S3) va kamera proshivkasini (``.bin`` fayli) tanlang hamda **[Erase & write firmware]** tugmasini bosing.
 
 PC ko'magidagi AI (MediaPipe bilan)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

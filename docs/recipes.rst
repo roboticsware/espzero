@@ -38,6 +38,10 @@ ESP32 보드의 핀맵과 기능을 터미널에 아스키 다이어그램으로
 
 일반 LED를 특정 핀에 연결하여 제어합니다.
 
+.. image:: /images/circuit_led.svg
+    :alt: ESP32 LED 회로 연결도
+    :align: center
+
 .. code-block:: python
 
     from espzero import LED
@@ -67,6 +71,10 @@ RGB LED
 
 빨강, 초록, 파랑 핀을 각각 연결하여 다양한 색상을 만듭니다.
 (ESP32-S3 등 일부 칩셋은 22~34번 핀이 없으므로, 모든 보드에서 공통으로 지원하는 GPIO 4, 5, 6번 등을 사용합니다.)
+
+.. image:: /images/circuit_rgb.svg
+    :alt: ESP32 RGB LED 회로 연결도
+    :align: center
 
 .. code-block:: python
 
@@ -125,6 +133,10 @@ ESP32-S3 또는 M5Stack 등 보드 자체에 WS2812 NeoPixel RGB LED가 내장�
 단순 경고음 (Beep)
 ~~~~~~~~~~~~~~~~
 
+.. image:: /images/circuit_buzzer.svg
+    :alt: ESP32 부저 회로 연결도
+    :align: center
+
 .. code-block:: python
 
     from espzero import Buzzer
@@ -154,6 +166,10 @@ ESP32-S3 또는 M5Stack 등 보드 자체에 WS2812 NeoPixel RGB LED가 내장�
 버튼 (Button)
 ~~~~~~~~~~~~
 
+.. image:: /images/circuit_button.svg
+    :alt: ESP32 버튼 회로 연결도
+    :align: center
+
 .. code-block:: python
 
     from espzero import Button
@@ -165,6 +181,10 @@ ESP32-S3 또는 M5Stack 등 보드 자체에 WS2812 NeoPixel RGB LED가 내장�
 
 가변저항 (Potentiometer)
 ~~~~~~~~~~~~~~~~~~~~~
+
+.. image:: /images/circuit_potentiometer.svg
+    :alt: ESP32 가변저항 회로 연결도
+    :align: center
 
 .. code-block:: python
 
@@ -180,6 +200,10 @@ ESP32-S3 또는 M5Stack 등 보드 자체에 WS2812 NeoPixel RGB LED가 내장�
 ~~~~~~~~~~~~~~~
 
 서보 모터를 0~1 비율 또는 각도(0~180도)로 제어합니다. (``picozero-rw`` 호환)
+
+.. image:: /images/circuit_servo.svg
+    :alt: ESP32 서보 모터 회로 연결도
+    :align: center
 
 .. code-block:: python
 
@@ -210,6 +234,10 @@ DC 모터 (Motor)
 
 모터 드라이버(예: L298N, L9110S, DRV8833 등)를 통해 양방향 회전이 가능한 DC 모터를 제어합니다.
 
+.. image:: /images/circuit_motor.svg
+    :alt: ESP32 DC 모터 드라이버 회로 연결도
+    :align: center
+
 .. code-block:: python
 
     from espzero import Motor
@@ -236,6 +264,10 @@ DC 모터 (Motor)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 좌/우 2개의 모터를 제어하여 전진, 후진, 좌회전, 우회전하는 로봇 플랫폼을 편리하게 구동합니다.
+
+.. image:: /images/circuit_robot.svg
+    :alt: ESP32 2륜 로봇 로버 회로 연결도
+    :align: center
 
 .. code-block:: python
 
@@ -288,6 +320,10 @@ ESP32 및 ESP32-S3 칩에 내장된 정전용량식 터치 센서를 사용합�
 -------------------------------
 
 HC-SR04 등의 초음파 센서를 사용하여 거리를 측정합니다.
+
+.. image:: /images/circuit_distance.svg
+    :alt: ESP32 초음파 센서 회로 연결도
+    :align: center
 
 .. code-block:: python
 
@@ -356,6 +392,10 @@ LCD 디스플레이 (LCD Display)
 
 I2C 버스와 PCF8574 I2C 어댑터를 사용하여 LiquidCrystal 디스플레이(LCD)에 문자를 출력합니다.
 
+.. image:: /images/circuit_i2c_lcd.svg
+    :alt: ESP32 I2C LCD 디스플레이 회로 연결도
+    :align: center
+
 .. literalinclude:: examples/i2c_lcd.py
 
 GPIO 핀만 사용하여 LiquidCrystal 디스플레이(LCD)에 문자를 출력합니다.
@@ -370,8 +410,13 @@ ESP32-S3 AI 비전 카메라와 에디터 연동 및 단독 실행 AI 예제입�
 
 .. important::
     **카메라 지원 펌웨어 필요**:
-    공식 MicroPython 기본 펌웨어에는 용량 문제로 카메라 드라이버(C 모듈 ``camera``)가 포함되어 있지 않습니다.
+    공식 MicroPython 기본 펌웨어에는 용량 문제로 카메라 드라이버(C 모듈 ``camera`` )가 포함되어 있지 않습니다.
     비전 기능을 사용하려면 보드(ESP32-S3 WROOM CAM)에 **카메라 드라이버가 포함 빌드된 MicroPython 펌웨어(Camera-enabled Firmware)** 가 플래싱되어 있어야 합니다.
+
+    .. note::
+        **Mu 에디터에서 직접 펌웨어 플래싱 지원**:
+        별도의 복잡한 도구(esptool 등)를 설치할 필요 없이 Mu 에디터 안에서 카메라 지원 펌웨어를 직접 플래싱할 수 있습니다.
+        Mu 우측 하단의 **설정 (톱니바퀴 아이콘) → [ESP Firmware flasher]** 탭(또는 **[ESP Online Flasher]** 탭)에서 보드 종류(ESP32-S3)를 선택하고 카메라 펌웨어( ``.bin`` 파일)를 지정한 뒤 **[Erase & write firmware]** 버튼을 누르면 자동으로 보드에 플래싱됩니다.
 
 PC 연동 AI (MediaPipe 연동)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -420,12 +465,12 @@ ESP32 카메라 영상을 PC(에디터)로 전송하고, PC의 MediaPipe 라이�
 
 1. **PC YOLO 환경 준비**:
    PC에서 YOLO 추론을 실행하기 위해 필요한 패키지를 설치합니다:
-   * **방법 A (Mu 에디터 설정)**: Mu 우측 하단의 **설정(톱니바퀴 아이콘) → [Third-party Packages (서드파티 패키지)]** 탭에서 ``ultralytics`` 입력 후 [OK]를 클릭합니다.
-   * **방법 B (터미널)**: CMD 또는 PowerShell에서 ``pip install ultralytics opencv-python requests`` 를 실행합니다.
+   * **방법 A (Mu 에디터 설정)**: Mu 우측 하단의 **설정 (톱니바퀴 아이콘) → [Third-party Packages (서드파티 패키지)]** 탭에서 ``ultralytics`` 입력 후 [OK] 버튼을 클릭합니다.
+   * **방법 B (터미널)**: CMD 또는 PowerShell에서 ``pip install ultralytics opencv-python requests`` 명령을 실행합니다.
 
 2. **1단계: ESP32 로봇 자동차 코드 업로드 (Mu [ESP32 모드])**:
-   Mu 에디터 상단 모드를 **ESP32 모드**로 두고 아래 코드를 작성한 후, 파일 이름을 ``main.py``로 ESP32에 저장합니다.
-   (``main.py``로 저장하면 PC와 USB 케이블을 분리하고 배터리만 연결해도 전원이 켜지면 스스로 Wi-Fi에 접속하여 무선 스트리밍을 시작합니다. 실행 시 터미널에 표시되는 ESP32의 IP 주소(예: ``192.168.0.50``)를 확인합니다.)
+   Mu 에디터 상단 모드를 **ESP32 모드** 로 설정하고 아래 코드를 작성한 후, 파일 이름을 ``main.py`` 파일로 지정하여 ESP32 보드에 저장합니다.
+   ( ``main.py`` 파일로 저장해 두면 PC와 USB 케이블을 분리하고 배터리만 연결해도 전원이 켜지는 즉시 스스로 Wi-Fi에 접속하여 무선 스트리밍을 시작합니다. 실행 시 터미널에 표시되는 ESP32의 IP 주소(예: ``http://192.168.0.50:8080/`` )를 확인합니다.)
 
 .. code-block:: python
 
@@ -453,8 +498,8 @@ ESP32 카메라 영상을 PC(에디터)로 전송하고, PC의 MediaPipe 라이�
         sleep(0.05)
 
 3. **2단계: PC AI 자율주행 컨트롤러 실행 (Mu [Python 3 모드])**:
-   Mu 에디터 좌측 상단의 **[모드(Mode)]** 버튼을 클릭하여 **Python 3 모드**로 변경합니다.
-   새 탭에 아래 스크립트를 작성하고, 앞서 확인한 ESP32의 IP 주소를 ``STREAM_URL``과 ``CMD_URL``에 입력한 뒤 **[실행(Play)]**을 누릅니다.
+   Mu 에디터 좌측 상단의 **[모드(Mode)]** 버튼을 클릭하여 **Python 3 모드** 로 변경합니다.
+   새 탭에 아래 스크립트를 작성하고, 앞서 확인한 ESP32의 IP 주소를 ``STREAM_URL`` 및 ``CMD_URL`` 변수에 입력한 뒤 **[실행(Play)]** 버튼을 누릅니다.
    PC 화면에 실시간 감지 결과가 표시되는 비디오 창이 열리며 로봇 자동차가 자율주행을 시작합니다.
 
 .. code-block:: python
@@ -505,11 +550,11 @@ ESP32 카메라 영상을 PC(에디터)로 전송하고, PC의 MediaPipe 라이�
     **완성 후 배터리 독립 구동 & 야외 핫스팟(AP) 꿀팁**
 
     * **PC 없이 보조배터리로 완전 무선 구동하기 (main.py 저장)**:
-      스마트카나 로봇 프로젝트를 완성하여 PC 연결 없이 야외나 바닥에서 굴릴 때는, 코드를 ESP32 보드 플래시 최상위에 ``main.py`` 라는 이름으로 저장하세요. USB 케이블을 뽑고 보조배터리나 어댑터만 연결하면, 부팅 즉시 Wi-Fi를 잡고 무선 영상 스트리밍과 주행 대기 상태에 들어갑니다.
-      PC나 스마트폰에서는 Mu 에디터 카메라 창의 Wi-Fi 입력란(``http://192.168.x.x:8080/``) 또는 웹 브라우저에서 보드 IP로 접속해 무선으로 영상을 보며 제어할 수 있습니다.
+      스마트카나 로봇 프로젝트를 완성하여 PC 연결 없이 야외나 바닥에서 주행시킬 때는, 코드를 ESP32 보드 플래시 최상위에 ``main.py`` 라는 이름의 파일로 저장하세요. USB 케이블을 뽑고 보조배터리나 어댑터만 연결하면, 부팅 즉시 Wi-Fi를 잡고 무선 영상 스트리밍과 주행 대기 상태에 들어갑니다.
+      PC나 스마트폰에서는 Mu 에디터 카메라 창의 Wi-Fi 주소 입력란( ``http://192.168.x.x:8080/`` ) 또는 웹 브라우저에서 보드 IP 주소로 접속하여 무선으로 영상을 보며 제어할 수 있습니다.
 
     * **공유기(Wi-Fi)가 없는 야외나 교실에서의 단독 핫스팟(AP 모드) 구동**:
-      주변에 Wi-Fi 공유기가 없더라도 걱정할 필요가 없습니다. ESP32 자체를 무선 공유기(AP)로 동작시키면 외부 인터넷이나 공유기 없이도 스마트폰/노트북과 1:1 직결 무선 스트리밍이 가능합니다:
+      주변에 Wi-Fi 공유기가 없더라도 걱정할 필요가 없습니다. ESP32 자체를 무선 공유기(AP)로 동작시키면 외부 인터넷이나 공유기 없이도 스마트폰 또는 노트북과 1:1 직결 무선 스트리밍이 가능합니다:
 
       .. code-block:: python
 
@@ -524,15 +569,15 @@ ESP32 카메라 영상을 PC(에디터)로 전송하고, PC의 MediaPipe 라이�
           # 2. 자체 망에서 스트리밍 시작 (기본 IP: http://192.168.4.1:8080/)
           vision.start_wifi_stream(port=8080)
 
-      노트북이나 스마트폰의 Wi-Fi 목록에서 ``ESP32-CAM-ROBOT`` 에 접속한 뒤, 브라우저나 PC 컨트롤러에서 ``http://192.168.4.1:8080/`` 로 연결하면 어디서든 무선 스트리밍 및 AI 원격 제어가 가능합니다.
+      노트북이나 스마트폰의 Wi-Fi 목록에서 ``ESP32-CAM-ROBOT`` 신호에 접속한 뒤, 브라우저나 PC 컨트롤러에서 ``http://192.168.4.1:8080/`` 주소로 연결하면 어디서든 무선 스트리밍 및 AI 원격 제어가 가능합니다.
 
 기기 단독 AI (On-Device TFLite)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ESP32 내부에 다운로드한 `.tflite` 모델 파일을 읽어와 직접 AI 추론을 수행합니다. PC와 연결되지 않은 상태에서도 동작할 수 있습니다.
+ESP32 내부에 다운로드한 ``.tflite`` 모델 파일을 읽어와 직접 AI 추론을 수행합니다. PC와 연결되지 않은 상태에서도 동작할 수 있습니다.
 
 .. note::
-    ESP32(마이크로컨트롤러)용 경량 `.tflite` 모델들은 Kaggle Models(https://www.kaggle.com/models?framework=liteRT), Hugging Face LiteRT 커뮤니티(https://huggingface.co/litert-community), 또는 텐서플로우 마이크로 공식 저장소(https://github.com/tensorflow/tflite-micro)에서 직접 내려받을 수 있습니다.
+    ESP32(마이크로컨트롤러)용 경량 ``.tflite`` 모델들은 Kaggle Models(https://www.kaggle.com/models?framework=liteRT), Hugging Face LiteRT 커뮤니티(https://huggingface.co/litert-community), 또는 텐서플로우 마이크로 공식 저장소(https://github.com/tensorflow/tflite-micro)에서 직접 내려받을 수 있습니다.
 
 .. code-block:: python
 
