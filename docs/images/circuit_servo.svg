@@ -1,108 +1,298 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 420" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 580" width="100%" height="100%">
+  <!-- ESP32-S3 WROOM CAM Servo Circuit -->
   <defs>
     <style>
-      .label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 13px; fill: #2c3e50; font-weight: 500; }
-      .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #1a252f; }
-      .pin-label { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 11px; fill: #ffffff; font-weight: bold; }
+      .label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Malgun Gothic", Helvetica, Arial, sans-serif; font-size: 12.5px; fill: #2c3e50; font-weight: 500; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Malgun Gothic", Helvetica, Arial, sans-serif; font-size: 15px; font-weight: 700; fill: #1a252f; }
+      .comp-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Malgun Gothic", Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 700; fill: #1e293b; }
+      .pin-silk { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 8.5px; font-weight: 700; }
+      .pill-text { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 9.5px; fill: #ffffff; font-weight: 700; }
+      .wire-lbl { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Malgun Gothic", Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 700; }
+      .mono-sm { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 9px; font-weight: 700; }
     </style>
-    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+    <linearGradient id="shield-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dbe2ea"/>
+      <stop offset="50%" stop-color="#9aa8b8"/>
+      <stop offset="100%" stop-color="#6b7a8c"/>
+    </linearGradient>
+    <linearGradient id="pcb-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#171f30"/>
+      <stop offset="100%" stop-color="#0f1522"/>
+    </linearGradient>
+    <filter id="shadow" x="-8%" y="-8%" width="118%" height="120%" filterUnits="objectBoundingBox">
       <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.18"/>
+    </filter>
+    <filter id="red-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
     </filter>
   </defs>
 
-  <rect width="100%" height="100%" fill="#fcfcfc" rx="8"/>
-  <rect x="10" y="10" width="730" height="400" fill="none" stroke="#e1e8ed" stroke-width="1.5" rx="6"/>
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#fcfcfc" rx="10"/>
+  <rect x="8" y="8" width="904" height="564" fill="none" stroke="#e1e8ed" stroke-width="1.5" rx="8"/>
+  <!-- Freenove ESP32-S3 WROOM CAM (N16R8) Board -->
+  <g transform="translate(148, 72)" filter="url(#shadow)">
+    <rect width="218" height="446" rx="14" fill="url(#pcb-grad)" stroke="#2d3a52" stroke-width="2"/>
+    <!-- PCB Meander Antenna -->
+    <rect x="59" y="10" width="100" height="30" rx="4" fill="#090d16" stroke="#1e293b" stroke-width="1"/>
+    <path d="M 68 35 L 68 17 L 79 17 L 79 31 L 90 31 L 90 17 L 101 17 L 101 31 L 112 31 L 112 17 L 123 17 L 123 31 L 134 31 L 134 17 L 145 17 L 145 35"
+          fill="none" stroke="#f59e0b" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="miter"/>
+    <!-- Metallic RF Shield -->
+    <rect x="48" y="46" width="122" height="130" rx="4" fill="url(#shield-grad)" stroke="#475569" stroke-width="1.2"/>
+    <text x="109" y="61" text-anchor="middle" font-family="sans-serif" font-size="7.5px" font-weight="800" letter-spacing="1.5" fill="#1e293b">ESPRESSIF</text>
+    <text x="109" y="73" text-anchor="middle" font-family="sans-serif" font-size="9px" font-weight="800" fill="#0f172a">ESP32-S3-WROOM-1</text>
+    <text x="109" y="85" text-anchor="middle" font-family="sans-serif" font-size="6px" font-weight="600" fill="#334155">N16R8 &#x2022; 16MB Flash &#x2022; 8MB PSRAM</text>
+    <!-- OV2640 Camera & FPC Connector -->
+    <rect x="97" y="135" width="24" height="47" fill="#e67e22" stroke="#b45309" stroke-width="0.8"/>
+    <line x1="101" y1="136" x2="101" y2="181" stroke="#d35400" stroke-width="0.7" opacity="0.7"/>
+    <line x1="105" y1="136" x2="105" y2="181" stroke="#d35400" stroke-width="0.7" opacity="0.7"/>
+    <line x1="113" y1="136" x2="113" y2="181" stroke="#d35400" stroke-width="0.7" opacity="0.7"/>
+    <line x1="117" y1="136" x2="117" y2="181" stroke="#d35400" stroke-width="0.7" opacity="0.7"/>
+    <text x="109" y="162" text-anchor="middle" font-family="monospace" font-size="6.5px" font-weight="700" fill="#431407">OV2640</text>
+    <rect x="89" y="96" width="40" height="40" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+    <circle cx="109" cy="116" r="14" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+    <circle cx="109" cy="116" r="9" fill="#090d16" stroke="#64748b" stroke-width="0.8"/>
+    <circle cx="109" cy="116" r="4.5" fill="#dc2626"/>
+    <circle cx="107.2" cy="114.2" r="1.4" fill="#fecaca" opacity="0.9"/>
+    <rect x="76" y="181" width="66" height="20" rx="2" fill="#f1f5f9" stroke="#64748b" stroke-width="1"/>
+    <rect x="80" y="184" width="58" height="5" rx="1" fill="#1e293b"/>
+    <text x="109" y="197.5" text-anchor="middle" font-family="monospace" font-size="5.8px" font-weight="700" fill="#334155">CAMERA FPC 24P</text>
+    <!-- Board Silkscreen Title -->
+    <text x="109" y="220" text-anchor="middle" font-family="sans-serif" font-size="13px" font-weight="800" letter-spacing="0.5" fill="#ffffff">ESP32-S3</text>
+    <text x="109" y="232" text-anchor="middle" font-family="sans-serif" font-size="7.5px" font-weight="700" letter-spacing="0.8" fill="#94a3b8">WROOM-1 CAM</text>
+    <!-- EN/RST, Status LEDs, BOOT(0) -->
+    <rect x="50" y="246" width="20" height="20" rx="3" fill="#334155" stroke="#64748b" stroke-width="1"/>
+    <circle cx="60" cy="256" r="5.5" fill="#cbd5e1" stroke="#475569" stroke-width="1"/>
+    <text x="60" y="275" text-anchor="middle" font-family="monospace" font-size="6.2px" font-weight="700" fill="#cbd5e1">EN/RST</text>
 
-  <!-- ESP32 Board Graphic -->
-  <g transform="translate(60, 60)" filter="url(#shadow)">
-    <rect width="160" height="280" rx="8" fill="#1e272e"/>
-    <rect x="25" y="60" width="110" height="90" rx="4" fill="#d2dae2" stroke="#808e9b" stroke-width="1.5"/>
-    <text x="80" y="100" text-anchor="middle" font-family="sans-serif" font-size="11px" font-weight="bold" fill="#485460">ESP32-WROOM</text>
-    <text x="80" y="118" text-anchor="middle" font-family="sans-serif" font-size="9px" fill="#808e9b">WiFi + BLE SoC</text>
-    <circle cx="115" cy="80" r="4" fill="#b0bec5"/>
-    <rect x="35" y="10" width="90" height="35" rx="3" fill="#000000"/>
-    <path d="M 45 40 L 45 20 L 55 20 L 55 35 L 65 35 L 65 20 L 75 20 L 75 35 L 85 35 L 85 20 L 95 20 L 95 35 L 105 35 L 105 20 L 115 20 L 115 40" fill="none" stroke="#f1c40f" stroke-width="2"/>
-    <rect x="55" y="260" width="50" height="24" rx="3" fill="#718093" stroke="#2f3640" stroke-width="1"/>
-    
-    <!-- Pin Headers -->
-    <g fill="#f5f6fa" stroke="#7f8fa6">
-      <circle cx="12" cy="70" r="4.5"/><circle cx="12" cy="90" r="4.5"/><circle cx="12" cy="110" r="4.5"/>
-      <circle cx="12" cy="130" r="4.5"/><circle cx="12" cy="150" r="4.5"/><circle cx="12" cy="170" r="4.5"/>
-      <circle cx="12" cy="190" r="4.5"/><circle cx="12" cy="210" r="4.5"/><circle cx="12" cy="230" r="4.5"/>
-      <circle cx="148" cy="70" r="4.5"/><circle cx="148" cy="90" r="4.5"/><circle cx="148" cy="110" r="4.5"/>
-      <circle cx="148" cy="130" r="4.5"/><circle cx="148" cy="150" r="4.5"/><circle cx="148" cy="170" r="4.5"/>
-      <circle cx="148" cy="190" r="4.5"/><circle cx="148" cy="210" r="4.5"/><circle cx="148" cy="230" r="4.5"/>
-    </g>
-    <text x="80" y="248" text-anchor="middle" class="pin-label" fill="#f5cd79">ESP32 DevKit</text>
-  </g>
+    <rect x="78" y="250" width="12" height="14" rx="2" fill="#1e293b" stroke="#475569" stroke-width="0.8"/>
+    <circle cx="84" cy="257" r="3" fill="#ef4444" filter="url(#red-glow)"/>
+    <text x="84" y="274" text-anchor="middle" font-family="monospace" font-size="6px" font-weight="700" fill="#f87171">ON</text>
 
-  <!-- Pin Callouts -->
-  <!-- 5V / VIN (Left, cy=230 -> absolute 290) -->
-  <g transform="translate(8, 280)">
-    <rect width="50" height="20" rx="3" fill="#c0392b"/>
-    <text x="25" y="14" text-anchor="middle" class="pin-label">5V (VIN)</text>
-  </g>
-  <!-- GND (Left, cy=190 -> absolute 250) -->
-  <g transform="translate(8, 240)">
-    <rect width="50" height="20" rx="3" fill="#2f3640"/>
-    <text x="25" y="14" text-anchor="middle" class="pin-label">GND</text>
-  </g>
-  <!-- GPIO 13 (Right, cy=170 -> absolute 230) -->
-  <g transform="translate(208, 220)">
-    <rect width="70" height="20" rx="3" fill="#f39c12"/>
-    <text x="35" y="14" text-anchor="middle" class="pin-label">GPIO 13</text>
-  </g>
+    <rect x="94" y="250" width="12" height="14" rx="2" fill="#1e293b" stroke="#475569" stroke-width="0.8"/>
+    <circle cx="100" cy="257" r="2.8" fill="#475569"/>
+    <text x="100" y="274" text-anchor="middle" font-family="monospace" font-size="6px" font-weight="700" fill="#94a3b8">TX</text>
 
-  <!-- SG90 Servo Motor Graphic -->
-  <g transform="translate(460, 160)" filter="url(#shadow)">
-    <!-- Blue Plastic Body -->
-    <rect width="130" height="90" rx="6" fill="#0984e3" stroke="#0652dd" stroke-width="2"/>
-    <!-- Mounting Ears -->
-    <rect x="-18" y="25" width="20" height="40" rx="3" fill="#0984e3" stroke="#0652dd" stroke-width="1.5"/>
-    <circle cx="-8" cy="45" r="3.5" fill="#ffffff"/>
-    <rect x="128" y="25" width="20" height="40" rx="3" fill="#0984e3" stroke="#0652dd" stroke-width="1.5"/>
-    <circle cx="138" cy="45" r="3.5" fill="#ffffff"/>
-    
-    <!-- Servo Gear Output Cylinder -->
-    <circle cx="35" cy="45" r="24" fill="#dfe6e9" stroke="#b2bec3" stroke-width="2"/>
-    <!-- Horn (White Plastic Arm) -->
-    <path d="M 35 30 L 105 40 A 6 6 0 0 1 105 50 L 35 60 Z" fill="#ffffff" stroke="#b2bec3" stroke-width="1.5"/>
-    <circle cx="35" cy="45" r="7" fill="#747d8c"/>
-    <circle cx="55" cy="45" r="2.5" fill="#747d8c"/>
-    <circle cx="75" cy="45" r="2.5" fill="#747d8c"/>
-    <circle cx="95" cy="45" r="2.5" fill="#747d8c"/>
+    <rect x="110" y="250" width="12" height="14" rx="2" fill="#1e293b" stroke="#475569" stroke-width="0.8"/>
+    <circle cx="116" cy="257" r="2.8" fill="#475569"/>
+    <text x="116" y="274" text-anchor="middle" font-family="monospace" font-size="6px" font-weight="700" fill="#94a3b8">RX</text>
 
-    <!-- Label on Servo -->
-    <text x="95" y="22" font-family="sans-serif" font-weight="bold" font-size="12px" fill="#ffffff">SG90</text>
-    <text x="95" y="78" font-family="sans-serif" font-size="10px" fill="#dff9fb">SERVO</text>
-    
-    <!-- 3-Pin Cable Header coming out bottom -->
-    <rect x="15" y="90" width="40" height="15" fill="#2d3436"/>
-    <line x1="22" y1="105" x2="22" y2="120" stroke="#f39c12" stroke-width="4"/> <!-- Orange/Signal -->
-    <line x1="35" y1="105" x2="35" y2="120" stroke="#c0392b" stroke-width="4"/> <!-- Red/VCC -->
-    <line x1="48" y1="105" x2="48" y2="120" stroke="#535c68" stroke-width="4"/> <!-- Brown/GND -->
-    <text x="22" y="134" text-anchor="middle" font-size="9px" font-weight="bold" fill="#f39c12">SIG</text>
-    <text x="35" y="134" text-anchor="middle" font-size="9px" font-weight="bold" fill="#c0392b">VCC</text>
-    <text x="48" y="134" text-anchor="middle" font-size="9px" font-weight="bold" fill="#535c68">GND</text>
+    <rect x="126" y="250" width="12" height="14" rx="2" fill="#1e293b" stroke="#475569" stroke-width="0.8"/>
+    <circle cx="132" cy="257" r="2.8" fill="#475569"/>
+    <text x="132" y="274" text-anchor="middle" font-family="monospace" font-size="6px" font-weight="700" fill="#94a3b8">IO2</text>
+
+    <rect x="148" y="246" width="20" height="20" rx="3" fill="#334155" stroke="#64748b" stroke-width="1"/>
+    <circle cx="158" cy="256" r="5.5" fill="#cbd5e1" stroke="#475569" stroke-width="1"/>
+    <text x="158" y="275" text-anchor="middle" font-family="monospace" font-size="6.2px" font-weight="700" fill="#cbd5e1">BOOT(0)</text>
+    <!-- On-board WS2812 RGB LED (GPIO 48) -->
+    <rect x="96" y="288" width="26" height="26" rx="3" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+    <rect x="97.5" y="289.5" width="4" height="4" fill="#eab308"/>
+    <rect x="116.5" y="289.5" width="4" height="4" fill="#eab308"/>
+    <rect x="97.5" y="308.5" width="4" height="4" fill="#eab308"/>
+    <rect x="116.5" y="308.5" width="4" height="4" fill="#eab308"/>
+    <circle cx="109" cy="301" r="8" fill="#1e293b" stroke="#475569" stroke-width="0.8"/>
+    <circle cx="109" cy="301" r="4" fill="#334155"/>
+    <text x="109" y="326" text-anchor="middle" font-family="monospace" font-size="6.8px" font-weight="700" fill="#cbd5e1">48 (WS2812)</text>
+    <!-- Dual USB Type-C Ports -->
+    <text x="76" y="406" text-anchor="middle" font-family="monospace" font-size="6.5px" font-weight="700" fill="#cbd5e1">USB (OTG)</text>
+    <rect x="56" y="412" width="40" height="28" rx="4" fill="#334155" stroke="#94a3b8" stroke-width="1.2"/>
+    <rect x="62" y="418" width="28" height="16" rx="5" fill="#090d16"/>
+    <rect x="66" y="423" width="20" height="6" rx="2" fill="#3b82f6"/>
+
+    <text x="142" y="406" text-anchor="middle" font-family="monospace" font-size="6.5px" font-weight="700" fill="#cbd5e1">UART</text>
+    <rect x="122" y="412" width="40" height="28" rx="4" fill="#334155" stroke="#94a3b8" stroke-width="1.2"/>
+    <rect x="128" y="418" width="28" height="16" rx="5" fill="#090d16"/>
+    <rect x="132" y="423" width="20" height="6" rx="2" fill="#64748b"/>
+    <!-- 40-Pin Headers (20 Left + 20 Right) -->
+    <rect x="8" y="45" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="50" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="53" text-anchor="start" class="pin-silk" fill="#94a3b8">3V3</text>
+    <rect x="8" y="63" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="68" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="71" text-anchor="start" class="pin-silk" fill="#94a3b8">RST</text>
+    <rect x="8" y="81" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="86" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="89" text-anchor="start" class="pin-silk" fill="#94a3b8">G4</text>
+    <rect x="8" y="99" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="104" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="107" text-anchor="start" class="pin-silk" fill="#94a3b8">G5</text>
+    <rect x="8" y="117" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="122" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="125" text-anchor="start" class="pin-silk" fill="#94a3b8">G6</text>
+    <rect x="8" y="135" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="140" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="143" text-anchor="start" class="pin-silk" fill="#94a3b8">G7</text>
+    <rect x="8" y="153" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="158" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="161" text-anchor="start" class="pin-silk" fill="#94a3b8">G15</text>
+    <rect x="8" y="171" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="176" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="179" text-anchor="start" class="pin-silk" fill="#94a3b8">G16</text>
+    <rect x="8" y="189" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="194" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="197" text-anchor="start" class="pin-silk" fill="#94a3b8">G17</text>
+    <rect x="8" y="207" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="212" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="215" text-anchor="start" class="pin-silk" fill="#94a3b8">G18</text>
+    <rect x="8" y="225" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="230" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="233" text-anchor="start" class="pin-silk" fill="#94a3b8">G8</text>
+    <rect x="8" y="243" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="248" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="251" text-anchor="start" class="pin-silk" fill="#94a3b8">G3</text>
+    <rect x="8" y="261" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="266" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="269" text-anchor="start" class="pin-silk" fill="#94a3b8">G46</text>
+    <rect x="8" y="279" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="284" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="287" text-anchor="start" class="pin-silk" fill="#94a3b8">G9</text>
+    <rect x="8" y="297" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="302" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="305" text-anchor="start" class="pin-silk" fill="#94a3b8">G10</text>
+    <rect x="8" y="315" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="320" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="323" text-anchor="start" class="pin-silk" fill="#94a3b8">G11</text>
+    <rect x="8" y="333" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="338" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="341" text-anchor="start" class="pin-silk" fill="#94a3b8">G12</text>
+    <rect x="8" y="351" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="356" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="359" text-anchor="start" class="pin-silk" fill="#ffffff">G13</text>
+    <rect x="8" y="369" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="374" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="377" text-anchor="start" class="pin-silk" fill="#94a3b8">G14</text>
+    <rect x="8" y="387" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="392" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="395" text-anchor="start" class="pin-silk" fill="#ffffff">5V</text>
+    <rect x="200" y="45" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="50" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="53" text-anchor="end" class="pin-silk" fill="#94a3b8">TX0</text>
+    <rect x="200" y="63" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="68" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="71" text-anchor="end" class="pin-silk" fill="#94a3b8">RX0</text>
+    <rect x="200" y="81" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="86" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="89" text-anchor="end" class="pin-silk" fill="#94a3b8">G1</text>
+    <rect x="200" y="99" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="104" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="107" text-anchor="end" class="pin-silk" fill="#94a3b8">G2</text>
+    <rect x="200" y="117" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="122" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="125" text-anchor="end" class="pin-silk" fill="#94a3b8">G42</text>
+    <rect x="200" y="135" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="140" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="143" text-anchor="end" class="pin-silk" fill="#94a3b8">G41</text>
+    <rect x="200" y="153" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="158" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="161" text-anchor="end" class="pin-silk" fill="#94a3b8">G40</text>
+    <rect x="200" y="171" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="176" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="179" text-anchor="end" class="pin-silk" fill="#94a3b8">G39</text>
+    <rect x="200" y="189" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="194" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="197" text-anchor="end" class="pin-silk" fill="#94a3b8">G38</text>
+    <rect x="200" y="207" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="212" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="215" text-anchor="end" class="pin-silk" fill="#94a3b8">G37</text>
+    <rect x="200" y="225" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="230" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="233" text-anchor="end" class="pin-silk" fill="#94a3b8">G36</text>
+    <rect x="200" y="243" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="248" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="251" text-anchor="end" class="pin-silk" fill="#94a3b8">G35</text>
+    <rect x="200" y="261" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="266" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="269" text-anchor="end" class="pin-silk" fill="#94a3b8">G0</text>
+    <rect x="200" y="279" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="284" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="287" text-anchor="end" class="pin-silk" fill="#94a3b8">G45</text>
+    <rect x="200" y="297" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="302" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="305" text-anchor="end" class="pin-silk" fill="#94a3b8">G48</text>
+    <rect x="200" y="315" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="320" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="323" text-anchor="end" class="pin-silk" fill="#94a3b8">G47</text>
+    <rect x="200" y="333" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="338" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="341" text-anchor="end" class="pin-silk" fill="#94a3b8">G21</text>
+    <rect x="200" y="351" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="356" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="359" text-anchor="end" class="pin-silk" fill="#94a3b8">G20</text>
+    <rect x="200" y="369" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="374" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="377" text-anchor="end" class="pin-silk" fill="#94a3b8">G19</text>
+    <rect x="200" y="387" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="392" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="395" text-anchor="end" class="pin-silk" fill="#ffffff">GND</text>
   </g>
-
   <!-- Wires -->
-  <!-- Signal Wire (Orange): GPIO 13 -> Servo SIG -->
-  <path d="M 278 230 L 410 230 L 410 280 L 482 280" fill="none" stroke="#f39c12" stroke-width="3.5" stroke-linecap="round"/>
-  <!-- Power Wire (Red): 5V (VIN) -> Servo VCC -->
-  <path d="M 68 290 L 45 290 L 45 350 L 495 350 L 495 280" fill="none" stroke="#c0392b" stroke-width="3.5" stroke-linecap="round"/>
-  <!-- GND Wire (Brown/Black): GND -> Servo GND -->
-  <path d="M 68 250 L 30 250 L 30 365 L 508 365 L 508 280" fill="none" stroke="#535c68" stroke-width="3.5" stroke-linecap="round"/>
-
-  <!-- Info Box -->
-  <g transform="translate(350, 40)">
-    <rect width="360" height="85" rx="6" fill="#f8f9fa" stroke="#ced6e0" stroke-width="1"/>
-    <text x="15" y="24" class="title" font-size="14px">서보 모터 (Servo) 연결도</text>
-    <circle cx="22" cy="46" r="5" fill="#f39c12"/>
-    <text x="35" y="50" class="label" font-size="12px">GPIO 13 → 서보 주황색/흰색 선 (신호/PWM)</text>
-    <circle cx="22" cy="62" r="5" fill="#c0392b"/>
-    <text x="35" y="66" class="label" font-size="12px">5V (VIN) → 서보 빨간색 선 (전원 VCC)</text>
-    <circle cx="22" cy="78" r="5" fill="#535c68"/>
-    <text x="35" y="82" class="label" font-size="12px">GND → 서보 갈색/검정색 선 (접지 GND)</text>
+  <g>
+    <path d="M 161 428 L 46 428 L 46 554 L 610 554 L 610 356" fill="none" stroke="#fcfcfc" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 161 428 L 46 428 L 46 554 L 610 554 L 610 356" fill="none" stroke="#f39c12" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 161 464 L 60 464 L 60 538 L 630 538 L 630 356" fill="none" stroke="#fcfcfc" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 161 464 L 60 464 L 60 538 L 630 538 L 630 356" fill="none" stroke="#c0392b" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 464 L 650 464 L 650 356" fill="none" stroke="#fcfcfc" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 464 L 650 464 L 650 356" fill="none" stroke="#535c68" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <!-- Active Pin Pads & External Callout Pills -->
+  <rect x="155.5" y="422.5" width="11" height="11" rx="2" fill="#f39c12" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="161" cy="428" r="2.2" fill="#ffffff"/>
+  <g transform="translate(74, 420)">
+    <rect width="64" height="16" rx="3.5" fill="#f39c12" stroke="#ffffff" stroke-width="1"/>
+    <text x="32" y="11" text-anchor="middle" class="pill-text">G13 (PWM)</text>
+  </g>
+  <rect x="155.5" y="458.5" width="11" height="11" rx="2" fill="#c0392b" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="161" cy="464" r="2.2" fill="#ffffff"/>
+  <g transform="translate(74, 456)">
+    <rect width="64" height="16" rx="3.5" fill="#c0392b" stroke="#ffffff" stroke-width="1"/>
+    <text x="32" y="11" text-anchor="middle" class="pill-text">5V</text>
+  </g>
+  <rect x="347.5" y="458.5" width="11" height="11" rx="2" fill="#535c68" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="353" cy="464" r="2.2" fill="#ffffff"/>
+  <g transform="translate(376, 456)">
+    <rect width="64" height="16" rx="3.5" fill="#535c68" stroke="#ffffff" stroke-width="1"/>
+    <text x="32" y="11" text-anchor="middle" class="pill-text">GND</text>
+  </g>
+  <!-- SG90 Micro Servo Motor -->
+  <g transform="translate(570, 210)" filter="url(#shadow)">
+    <!-- Mounting Ears -->
+    <rect x="-18" y="28" width="22" height="44" rx="3" fill="#0984e3" stroke="#0652dd" stroke-width="1.5"/>
+    <circle cx="-8" cy="50" r="4" fill="#fcfcfc"/>
+    <rect x="136" y="28" width="22" height="44" rx="3" fill="#0984e3" stroke="#0652dd" stroke-width="1.5"/>
+    <circle cx="148" cy="50" r="4" fill="#fcfcfc"/>
+    <!-- Body -->
+    <rect width="140" height="100" rx="6" fill="#0984e3" stroke="#0652dd" stroke-width="2"/>
+    <circle cx="40" cy="50" r="26" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+    <path d="M 40 34 L 116 44 A 6 6 0 0 1 116 56 L 40 66 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <circle cx="40" cy="50" r="8" fill="#64748b"/>
+    <circle cx="62" cy="50" r="2.8" fill="#64748b"/>
+    <circle cx="84" cy="50" r="2.8" fill="#64748b"/>
+    <circle cx="106" cy="50" r="2.8" fill="#64748b"/>
+    <text x="108" y="24" font-family="sans-serif" font-weight="800" font-size="13px" fill="#ffffff">SG90</text>
+    <text x="108" y="86" font-family="sans-serif" font-weight="700" font-size="10px" fill="#dbeafe">SERVO</text>
+    <text x="70" y="-14" text-anchor="middle" class="comp-title">SG90 서보 모터</text>
+    <!-- 3-Pin Connector (abs x = 610, 630, 650; bottom y = 356) -->
+    <rect x="26" y="100" width="68" height="22" rx="3" fill="#1e293b"/>
+    <line x1="40" y1="122" x2="40" y2="146" stroke="#f39c12" stroke-width="4.5"/>
+    <line x1="60" y1="122" x2="60" y2="146" stroke="#c0392b" stroke-width="4.5"/>
+    <line x1="80" y1="122" x2="80" y2="146" stroke="#535c68" stroke-width="4.5"/>
+    <text x="40" y="114" text-anchor="middle" class="mono-sm" style="font-size:8px;" fill="#fbbf24">SIG</text>
+    <text x="60" y="114" text-anchor="middle" class="mono-sm" style="font-size:8px;" fill="#f87171">VCC</text>
+    <text x="80" y="114" text-anchor="middle" class="mono-sm" style="font-size:8px;" fill="#cbd5e1">GND</text>
+  </g>
+  <!-- Info Card -->
+  <g transform="translate(458, 20)">
+    <rect width="442" height="98" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+    <text x="14" y="24" class="title">ESP32-S3 WROOM CAM — 서보 모터 (Servo)</text>
+    <circle cx="22" cy="44" r="5" fill="#f39c12"/>
+    <text x="35" y="48" class="label">G13 (GPIO 13) → 서보 주황색 선 (신호 / PWM)</text>
+    <circle cx="22" cy="64" r="5" fill="#c0392b"/>
+    <text x="35" y="68" class="label">5V → 서보 빨간색 선 (전원 VCC)</text>
+    <circle cx="22" cy="84" r="5" fill="#535c68"/>
+    <text x="35" y="88" class="label">GND → 서보 갈색/검정색 선 (접지 GND)</text>
   </g>
 </svg>

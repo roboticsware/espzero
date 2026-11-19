@@ -190,7 +190,7 @@ ESP32-S3 또는 M5Stack 등 보드 자체에 WS2812 NeoPixel RGB LED가 내장�
 
     from espzero import Pot
 
-    pot = Pot(34) # 아날로그 핀 (ADC)
+    pot = Pot(1) # 아날로그 핀 (ADC1_CH0, ESP32-S3)
 
     print("정규화 값 (0.0 - 1.0):", pot.value)
     print("원시 16비트 ADC 값 (0 - 65535):", pot.raw_value)

@@ -118,6 +118,10 @@ Buzzer & Speaker
 Simple Beep
 ~~~~~~~~~~~
 
+.. image:: /images/circuit_buzzer.svg
+    :alt: ESP32-S3 Buzzer Circuit Wiring Diagram
+    :align: center
+
 .. code-block:: python
 
     from espzero import Buzzer
@@ -171,7 +175,7 @@ Potentiometer
 
     from espzero import Pot
 
-    pot = Pot(34) # Analog pin (ADC)
+    pot = Pot(1) # Analog pin (ADC1_CH0, ESP32-S3)
 
     print("Current value (0-1):", pot.value)
     print("Voltage (V):", pot.voltage)
