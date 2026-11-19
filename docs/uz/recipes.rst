@@ -411,6 +411,10 @@ I2C shinasidan va PCF8574 I2C adapteridan foydalanib LiquidCrystal displeylarida
     Aksariyat ``16x2 I2C LCD (PCF8574)`` modullari 5V da ishlaydi va ``SDA`` / ``SCL`` liniyalarini **5V** ga tortadi (pull-up).
     ESP32-S3 ning 3.3V pinlarini (``G21``, ``G47``) himoya qilish uchun plata va PCF8574 moduli orasiga **3.3V↔5V ikki yo'nalishli I2C mantiqiy daraja o'zgartirgich (Logic Level Shifter)** ulashingiz shart (yoki yuqoridagi **3.3V OLED displeydan** foydalaning).
 
+.. image:: /images/circuit_i2c_lcd.svg
+    :alt: ESP32-S3 I2C LCD va mantiqiy daraja o'zgartirgich sxemasi
+    :align: center
+
 .. literalinclude:: examples/i2c_lcd.py
 
 Faqat GPIO pinlari yordamida LiquidCrystal displeylarida (LCD) belgilarni chop etish.

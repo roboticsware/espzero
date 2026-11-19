@@ -411,6 +411,10 @@ Print characters on LiquidCrystal displays (LCD) using the I2C bus and a PCF8574
     Most ``16x2 I2C LCD (PCF8574)`` modules operate at 5V and pull ``SDA`` / ``SCL`` up to **5V**.
     To protect ESP32-S3's 3.3V pins (``G21``, ``G47``), always place a **3.3V↔5V bidirectional I2C logic level shifter** between the board and the PCF8574 module (or use the native **3.3V OLED display** shown above).
 
+.. image:: /images/circuit_i2c_lcd.svg
+    :alt: ESP32-S3 I2C LCD with Logic Level Shifter Circuit Wiring Diagram
+    :align: center
+
 .. literalinclude:: examples/i2c_lcd.py
 
 Print characters on LiquidCrystal displays (LCD) by using GPIO pins only.

@@ -427,6 +427,10 @@ I2C 버스와 PCF8574 I2C 어댑터를 사용하여 LiquidCrystal 디스플레�
     대부분의 ``16x2 I2C LCD (PCF8574)`` 모듈은 5V 전원을 사용하며 내부 I2C 풀업 저항이 **5V** 에 연결되어 있습니다.
     따라서 ESP32-S3(3.3V 로직)의 ``G21`` (SDA), ``G47`` (SCL) 핀을 보호하려면 보드와 LCD 모듈 사이에 **3.3V↔5V 양방향 I2C 로직 레벨 시프터(Logic Level Shifter)**\ 를 반드시 추가해야 합니다. (레벨 시프터 없이 간편하게 사용하려면 위 **3.3V OLED 디스플레이** 사용을 권장합니다.)
 
+.. image:: /images/circuit_i2c_lcd.svg
+    :alt: ESP32-S3 I2C LCD 로직 레벨 시프터 회로 연결도
+    :align: center
+
 .. literalinclude:: examples/i2c_lcd.py
 
 GPIO 핀만 사용하여 LiquidCrystal 디스플레이(LCD)에 문자를 출력합니다.
