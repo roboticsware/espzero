@@ -281,7 +281,7 @@
     <text x="164" y="56" text-anchor="middle" font-weight="800" font-size="12px" fill="#1e293b">R</text>
 
     <rect x="102" y="16" width="16" height="30" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
-    <text x="110" y="-14" text-anchor="middle" class="comp-title">초음파 거리 센서 (HC-SR04)</text>
+    <text x="110" y="-14" text-anchor="middle" class="comp-title">Ultrasonic Distance Sensor (HC-SR04)</text>
 
     <!-- 4-Pin Bottom Header (abs x = 639, 659, 679, 699) -->
     <rect x="75" y="104" width="10" height="23" fill="#c0392b"/>
@@ -296,14 +296,14 @@
   <!-- Info Card -->
   <g transform="translate(458, 20)">
     <rect width="442" height="118" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
-    <text x="14" y="24" class="title">ESP32-S3 WROOM CAM — 초음파 센서 (HC-SR04)</text>
+    <text x="14" y="24" class="title">ESP32-S3 WROOM CAM — Distance Sensor (HC-SR04)</text>
     <circle cx="22" cy="44" r="5" fill="#c0392b"/>
-    <text x="35" y="48" class="label">5V → 센서 VCC</text>
+    <text x="35" y="48" class="label">5V → Sensor VCC</text>
     <circle cx="22" cy="64" r="5" fill="#f39c12"/>
-    <text x="35" y="68" class="label">G13 (GPIO 13) → 센서 TRIG (트리거 펄스 출력)</text>
+    <text x="35" y="68" class="label">G13 (GPIO 13) → Sensor TRIG (Trigger Pulse)</text>
     <circle cx="22" cy="84" r="5" fill="#3498db"/>
-    <text x="35" y="88" class="label">G14 (GPIO 14) → 센서 ECHO (반사파 수신)</text>
+    <text x="35" y="88" class="label">G14 (GPIO 14) → Sensor ECHO (Echo Signal)</text>
     <circle cx="22" cy="104" r="5" fill="#2f3640"/>
-    <text x="35" y="108" class="label">GND → 센서 GND</text>
+    <text x="35" y="108" class="label">GND → Sensor GND</text>
   </g>
 </svg>

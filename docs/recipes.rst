@@ -1,8 +1,8 @@
 예제 (Recipes)
 ==============
 
-이 섹션은 ``espzero`` 를 사용하여 다양한 센서와 부품을 제어하는 실전 예제를 다룹니다.
-``espzero`` 는 첫 사용 시 보드를 자동으로 감지하므로 ``begin()`` 호출 없이 곧바로 사용할 수 있습니다. (라즈베리파이 피코용 ``picozero-rw`` 라이브러리와 100% 동일한 사용 경험을 제공합니다.)
+이 섹션은 ``espzero``\ 를 사용하여 다양한 센서와 부품을 제어하는 실전 예제를 다룹니다.
+``espzero``\ 는 첫 사용 시 보드를 자동으로 감지하므로 ``begin()`` 호출 없이 곧바로 사용할 수 있습니다. (라즈베리파이 피코용 ``picozero-rw`` 라이브러리와 100% 동일한 사용 경험을 제공합니다.)
 
 보드 핀맵 확인 (Pinout)
 --------------------
@@ -109,7 +109,7 @@ RGB LED
 온보드 내장 RGB LED (ESP32-S3 WS2812 NeoPixel)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ESP32-S3 또는 M5Stack 등 보드 자체에 WS2812 NeoPixel RGB LED가 내장된 경우, 핀 번호 지정 없이 ``esp_led`` 로 간편하게 제어합니다.
+ESP32-S3 또는 M5Stack 등 보드 자체에 WS2812 NeoPixel RGB LED가 내장된 경우, 핀 번호 지정 없이 ``esp_led``\ 로 간편하게 제어합니다.
 
 .. code-block:: python
 
@@ -410,13 +410,13 @@ ESP32-S3 AI 비전 카메라와 에디터 연동 및 단독 실행 AI 예제입�
 
 .. important::
     **카메라 지원 펌웨어 필요**:
-    공식 MicroPython 기본 펌웨어에는 용량 문제로 카메라 드라이버(C 모듈 ``camera`` )가 포함되어 있지 않습니다.
-    비전 기능을 사용하려면 보드(ESP32-S3 WROOM CAM)에 **카메라 드라이버가 포함 빌드된 MicroPython 펌웨어(Camera-enabled Firmware)** 가 플래싱되어 있어야 합니다.
+    공식 MicroPython 기본 펌웨어에는 용량 문제로 카메라 드라이버(C 모듈 ``camera``)가 포함되어 있지 않습니다.
+    비전 기능을 사용하려면 보드(ESP32-S3 WROOM CAM)에 **카메라 드라이버가 포함 빌드된 MicroPython 펌웨어(Camera-enabled Firmware)**\ 가 플래싱되어 있어야 합니다.
 
-    .. note::
-        **Mu 에디터에서 직접 펌웨어 플래싱 지원**:
-        별도의 복잡한 도구(esptool 등)를 설치할 필요 없이 Mu 에디터 안에서 카메라 지원 펌웨어를 직접 플래싱할 수 있습니다.
-        Mu 우측 하단의 **설정 (톱니바퀴 아이콘) → [ESP Firmware flasher]** 탭(또는 **[ESP Online Flasher]** 탭)에서 보드 종류(ESP32-S3)를 선택하고 카메라 펌웨어( ``.bin`` 파일)를 지정한 뒤 **[Erase & write firmware]** 버튼을 누르면 자동으로 보드에 플래싱됩니다.
+.. note::
+    **Mu 에디터에서 직접 펌웨어 플래싱 지원**:
+    별도의 복잡한 도구(esptool 등)를 설치할 필요 없이 Mu 에디터 안에서 카메라 지원 펌웨어를 직접 플래싱할 수 있습니다.
+    Mu 우측 하단의 **설정 (톱니바퀴 아이콘) → [ESP Firmware flasher]** 탭(또는 **[ESP Online Flasher]** 탭)에서 보드 종류(ESP32-S3)를 선택하고 카메라 펌웨어(``.bin`` 파일)를 지정한 뒤 **[Erase & write firmware]** 버튼을 누르면 자동으로 보드에 플래싱됩니다.
 
 PC 연동 AI (MediaPipe 연동)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -445,7 +445,7 @@ ESP32 카메라 영상을 PC(에디터)로 전송하고, PC의 MediaPipe 라이�
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 마이크로컨트롤러인 ESP32-S3는 하드웨어 연산 능력과 메모리가 제한되어 있어 무거운 최신 딥러닝 모델(YOLOv8 등)을 단독으로 구동하기 어렵습니다.
-하지만 ESP32와 PC가 **무선 WiFi**를 통해 역할을 분담하면, 실시간 객체 인식 기반의 고성능 자율주행 로봇 자동차를 쉽게 만들 수 있습니다.
+하지만 ESP32와 PC가 **무선 Wi-Fi**\ 를 통해 역할을 분담하면, 실시간 객체 인식 기반의 고성능 자율주행 로봇 자동차를 쉽게 만들 수 있습니다.
 
 **동작 원리 및 역할 분담**:
 
@@ -465,93 +465,94 @@ ESP32 카메라 영상을 PC(에디터)로 전송하고, PC의 MediaPipe 라이�
 
 1. **PC YOLO 환경 준비**:
    PC에서 YOLO 추론을 실행하기 위해 필요한 패키지를 설치합니다:
+
    * **방법 A (Mu 에디터 설정)**: Mu 우측 하단의 **설정 (톱니바퀴 아이콘) → [Third-party Packages (서드파티 패키지)]** 탭에서 ``ultralytics`` 입력 후 [OK] 버튼을 클릭합니다.
    * **방법 B (터미널)**: CMD 또는 PowerShell에서 ``pip install ultralytics opencv-python requests`` 명령을 실행합니다.
 
 2. **1단계: ESP32 로봇 자동차 코드 업로드 (Mu [ESP32 모드])**:
-   Mu 에디터 상단 모드를 **ESP32 모드** 로 설정하고 아래 코드를 작성한 후, 파일 이름을 ``main.py`` 파일로 지정하여 ESP32 보드에 저장합니다.
-   ( ``main.py`` 파일로 저장해 두면 PC와 USB 케이블을 분리하고 배터리만 연결해도 전원이 켜지는 즉시 스스로 Wi-Fi에 접속하여 무선 스트리밍을 시작합니다. 실행 시 터미널에 표시되는 ESP32의 IP 주소(예: ``http://192.168.0.50:8080/`` )를 확인합니다.)
+   Mu 에디터 상단 모드를 **ESP32 모드**\ 로 설정하고 아래 코드를 작성한 후, 파일 이름을 ``main.py`` 파일로 지정하여 ESP32 보드에 저장합니다.
+   (``main.py`` 파일로 저장해 두면 PC와 USB 케이블을 분리하고 배터리만 연결해도 전원이 켜지는 즉시 스스로 Wi-Fi에 접속하여 무선 스트리밍을 시작합니다. 실행 시 터미널에 표시되는 ESP32의 IP 주소(예: ``http://192.168.0.50:8080/``)를 확인합니다.)
 
-.. code-block:: python
+   .. code-block:: python
 
-    from espzero import WiFi, vision, Robot
-    from time import sleep
+       from espzero import WiFi, vision, Robot
+       from time import sleep
 
-    # 1. WiFi 공유기 연결
-    wifi = WiFi()
-    wifi.connect("내_와이파이_이름", "비밀번호")
+       # 1. WiFi 공유기 연결
+       wifi = WiFi()
+       wifi.connect("내_와이파이_이름", "비밀번호")
 
-    # 2. 2륜 구동 로봇 모터 설정 (왼쪽 모터 GPIO 4, 5 / 오른쪽 모터 GPIO 6, 7)
-    car = Robot(left=(4, 5), right=(6, 7))
+       # 2. 2륜 구동 로봇 모터 설정 (왼쪽 모터 GPIO 4, 5 / 오른쪽 모터 GPIO 6, 7)
+       car = Robot(left=(4, 5), right=(6, 7))
 
-    # 3. 무선 카메라 스트리밍 시작 (기본 포트: 8080)
-    vision.start_wifi_stream(port=8080)
+       # 3. 무선 카메라 스트리밍 시작 (기본 포트: 8080)
+       vision.start_wifi_stream(port=8080)
 
-    # 4. PC AI 판단 데이터 수신 및 주행 루프
-    while True:
-        if "__pc_ai_data" in globals():
-            action = __pc_ai_data.get("action", "STOP")
-            if action == "GO":
-                car.forward(0.6) # 전방 안전 시 전진
-            else:
-                car.stop()       # 사람/장애물 감지 시 정지
-        sleep(0.05)
+       # 4. PC AI 판단 데이터 수신 및 주행 루프
+       while True:
+           if "__pc_ai_data" in globals():
+               action = __pc_ai_data.get("action", "STOP")
+               if action == "GO":
+                   car.forward(0.6) # 전방 안전 시 전진
+               else:
+                   car.stop()       # 사람/장애물 감지 시 정지
+           sleep(0.05)
 
 3. **2단계: PC AI 자율주행 컨트롤러 실행 (Mu [Python 3 모드])**:
-   Mu 에디터 좌측 상단의 **[모드(Mode)]** 버튼을 클릭하여 **Python 3 모드** 로 변경합니다.
+   Mu 에디터 좌측 상단의 **[모드(Mode)]** 버튼을 클릭하여 **Python 3 모드**\ 로 변경합니다.
    새 탭에 아래 스크립트를 작성하고, 앞서 확인한 ESP32의 IP 주소를 ``STREAM_URL`` 및 ``CMD_URL`` 변수에 입력한 뒤 **[실행(Play)]** 버튼을 누릅니다.
    PC 화면에 실시간 감지 결과가 표시되는 비디오 창이 열리며 로봇 자동차가 자율주행을 시작합니다.
 
-.. code-block:: python
+   .. code-block:: python
 
-    import cv2
-    import requests
-    from ultralytics import YOLO
+       import cv2
+       import requests
+       from ultralytics import YOLO
 
-    # 경량 고속 모델 로드 및 ESP32 카메라 스트림 주소 설정
-    model = YOLO("yolov8n.pt")
-    STREAM_URL = "http://192.168.0.50:8080/"  # ESP32 IP 주소
-    CMD_URL = "http://192.168.0.50:8080/ai"
+       # 경량 고속 모델 로드 및 ESP32 카메라 스트림 주소 설정
+       model = YOLO("yolov8n.pt")
+       STREAM_URL = "http://192.168.0.50:8080/"  # ESP32 IP 주소
+       CMD_URL = "http://192.168.0.50:8080/ai"
 
-    cap = cv2.VideoCapture(STREAM_URL)
+       cap = cv2.VideoCapture(STREAM_URL)
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
+       while cap.isOpened():
+           ret, frame = cap.read()
+           if not ret:
+               break
 
-        # YOLOv8 실시간 객체 추론 (0: 사람, 9: 신호등)
-        results = model(frame, verbose=False)
-        person_detected = False
+           # YOLOv8 실시간 객체 추론 (0: 사람, 9: 신호등)
+           results = model(frame, verbose=False)
+           person_detected = False
 
-        for r in results:
-            for box in r.boxes:
-                cls_id = int(box.cls[0])
-                if cls_id == 0: # 사람 감지
-                    person_detected = True
+           for r in results:
+               for box in r.boxes:
+                   cls_id = int(box.cls[0])
+                   if cls_id == 0: # 사람 감지
+                       person_detected = True
 
-        # 사람 감지 시 즉시 정지, 없으면 주행 명령 전송
-        cmd = "STOP" if person_detected else "GO"
-        try:
-            requests.get(f"{CMD_URL}?action={cmd}", timeout=0.1)
-        except Exception:
-            pass
+           # 사람 감지 시 즉시 정지, 없으면 주행 명령 전송
+           cmd = "STOP" if person_detected else "GO"
+           try:
+               requests.get(f"{CMD_URL}?action={cmd}", timeout=0.1)
+           except Exception:
+               pass
 
-        # 화면에 바운딩 박스 표시
-        annotated = results[0].plot()
-        cv2.imshow("ESP32-S3 YOLO AI Auto-Driving", annotated)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+           # 화면에 바운딩 박스 표시
+           annotated = results[0].plot()
+           cv2.imshow("ESP32-S3 YOLO AI Auto-Driving", annotated)
+           if cv2.waitKey(1) & 0xFF == ord('q'):
+               break
 
-    cap.release()
-    cv2.destroyAllWindows()
+       cap.release()
+       cv2.destroyAllWindows()
 
 .. tip::
     **완성 후 배터리 독립 구동 & 야외 핫스팟(AP) 꿀팁**
 
     * **PC 없이 보조배터리로 완전 무선 구동하기 (main.py 저장)**:
-      스마트카나 로봇 프로젝트를 완성하여 PC 연결 없이 야외나 바닥에서 주행시킬 때는, 코드를 ESP32 보드 플래시 최상위에 ``main.py`` 라는 이름의 파일로 저장하세요. USB 케이블을 뽑고 보조배터리나 어댑터만 연결하면, 부팅 즉시 Wi-Fi를 잡고 무선 영상 스트리밍과 주행 대기 상태에 들어갑니다.
-      PC나 스마트폰에서는 Mu 에디터 카메라 창의 Wi-Fi 주소 입력란( ``http://192.168.x.x:8080/`` ) 또는 웹 브라우저에서 보드 IP 주소로 접속하여 무선으로 영상을 보며 제어할 수 있습니다.
+      스마트카나 로봇 프로젝트를 완성하여 PC 연결 없이 야외나 바닥에서 주행시킬 때는, 코드를 ESP32 보드 플래시 최상위에 ``main.py``\ 라는 이름의 파일로 저장하세요. USB 케이블을 뽑고 보조배터리나 어댑터만 연결하면, 부팅 즉시 Wi-Fi를 잡고 무선 영상 스트리밍과 주행 대기 상태에 들어갑니다.
+      PC나 스마트폰에서는 Mu 에디터 카메라 창의 Wi-Fi 주소 입력란(``http://192.168.x.x:8080/``) 또는 웹 브라우저에서 보드 IP 주소로 접속하여 무선으로 영상을 보며 제어할 수 있습니다.
 
     * **공유기(Wi-Fi)가 없는 야외나 교실에서의 단독 핫스팟(AP 모드) 구동**:
       주변에 Wi-Fi 공유기가 없더라도 걱정할 필요가 없습니다. ESP32 자체를 무선 공유기(AP)로 동작시키면 외부 인터넷이나 공유기 없이도 스마트폰 또는 노트북과 1:1 직결 무선 스트리밍이 가능합니다:

@@ -288,7 +288,7 @@
     <circle cx="12" cy="136" r="4.5" fill="#e74c3c" stroke="#ffffff" stroke-width="1"/>
     <text x="23" y="139" class="mono-sm" fill="#fca5a5">VCC (5~12V)</text>
     <circle cx="12" cy="156" r="4.5" fill="#2f3640" stroke="#ffffff" stroke-width="1"/>
-    <text x="23" y="159" class="mono-sm" fill="#cbd5e1">GND (접지)</text>
+    <text x="23" y="159" class="mono-sm" fill="#cbd5e1">GND</text>
   </g>
 
   <!-- DC Motor -->
@@ -298,7 +298,7 @@
     <rect x="92" y="32" width="28" height="12" rx="2" fill="#94a3b8" stroke="#64748b"/>
     <circle cx="-4" cy="25" r="3.5" fill="#f1c40f"/>
     <circle cx="-4" cy="49" r="3.5" fill="#f1c40f"/>
-    <text x="46" y="42" text-anchor="middle" class="comp-title" style="font-size:13px;">DC 모터</text>
+    <text x="46" y="42" text-anchor="middle" class="comp-title" style="font-size:13px;">DC Motor</text>
   </g>
 
   <!-- External Battery Pack -->
@@ -306,7 +306,7 @@
     <rect x="18" y="-6" width="10" height="8" rx="1" fill="#e74c3c"/>
     <rect x="100" y="56" width="10" height="8" rx="1" fill="#2f3640"/>
     <rect width="128" height="60" rx="6" fill="#334155" stroke="#1e293b" stroke-width="1.5"/>
-    <text x="64" y="27" text-anchor="middle" class="wire-lbl" style="font-size:12px;" fill="#f8fafc">외부 배터리</text>
+    <text x="64" y="27" text-anchor="middle" class="wire-lbl" style="font-size:11.5px;" fill="#f8fafc">External Battery</text>
     <text x="64" y="45" text-anchor="middle" class="mono-sm" fill="#fbbf24">4.5V ~ 6V</text>
     <text x="34" y="14" class="wire-lbl" fill="#f87171">+</text>
     <text x="115" y="72" class="wire-lbl" fill="#2f3640">-</text>
@@ -314,12 +314,12 @@
   <!-- Info Card -->
   <g transform="translate(458, 20)">
     <rect width="442" height="98" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
-    <text x="14" y="24" class="title">ESP32-S3 WROOM CAM — DC 모터 (L9110S)</text>
+    <text x="14" y="24" class="title">ESP32-S3 WROOM CAM — DC Motor (L9110S)</text>
     <circle cx="22" cy="44" r="5" fill="#0984e3"/>
-    <text x="35" y="48" class="label">G4 (정회전 Forward) → 드라이버 A-IA</text>
+    <text x="35" y="48" class="label">G4 (Forward) → Driver A-IA</text>
     <circle cx="22" cy="64" r="5" fill="#00b894"/>
-    <text x="35" y="68" class="label">G5 (역회전 Backward) → 드라이버 A-IB</text>
+    <text x="35" y="68" class="label">G5 (Backward) → Driver A-IB</text>
     <circle cx="22" cy="84" r="5" fill="#2f3640"/>
-    <text x="35" y="88" class="label">공통 접지(GND) → ESP32 GND &amp; 외부 배터리 음극(-)</text>
+    <text x="35" y="88" class="label">Common GND → ESP32 GND &amp; Battery (-)</text>
   </g>
 </svg>

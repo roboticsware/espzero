@@ -295,7 +295,7 @@
     <line x1="82" y1="30" x2="82" y2="88" stroke="#64748b" stroke-width="2"/>
     <line x1="100" y1="30" x2="100" y2="88" stroke="#64748b" stroke-width="2"/>
     <line x1="118" y1="30" x2="118" y2="88" stroke="#64748b" stroke-width="2"/>
-    <text x="91" y="21" text-anchor="middle" font-family="sans-serif" font-weight="800" font-size="11.5px" fill="#ffffff">L298N 모터 드라이버</text>
+    <text x="91" y="21" text-anchor="middle" font-family="sans-serif" font-weight="800" font-size="11.5px" fill="#ffffff">L298N Motor Driver</text>
 
     <!-- Left Motor Output Block OUT1,2 -->
     <rect x="-10" y="36" width="24" height="46" rx="3" fill="#2980b9" stroke="#1f618d"/>
@@ -333,7 +333,7 @@
     <rect width="68" height="52" rx="8" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
     <rect x="68" y="8" width="8" height="36" rx="2" fill="#e74c3c"/>
     <circle cx="72" cy="17" r="2.8" fill="#f1c40f"/><circle cx="72" cy="37" r="2.8" fill="#f1c40f"/>
-    <text x="34" y="30" text-anchor="middle" class="wire-lbl" fill="#1e293b">왼쪽 모터</text>
+    <text x="34" y="30" text-anchor="middle" class="wire-lbl" style="font-size:10px;" fill="#1e293b">Left Motor</text>
   </g>
 
   <!-- Right Motor (Terminals on left at x=806, shaft facing right) -->
@@ -342,7 +342,7 @@
     <rect width="68" height="52" rx="8" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
     <rect x="68" y="21" width="18" height="10" rx="2" fill="#94a3b8" stroke="#64748b"/>
     <circle cx="-4" cy="17" r="2.8" fill="#f1c40f"/><circle cx="-4" cy="37" r="2.8" fill="#f1c40f"/>
-    <text x="34" y="30" text-anchor="middle" class="wire-lbl" fill="#1e293b">오른쪽 모터</text>
+    <text x="34" y="30" text-anchor="middle" class="wire-lbl" style="font-size:10px;" fill="#1e293b">Right Motor</text>
   </g>
 
   <!-- External Battery -->
@@ -350,7 +350,7 @@
     <rect x="17" y="-7" width="10" height="8" rx="1" fill="#e74c3c"/>
     <rect x="93" y="-7" width="10" height="8" rx="1" fill="#2f3640"/>
     <rect width="120" height="54" rx="6" fill="#334155" stroke="#1e293b" stroke-width="1.5"/>
-    <text x="60" y="24" text-anchor="middle" class="wire-lbl" style="font-size:11.5px;" fill="#f8fafc">외부 배터리</text>
+    <text x="60" y="24" text-anchor="middle" class="wire-lbl" style="font-size:11px;" fill="#f8fafc">External Battery</text>
     <text x="60" y="42" text-anchor="middle" class="mono-sm" fill="#fbbf24">6V ~ 12V</text>
     <text x="33" y="13" class="wire-lbl" fill="#f87171">+</text>
     <text x="84" y="13" class="wire-lbl" fill="#cbd5e1">-</text>
@@ -358,12 +358,12 @@
   <!-- Info Card -->
   <g transform="translate(458, 20)">
     <rect width="442" height="98" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
-    <text x="14" y="24" class="title">ESP32-S3 WROOM CAM — 2륜 로봇 로버 (Robot)</text>
+    <text x="14" y="24" class="title">ESP32-S3 WROOM CAM — 2WD Robot Rover</text>
     <circle cx="22" cy="44" r="5" fill="#0984e3"/>
-    <text x="35" y="48" class="label">왼쪽 모터 (Left) : G4 (IN1), G5 (IN2)</text>
+    <text x="35" y="48" class="label">Left Motor : G4 (IN1), G5 (IN2)</text>
     <circle cx="22" cy="64" r="5" fill="#e17055"/>
-    <text x="35" y="68" class="label">오른쪽 모터 (Right) : G6 (IN3), G7 (IN4)</text>
+    <text x="35" y="68" class="label">Right Motor : G6 (IN3), G7 (IN4)</text>
     <circle cx="22" cy="84" r="5" fill="#2f3640"/>
-    <text x="35" y="88" class="label">공통 접지(GND) : ESP32 GND ↔ 드라이버 GND ↔ 배터리(-)</text>
+    <text x="35" y="88" class="label">Common GND : ESP32 GND ↔ Driver GND ↔ Battery (-)</text>
   </g>
 </svg>

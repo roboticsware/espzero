@@ -397,10 +397,10 @@ Examples for using the ESP32-S3 camera with PC-assisted AI and standalone on-dev
     The official generic MicroPython firmware does not include the camera C driver (``camera`` module).
     To use vision features, ensure your board (e.g. ESP32-S3 WROOM CAM) is flashed with a **Camera-enabled MicroPython firmware**.
 
-    .. note::
-        **Direct 1-Click Firmware Flashing in Mu Editor**:
-        You do not need external tools (like esptool) to flash your board. Mu Editor has a built-in firmware flasher:
-        Click **Settings (gear icon)** at the bottom-right → **[ESP Firmware flasher]** tab (or **[ESP Online Flasher]** tab), select your device type (ESP32-S3), pick your camera-enabled firmware (``.bin`` file), and click **[Erase & write firmware]** to flash directly.
+.. note::
+    **Direct 1-Click Firmware Flashing in Mu Editor**:
+    You do not need external tools (like esptool) to flash your board. Mu Editor has a built-in firmware flasher:
+    Click **Settings (gear icon)** at the bottom-right → **[ESP Firmware flasher]** tab (or **[ESP Online Flasher]** tab), select your device type (ESP32-S3), pick your camera-enabled firmware (``.bin`` file), and click **[Erase & write firmware]** to flash directly.
 
 PC-Side AI (with MediaPipe)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -449,6 +449,7 @@ However, by dividing responsibilities between the ESP32 and a PC over **Wi-Fi**,
 
 1. **PC YOLO Environment Setup**:
    Install the required packages to run YOLO inference on your PC:
+
    * **Option A (In Mu Editor)**: Click the **Settings (gear icon)** at bottom-right → **[Third-party Packages]** tab, enter ``ultralytics``, and click [OK].
    * **Option B (In Terminal)**: Open CMD or PowerShell and run ``pip install ultralytics opencv-python requests``.
 
@@ -456,79 +457,79 @@ However, by dividing responsibilities between the ESP32 and a PC over **Wi-Fi**,
    Switch Mu Editor to **ESP32 mode** and save the code below as ``main.py`` on the board.
    (Saving as ``main.py`` allows you to unplug the USB cable and power the car with batteries; it will automatically connect to Wi-Fi and start streaming on boot. Check the ESP32 IP address printed in the REPL, e.g., ``192.168.0.50``.)
 
-.. code-block:: python
+   .. code-block:: python
 
-    from espzero import WiFi, vision, Robot
-    from time import sleep
+       from espzero import WiFi, vision, Robot
+       from time import sleep
 
-    # 1. Connect to Wi-Fi access point
-    wifi = WiFi()
-    wifi.connect("My_WiFi_SSID", "password")
+       # 1. Connect to Wi-Fi access point
+       wifi = WiFi()
+       wifi.connect("My_WiFi_SSID", "password")
 
-    # 2. Configure 2-wheel robot motors (Left: GPIO 4, 5 / Right: GPIO 6, 7)
-    car = Robot(left=(4, 5), right=(6, 7))
+       # 2. Configure 2-wheel robot motors (Left: GPIO 4, 5 / Right: GPIO 6, 7)
+       car = Robot(left=(4, 5), right=(6, 7))
 
-    # 3. Start wireless camera stream (default port: 8080)
-    vision.start_wifi_stream(port=8080)
+       # 3. Start wireless camera stream (default port: 8080)
+       vision.start_wifi_stream(port=8080)
 
-    # 4. Driving loop reading AI decisions from PC
-    while True:
-        if "__pc_ai_data" in globals():
-            action = __pc_ai_data.get("action", "STOP")
-            if action == "GO":
-                car.forward(0.6) # Move forward when clear
-            else:
-                car.stop()       # Stop if pedestrian or obstacle detected
-        sleep(0.05)
+       # 4. Driving loop reading AI decisions from PC
+       while True:
+           if "__pc_ai_data" in globals():
+               action = __pc_ai_data.get("action", "STOP")
+               if action == "GO":
+                   car.forward(0.6) # Move forward when clear
+               else:
+                   car.stop()       # Stop if pedestrian or obstacle detected
+           sleep(0.05)
 
 3. **Step 2: Run PC AI Autonomous Driving Controller (Mu [Python 3 Mode])**:
    Switch Mu Editor mode to **Python 3 mode** via the **[Mode]** button at top-left.
    Paste the script below into a new tab, replace the ESP32 IP address in ``STREAM_URL`` and ``CMD_URL``, and click **[Play]**.
    A live video window showing real-time detection boxes will appear on your PC, autonomously piloting the robot car!
 
-.. code-block:: python
+   .. code-block:: python
 
-    import cv2
-    import requests
-    from ultralytics import YOLO
+       import cv2
+       import requests
+       from ultralytics import YOLO
 
-    # Load lightweight YOLOv8 nano model and configure ESP32 stream URL
-    model = YOLO("yolov8n.pt")
-    STREAM_URL = "http://192.168.0.50:8080/"  # ESP32 IP address
-    CMD_URL = "http://192.168.0.50:8080/ai"
+       # Load lightweight YOLOv8 nano model and configure ESP32 stream URL
+       model = YOLO("yolov8n.pt")
+       STREAM_URL = "http://192.168.0.50:8080/"  # ESP32 IP address
+       CMD_URL = "http://192.168.0.50:8080/ai"
 
-    cap = cv2.VideoCapture(STREAM_URL)
+       cap = cv2.VideoCapture(STREAM_URL)
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
+       while cap.isOpened():
+           ret, frame = cap.read()
+           if not ret:
+               break
 
-        # Real-time object inference (Class 0: Person, 9: Traffic Light)
-        results = model(frame, verbose=False)
-        person_detected = False
+           # Real-time object inference (Class 0: Person, 9: Traffic Light)
+           results = model(frame, verbose=False)
+           person_detected = False
 
-        for r in results:
-            for box in r.boxes:
-                cls_id = int(box.cls[0])
-                if cls_id == 0: # Person detected
-                    person_detected = True
+           for r in results:
+               for box in r.boxes:
+                   cls_id = int(box.cls[0])
+                   if cls_id == 0: # Person detected
+                       person_detected = True
 
-        # Send GO / STOP action wirelessly
-        cmd = "STOP" if person_detected else "GO"
-        try:
-            requests.get(f"{CMD_URL}?action={cmd}", timeout=0.1)
-        except Exception:
-            pass
+           # Send GO / STOP action wirelessly
+           cmd = "STOP" if person_detected else "GO"
+           try:
+               requests.get(f"{CMD_URL}?action={cmd}", timeout=0.1)
+           except Exception:
+               pass
 
-        # Display annotated bounding box video
-        annotated = results[0].plot()
-        cv2.imshow("ESP32-S3 YOLO AI Auto-Driving", annotated)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+           # Display annotated bounding box video
+           annotated = results[0].plot()
+           cv2.imshow("ESP32-S3 YOLO AI Auto-Driving", annotated)
+           if cv2.waitKey(1) & 0xFF == ord('q'):
+               break
 
-    cap.release()
-    cv2.destroyAllWindows()
+       cap.release()
+       cv2.destroyAllWindows()
 
 .. tip::
     **Standalone Battery Operation & Outdoor Hotspot (AP Mode) Tips**
@@ -558,10 +559,10 @@ However, by dividing responsibilities between the ESP32 and a PC over **Wi-Fi**,
 On-Device AI (On-Device TFLite)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Loads a `.tflite` model file directly from the ESP32's file system to perform local AI inference. It can run independently of any computer.
+Loads a ``.tflite`` model file directly from the ESP32's file system to perform local AI inference. It can run independently of any computer.
 
 .. note::
-    Lightweight `.tflite` models for ESP32 and microcontrollers can be downloaded directly from Kaggle Models (https://www.kaggle.com/models?framework=liteRT), Hugging Face LiteRT Community (https://huggingface.co/litert-community), or the official TensorFlow Lite Micro repository (https://github.com/tensorflow/tflite-micro).
+    Lightweight ``.tflite`` models for ESP32 and microcontrollers can be downloaded directly from Kaggle Models (https://www.kaggle.com/models?framework=liteRT), Hugging Face LiteRT Community (https://huggingface.co/litert-community), or the official TensorFlow Lite Micro repository (https://github.com/tensorflow/tflite-micro).
 
 .. code-block:: python
 

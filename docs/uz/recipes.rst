@@ -397,10 +397,10 @@ ESP32-S3 kamerasi yordamida kompyuter ko'magidagi AI va mustaqil ishlaydigan qur
     Rasmiy standart MicroPython proshivkasida xotira cheklovlari tufayli kamera drayveri (``camera`` moduli) mavjud emas.
     Vizual funksiyalardan foydalanish uchun platangizga (ESP32-S3 WROOM CAM) **Kamera drayveri bilan yig'ilgan MicroPython proshivkasi (Camera-enabled Firmware)** o'rnatilgan bo'lishi kerak.
 
-    .. note::
-        **Mu muharririda to'g'ridan-to'g'ri proshivka o'rnatish**:
-        Qo'shimcha murakkab dasturlarni (masalan, esptool) o'rnatish shart emas. Mu muharririning o'zida proshivka qilish imkoni mavjud:
-        Mu ning pastki o'ng burchagidagi **Sozlamalar (tishli g'ildirak)** tugmasini bosing → **[ESP Firmware flasher]** (yoki **[ESP Online Flasher]**) bo'limiga o'ting, plata turini (ESP32-S3) va kamera proshivkasini (``.bin`` fayli) tanlang hamda **[Erase & write firmware]** tugmasini bosing.
+.. note::
+    **Mu muharririda to'g'ridan-to'g'ri proshivka o'rnatish**:
+    Qo'shimcha murakkab dasturlarni (masalan, esptool) o'rnatish shart emas. Mu muharririning o'zida proshivka qilish imkoni mavjud:
+    Mu ning pastki o'ng burchagidagi **Sozlamalar (tishli g'ildirak)** tugmasini bosing → **[ESP Firmware flasher]** (yoki **[ESP Online Flasher]**) bo'limiga o'ting, plata turini (ESP32-S3) va kamera proshivkasini (``.bin`` fayli) tanlang hamda **[Erase & write firmware]** tugmasini bosing.
 
 PC ko'magidagi AI (MediaPipe bilan)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -449,86 +449,87 @@ Biroq, ESP32 va kompyuter o'rtasida **Wi-Fi** orqali vazifalarni taqsimlash orqa
 
 1. **Kompyuterda YOLO muhitini tayyorlash**:
    Kompyuteringizda YOLOv8 ni ishga tushirish uchun kerakli paketlarni o'rnating:
+
    * **A usuli (Mu sozlamalarida)**: Mu pastki o'ng burchagidagi **Sozlamalar (tishli g'ildirak)** tugmasini bosing → **[Third-party Packages (Uchinchi tomon paketlari)]** bo'limiga o'ting, ``ultralytics`` deb yozing va [OK] tugmasini bosing.
    * **B usuli (Terminalda)**: CMD yoki PowerShell da ``pip install ultralytics opencv-python requests`` buyrug'ini bajaring.
 
 2. **1-bosqich: ESP32 Robot kodini yuklash (Mu [ESP32 rejimi])**:
-   Mu muharririning rejimini **ESP32 rejimi**ga o'tkazing va quyidagi kodni yozib, plataga ``main.py`` nomi bilan saqlang.
+   Mu muharririning rejimini **ESP32 rejimi**\ ga o'tkazing va quyidagi kodni yozib, plataga ``main.py`` nomi bilan saqlang.
    (``main.py`` qilib saqlanganda, USB kabelni uzib, faqat batareya ulaganingizda ham plata o'z-o'zidan Wi-Fi ga ulanadi va simsiz video uzatishni boshlaydi. REPL da chiqqan ESP32 IP manzilini (masalan, ``192.168.0.50``) eslab qoling.)
 
-.. code-block:: python
+   .. code-block:: python
 
-    from espzero import WiFi, vision, Robot
-    from time import sleep
+       from espzero import WiFi, vision, Robot
+       from time import sleep
 
-    # 1. Wi-Fi ga ulanish
-    wifi = WiFi()
-    wifi.connect("Mening_WiFi_Nomi", "parol1234")
+       # 1. Wi-Fi ga ulanish
+       wifi = WiFi()
+       wifi.connect("Mening_WiFi_Nomi", "parol1234")
 
-    # 2. 2 g'ildirakli robot motorini sozlash (Chap: GPIO 4, 5 / O'ng: GPIO 6, 7)
-    car = Robot(left=(4, 5), right=(6, 7))
+       # 2. 2 g'ildirakli robot motorini sozlash (Chap: GPIO 4, 5 / O'ng: GPIO 6, 7)
+       car = Robot(left=(4, 5), right=(6, 7))
 
-    # 3. Simsiz kamera oqimini boshlash (standart port: 8080)
-    vision.start_wifi_stream(port=8080)
+       # 3. Simsiz kamera oqimini boshlash (standart port: 8080)
+       vision.start_wifi_stream(port=8080)
 
-    # 4. Kompyuter AI qarorlarini qabul qilish va boshqarish davri
-    while True:
-        if "__pc_ai_data" in globals():
-            action = __pc_ai_data.get("action", "STOP")
-            if action == "GO":
-                car.forward(0.6) # Yo'l bo'sh bo'lsa oldinga harakatlanish
-            else:
-                car.stop()       # Odam yoki to'siq aniqlanganda to'xtash
-        sleep(0.05)
+       # 4. Kompyuter AI qarorlarini qabul qilish va boshqarish davri
+       while True:
+           if "__pc_ai_data" in globals():
+               action = __pc_ai_data.get("action", "STOP")
+               if action == "GO":
+                   car.forward(0.6) # Yo'l bo'sh bo'lsa oldinga harakatlanish
+               else:
+                   car.stop()       # Odam yoki to'siq aniqlanganda to'xtash
+           sleep(0.05)
 
 3. **2-bosqich: Kompyuter AI Avtonom Boshqaruvchisini ishga tushirish (Mu [Python 3 rejimi])**:
-   Mu muharririning yuqori chap burchagidagi **[Rejim (Mode)]** tugmasini bosib **Python 3 rejimi**ga o'ting.
+   Mu muharririning yuqori chap burchagidagi **[Rejim (Mode)]** tugmasini bosib **Python 3 rejimi**\ ga o'ting.
    Yangi oynada quyidagi skriptni yozing, yuqorida olingan ESP32 IP manzilini ``STREAM_URL`` va ``CMD_URL`` ga kiriting hamda **[Boshlash (Play)]** tugmasini bosing.
    Kompyuteringizda real vaqtda aniqlangan obyektlar ramka bilan ko'rsatilgan video oyna ochiladi va robot mashina avtonom harakatni boshlaydi.
 
-.. code-block:: python
+   .. code-block:: python
 
-    import cv2
-    import requests
-    from ultralytics import YOLO
+       import cv2
+       import requests
+       from ultralytics import YOLO
 
-    # Yengil YOLOv8 modelini yuklash va ESP32 oqim manzilini belgilash
-    model = YOLO("yolov8n.pt")
-    STREAM_URL = "http://192.168.0.50:8080/"  # ESP32 IP manzili
-    CMD_URL = "http://192.168.0.50:8080/ai"
+       # Yengil YOLOv8 modelini yuklash va ESP32 oqim manzilini belgilash
+       model = YOLO("yolov8n.pt")
+       STREAM_URL = "http://192.168.0.50:8080/"  # ESP32 IP manzili
+       CMD_URL = "http://192.168.0.50:8080/ai"
 
-    cap = cv2.VideoCapture(STREAM_URL)
+       cap = cv2.VideoCapture(STREAM_URL)
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
+       while cap.isOpened():
+           ret, frame = cap.read()
+           if not ret:
+               break
 
-        # Real vaqtda obyektni aniqlash (0: Odam, 9: Svetofor)
-        results = model(frame, verbose=False)
-        person_detected = False
+           # Real vaqtda obyektni aniqlash (0: Odam, 9: Svetofor)
+           results = model(frame, verbose=False)
+           person_detected = False
 
-        for r in results:
-            for box in r.boxes:
-                cls_id = int(box.cls[0])
-                if cls_id == 0: # Odam aniqlandi
-                    person_detected = True
+           for r in results:
+               for box in r.boxes:
+                   cls_id = int(box.cls[0])
+                   if cls_id == 0: # Odam aniqlandi
+                       person_detected = True
 
-        # Buyruq yuborish (STOP yoki GO)
-        cmd = "STOP" if person_detected else "GO"
-        try:
-            requests.get(f"{CMD_URL}?action={cmd}", timeout=0.1)
-        except Exception:
-            pass
+           # Buyruq yuborish (STOP yoki GO)
+           cmd = "STOP" if person_detected else "GO"
+           try:
+               requests.get(f"{CMD_URL}?action={cmd}", timeout=0.1)
+           except Exception:
+               pass
 
-        # Natijani ekranda ko'rsatish
-        annotated = results[0].plot()
-        cv2.imshow("ESP32-S3 YOLO AI Auto-Driving", annotated)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+           # Natijani ekranda ko'rsatish
+           annotated = results[0].plot()
+           cv2.imshow("ESP32-S3 YOLO AI Auto-Driving", annotated)
+           if cv2.waitKey(1) & 0xFF == ord('q'):
+               break
 
-    cap.release()
-    cv2.destroyAllWindows()
+       cap.release()
+       cv2.destroyAllWindows()
 
 .. tip::
     **Batareyada mustaqil ishlash va ochiq havoda Hotspot (AP rejimi) bo'yicha maslahatlar**
@@ -558,10 +559,10 @@ Biroq, ESP32 va kompyuter o'rtasida **Wi-Fi** orqali vazifalarni taqsimlash orqa
 Qurilmadagi AI (On-Device TFLite)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Mahalliy AI xulosalarini chiqarish uchun bevosita ESP32 fayl tizimidan `.tflite` model faylini yuklaydi. U har qanday kompyuterga ulanmasdan ham mustaqil ishlashi mumkin.
+Mahalliy AI xulosalarini chiqarish uchun bevosita ESP32 fayl tizimidan ``.tflite`` model faylini yuklaydi. U har qanday kompyuterga ulanmasdan ham mustaqil ishlashi mumkin.
 
 .. note::
-    ESP32 va mikrokontrollerlar uchun mo'ljallangan ixcham `.tflite` model fayllarini Kaggle Models (https://www.kaggle.com/models?framework=liteRT), Hugging Face LiteRT Community (https://huggingface.co/litert-community) yoki rasmiy TensorFlow Lite Micro repozitoriysidan (https://github.com/tensorflow/tflite-micro) to'g'ridan-to'g'ri yuklab olishingiz mumkin.
+    ESP32 va mikrokontrollerlar uchun mo'ljallangan ixcham ``.tflite`` model fayllarini Kaggle Models (https://www.kaggle.com/models?framework=liteRT), Hugging Face LiteRT Community (https://huggingface.co/litert-community) yoki rasmiy TensorFlow Lite Micro repozitoriysidan (https://github.com/tensorflow/tflite-micro) to'g'ridan-to'g'ri yuklab olishingiz mumkin.
 
 .. code-block:: python
 

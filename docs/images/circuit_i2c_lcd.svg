@@ -291,13 +291,13 @@
     <rect x="296" y="28" width="28" height="28" rx="3" fill="#1976d2" stroke="#0d47a1"/>
     <circle cx="310" cy="42" r="8" fill="#e2e8f0"/>
     <line x1="306" y1="42" x2="314" y2="42" stroke="#334155" stroke-width="2.2"/>
-    <text x="310" y="70" text-anchor="middle" font-size="9px" font-weight="700" fill="#e2e8f0">명암조절</text>
-    <text x="176" y="-14" text-anchor="middle" class="comp-title">I2C LCD 디스플레이 (16x2)</text>
+    <text x="310" y="70" text-anchor="middle" font-size="8.5px" font-weight="700" fill="#e2e8f0">Contrast</text>
+    <text x="176" y="-14" text-anchor="middle" class="comp-title">I2C LCD Display (16x2)</text>
   </g>
   <!-- Info Card -->
   <g transform="translate(458, 20)">
     <rect width="442" height="118" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
-    <text x="14" y="24" class="title">ESP32-S3 WROOM CAM — I2C LCD 디스플레이</text>
+    <text x="14" y="24" class="title">ESP32-S3 WROOM CAM — I2C LCD Display (16x2)</text>
     <circle cx="22" cy="44" r="5" fill="#c0392b"/>
     <text x="35" y="48" class="label">5V → LCD VCC</text>
     <circle cx="22" cy="64" r="5" fill="#2f3640"/>

@@ -274,7 +274,7 @@
     <circle cx="106" cy="50" r="2.8" fill="#64748b"/>
     <text x="108" y="24" font-family="sans-serif" font-weight="800" font-size="13px" fill="#ffffff">SG90</text>
     <text x="108" y="86" font-family="sans-serif" font-weight="700" font-size="10px" fill="#dbeafe">SERVO</text>
-    <text x="70" y="-14" text-anchor="middle" class="comp-title">SG90 서보 모터</text>
+    <text x="70" y="-14" text-anchor="middle" class="comp-title">SG90 Micro Servo</text>
     <!-- 3-Pin Connector (abs x = 610, 630, 650; bottom y = 356) -->
     <rect x="26" y="100" width="68" height="22" rx="3" fill="#1e293b"/>
     <line x1="40" y1="122" x2="40" y2="146" stroke="#f39c12" stroke-width="4.5"/>
@@ -287,12 +287,12 @@
   <!-- Info Card -->
   <g transform="translate(458, 20)">
     <rect width="442" height="98" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
-    <text x="14" y="24" class="title">ESP32-S3 WROOM CAM — 서보 모터 (Servo)</text>
+    <text x="14" y="24" class="title">ESP32-S3 WROOM CAM — Servo Motor (SG90)</text>
     <circle cx="22" cy="44" r="5" fill="#f39c12"/>
-    <text x="35" y="48" class="label">G13 (GPIO 13) → 서보 주황색 선 (신호 / PWM)</text>
+    <text x="35" y="48" class="label">G13 (GPIO 13) → Servo Orange Wire (Signal / PWM)</text>
     <circle cx="22" cy="64" r="5" fill="#c0392b"/>
-    <text x="35" y="68" class="label">5V → 서보 빨간색 선 (전원 VCC)</text>
+    <text x="35" y="68" class="label">5V → Servo Red Wire (Power VCC)</text>
     <circle cx="22" cy="84" r="5" fill="#535c68"/>
-    <text x="35" y="88" class="label">GND → 서보 갈색/검정색 선 (접지 GND)</text>
+    <text x="35" y="88" class="label">GND → Servo Brown / Black Wire (GND)</text>
   </g>
 </svg>

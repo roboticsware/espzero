@@ -257,17 +257,17 @@
     <circle cx="70" cy="70" r="46" fill="#334155"/>
     <circle cx="70" cy="70" r="10" fill="#0f172a"/>
     <text x="36" y="45" font-family="sans-serif" font-weight="800" font-size="20px" fill="#ef4444">+</text>
-    <text x="70" y="-12" text-anchor="middle" class="comp-title">부저 / 피에조 스피커</text>
-    <text x="26" y="148" text-anchor="end" class="wire-lbl" fill="#e67e22">플러스 (+)</text>
-    <text x="114" y="148" text-anchor="start" class="wire-lbl" fill="#2f3640">마이너스 (-)</text>
+    <text x="70" y="-12" text-anchor="middle" class="comp-title">Buzzer / Piezo Speaker</text>
+    <text x="26" y="148" text-anchor="end" class="wire-lbl" fill="#e67e22">Positive (+)</text>
+    <text x="114" y="148" text-anchor="start" class="wire-lbl" fill="#2f3640">Negative (-)</text>
   </g>
   <!-- Info Card -->
   <g transform="translate(458, 20)">
     <rect width="442" height="78" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
-    <text x="14" y="24" class="title">ESP32-S3 WROOM CAM — 부저 및 스피커</text>
+    <text x="14" y="24" class="title">ESP32-S3 WROOM CAM — Buzzer &amp; Speaker</text>
     <circle cx="22" cy="44" r="5" fill="#e67e22"/>
-    <text x="35" y="48" class="label">G15 (GPIO 15, PWM) → 부저 긴 다리 / (+) 단자</text>
+    <text x="35" y="48" class="label">G15 (GPIO 15, PWM) → Buzzer Long Leg / (+) Pin</text>
     <circle cx="22" cy="64" r="5" fill="#2f3640"/>
-    <text x="35" y="68" class="label">GND → 부저 짧은 다리 / (-) 단자</text>
+    <text x="35" y="68" class="label">GND → Buzzer Short Leg / (-) Pin</text>
   </g>
 </svg>
