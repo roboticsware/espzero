@@ -3,44 +3,8 @@ Ishni boshlash
 
 Ushbu qo'llanma ``espzero`` kutubxonasini yangi boshlovchilar uchun qulay **Mu Editor** hamda ishlab chiquvchilar uchun buyruqlar satri vositalari (**mpremote / pip**) yordamida ESP32 ga o'rnatish yo'llarini tushuntiradi.
 
-Buyruqlar satri (CLI) orqali o'rnatish
---------------------------------------
-
-Terminal yoki buyruqlar satrida (PowerShell, CMD, Bash) ishlasangiz, quyidagi vositalar orqali o'rnatishingiz mumkin.
-
-mpremote orqali plataga to'g'ridan-to'g'ri o'rnatish
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-``mpremote`` — bu MicroPython-ning rasmiy buyruqlar satri vositasi bo'lib, USB orqali ulangan plata bilan to'g'ridan-to'g'ri aloqa o'rnatadi va MIP orqali kutubxonalarni avtomatik yuklab olib o'rnatadi.
-
-1. **Kompyuteringizda mpremote-ni o'rnatish**:
-   
-   .. code-block:: bash
-
-       pip install mpremote
-
-2. **Ulangan ESP32 platasiga espzero-ni o'rnatish**:
-   
-   ESP32 platangiz kompyuterga USB orqali ulangan holatda quyidagi buyruqni bajaring:
-
-   .. code-block:: bash
-
-       mpremote mip install espzero
-
-.. tip::
-    Agar bir nechta plata ulangan bo'lsa yoki portni qo'lda ko'rsatish kerak bo'lsa, ``mpremote connect COMx mip install espzero`` (Windows) yoki ``mpremote connect /dev/ttyUSB0 mip install espzero`` (macOS/Linux) buyrug'idan foydalaning.
-
-Kompyuterda dasturlash uchun pip orqali o'rnatish (Avtomatik to'ldirish)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-VS Code, PyCharm kabi muhitlarda kod yozishda avtomatik to'ldirish (IntelliSense) va turlarni tekshirishdan foydalanish uchun kompyuteringizga ham o'rnating:
-
-.. code-block:: bash
-
-    pip install espzero
-
-Mu yordamida o'rnatish
------------------------
+Mu yordamida o'rnatish (GUI)
+----------------------------
 
 Talablar
 ~~~~~~~~
@@ -92,3 +56,39 @@ Mu-dagi **Kompyuteringizdagi fayllar (Files on your computer)** oynasidan ``espz
 
 .. image:: /images/mu-drag-and-drop.jpg
     :alt: Mu-da espzero-ni kompyuterdan qurilmaga sudrab olib o'tish
+
+Buyruqlar satri (CLI) orqali o'rnatish
+--------------------------------------
+
+Terminal yoki buyruqlar satrida (PowerShell, CMD, Bash) ishlasangiz, quyidagi vositalar orqali o'rnatishingiz mumkin.
+
+mpremote orqali plataga to'g'ridan-to'g'ri o'rnatish
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``mpremote`` — bu MicroPython-ning rasmiy buyruqlar satri vositasi bo'lib, USB orqali ulangan plata bilan to'g'ridan-to'g'ri aloqa o'rnatadi va MIP orqali kutubxonalarni avtomatik yuklab olib o'rnatadi.
+
+1. **Kompyuteringizda mpremote-ni o'rnatish**:
+   
+   .. code-block:: bash
+
+       pip install mpremote
+
+2. **Ulangan ESP32 platasiga espzero-ni o'rnatish**:
+   
+   ESP32 platangiz kompyuterga USB orqali ulangan holatda quyidagi buyruqni bajaring:
+
+   .. code-block:: bash
+
+       mpremote mip install espzero
+
+.. tip::
+    Agar bir nechta plata ulangan bo'lsa yoki portni qo'lda ko'rsatish kerak bo'lsa, ``mpremote connect COMx mip install espzero`` (Windows) yoki ``mpremote connect /dev/ttyUSB0 mip install espzero`` (macOS/Linux) buyrug'idan foydalaning.
+
+Kompyuterda dasturlash uchun pip orqali o'rnatish (Avtomatik to'ldirish)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+VS Code, PyCharm kabi muhitlarda kod yozishda avtomatik to'ldirish (IntelliSense) va turlarni tekshirishdan foydalanish uchun kompyuteringizga ham o'rnating:
+
+.. code-block:: bash
+
+    pip install espzero
