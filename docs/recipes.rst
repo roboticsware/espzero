@@ -542,12 +542,19 @@ ESP32 카메라 영상을 PC(Mu 에디터)로 전송하고, PC의 MediaPipe 라�
 **단계별 실습 가이드 (Mu 에디터 / 일반 Python 에디터 공통)**:
 
 1. **PC YOLO 환경 준비**:
-   PC에서 YOLO 추론을 실행하기 위해 필요한 패키지를 준비합니다:
+   PC에서 YOLO 추론을 실행하기 위해 필요한 패키지를 준비합니다.
 
-   * **방법 A (Mu 에디터 환경)**: Mu 에디터에는 ``opencv-python``과 ``requests`` 패키지가 이미 기본 내장되어 있으므로, 우측 하단의 **설정 (톱니바퀴 아이콘) → [Third-party Packages (서드파티 패키지)]** 탭에서 ``ultralytics``\ 만 입력 후 [OK] 버튼을 누르면 즉시 사용할 수 있습니다.
-   * **방법 B (VS Code 등 외부 에디터 환경)**: Mu가 아닌 일반 Python 환경을 사용할 경우, CMD 또는 PowerShell에서 ``pip install ultralytics opencv-python requests`` 명령을 실행하여 필요한 패키지를 모두 설치합니다.
+   * **방법 A (Mu 에디터 환경)**:
+     Mu 에디터에는 ``opencv-python``\ 과 ``requests`` 패키지가 이미 기본 내장되어 있으므로, 우측 하단의 **설정 (톱니바퀴 아이콘) → [Third-party Packages (서드파티 패키지)]** 탭에서 ``ultralytics``\ 만 입력 후 [OK] 버튼을 누르면 즉시 사용할 수 있습니다.
 
-2. **1단계: ESP32 로봇 자동차 코드 업로드 (Mu [ESP32 모드] 또는 Thonny / ``mpremote``)**:
+   * **방법 B (VS Code 등 외부 에디터 환경)**:
+     Mu가 아닌 일반 Python 환경을 사용할 경우, CMD 또는 PowerShell에서 아래 명령을 실행하여 필요한 패키지를 설치합니다:
+
+     .. code-block:: bash
+
+         pip install ultralytics opencv-python requests
+
+2. **1단계: ESP32 로봇 자동차 코드 업로드 (Mu [ESP32 모드] 또는 Thonny / mpremote)**:
    아래 코드를 ``main.py`` 파일로 저장하여 ESP32 보드에 업로드합니다 (Mu 에디터에서는 **ESP32 모드** 사용, CLI에서는 ``mpremote cp main.py :main.py``).
    (``main.py`` 파일로 저장해 두면 PC와 USB 케이블을 분리하고 배터리만 연결해도 전원이 켜지는 즉시 스스로 Wi-Fi에 접속하여 무선 스트리밍을 시작합니다. 실행 시 터미널에 표시되는 ESP32의 IP 주소(예: ``http://192.168.0.50:8080/``)를 확인합니다.)
 
@@ -708,10 +715,19 @@ PC 음성 인식 기반 스마트카 무선 조작
 **단계별 실습 가이드 (Mu 에디터 / 일반 Python 에디터 공통)**:
 
 1. **PC 음성 인식 환경 준비**:
-   * **방법 A (Mu 에디터 환경)**: Mu 에디터에는 ``SpeechRecognition``과 ``requests`` 패키지가 이미 기본 내장되어 있으므로 **별도 패키지 설치 없이 곧바로 실행**할 수 있습니다.
-   * **방법 B (VS Code 등 외부 에디터 환경)**: Mu가 아닌 일반 Python 환경을 사용할 경우, CMD 또는 PowerShell에서 ``pip install SpeechRecognition requests PyAudio`` 명령을 실행하여 마이크 수음 및 통신 패키지를 설치합니다.
+   마이크로 음성을 인식하고 ESP32로 명령을 전달할 환경을 준비합니다.
 
-2. **1단계: ESP32 로봇 자동차 코드 업로드 (Mu [ESP32 모드] 또는 Thonny / ``mpremote``)**:
+   * **방법 A (Mu 에디터 환경)**:
+     Mu 에디터에는 ``SpeechRecognition``\ 과 ``requests`` 패키지가 이미 기본 내장되어 있으므로 **별도 패키지 설치 없이 곧바로 실행**할 수 있습니다.
+
+   * **방법 B (VS Code 등 외부 에디터 환경)**:
+     Mu가 아닌 일반 Python 환경을 사용할 경우, CMD 또는 PowerShell에서 아래 명령을 실행하여 필요한 패키지를 설치합니다:
+
+     .. code-block:: bash
+
+         pip install SpeechRecognition requests PyAudio
+
+2. **1단계: ESP32 로봇 자동차 코드 업로드 (Mu [ESP32 모드] 또는 Thonny / mpremote)**:
    아래 코드를 작성하여 ESP32 보드에 업로드합니다. 보드가 Wi-Fi에 접속되면 터미널에 표시되는 IP 주소(예: ``http://192.168.0.50:8080/``)를 확인합니다.
 
    .. literalinclude:: examples/voice_control_car.py

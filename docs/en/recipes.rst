@@ -526,12 +526,19 @@ However, by dividing responsibilities between the ESP32 and a PC over **Wi-Fi**,
 **Step-by-Step Practical Guide (Mu Editor / Standard Python IDEs)**:
 
 1. **PC YOLO Environment Setup**:
-   Prepare the required packages to run YOLO inference on your PC:
+   Prepare the required packages to run YOLO inference on your PC.
 
-   * **Option A (In Mu Editor)**: Mu Editor already has ``opencv-python`` and ``requests`` built-in. Simply click the **Settings (gear icon)** at bottom-right → **[Third-party Packages]** tab, enter ``ultralytics``, and click [OK].
-   * **Option B (External Editors like VS Code)**: If running outside Mu, install all necessary packages via CMD or PowerShell: ``pip install ultralytics opencv-python requests``.
+   * **Option A (In Mu Editor)**:
+     Mu Editor already has ``opencv-python`` and ``requests`` built-in. Simply click the **Settings (gear icon)** at bottom-right → **[Third-party Packages]** tab, enter ``ultralytics``, and click [OK].
 
-2. **Step 1: Upload ESP32 Robot Car Code (Mu [ESP32 Mode] or Thonny / ``mpremote``)**:
+   * **Option B (External Editors like VS Code)**:
+     If running outside Mu, install all necessary packages via CMD or PowerShell:
+
+     .. code-block:: bash
+
+         pip install ultralytics opencv-python requests
+
+2. **Step 1: Upload ESP32 Robot Car Code (Mu [ESP32 Mode] or Thonny / mpremote)**:
    Save the code below as ``main.py`` on the ESP32 board (use **ESP32 mode** in Mu, or ``mpremote cp main.py :main.py`` from CLI).
    (Saving as ``main.py`` allows you to unplug the USB cable and power the car with batteries; it will automatically connect to Wi-Fi and start streaming on boot. Check the ESP32 IP address printed in the REPL, e.g., ``192.168.0.50``.)
 
@@ -692,10 +699,19 @@ This approach requires minimal hardware wiring and ensures high speech recogniti
 **Step-by-Step Guide (Mu Editor / Standard Python IDEs)**:
 
 1. **PC Speech Recognition Environment Setup**:
-   * **Option A (In Mu Editor)**: Mu Editor already has ``SpeechRecognition`` and ``requests`` built-in, so you can **run the script directly without installing anything**.
-   * **Option B (External Editors like VS Code)**: If running in a generic Python environment, install the packages via CMD or PowerShell: ``pip install SpeechRecognition requests PyAudio``.
+   Prepare the environment to transcribe speech and send commands to the ESP32.
 
-2. **Step 1: Upload ESP32 Robot Car Script (Mu [ESP32 Mode] or Thonny / ``mpremote``)**:
+   * **Option A (In Mu Editor)**:
+     Mu Editor already has ``SpeechRecognition`` and ``requests`` built-in, so you can **run the script directly without installing anything**.
+
+   * **Option B (External Editors like VS Code)**:
+     If running in a generic Python environment, install the packages via CMD or PowerShell:
+
+     .. code-block:: bash
+
+         pip install SpeechRecognition requests PyAudio
+
+2. **Step 1: Upload ESP32 Robot Car Script (Mu [ESP32 Mode] or Thonny / mpremote)**:
 
    .. literalinclude:: ../examples/voice_control_car.py
 

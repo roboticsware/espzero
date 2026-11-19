@@ -526,12 +526,19 @@ Biroq, ESP32 va kompyuter o'rtasida **Wi-Fi** orqali vazifalarni taqsimlash orqa
 **Bosqichma-bosqich Amaliy Qo'llanma (Mu Muharriri / Standart Python IDElar)**:
 
 1. **Kompyuterda YOLO muhitini tayyorlash**:
-   Kompyuteringizda YOLOv8 ni ishga tushirish uchun paketlarni tayyorlang:
+   Kompyuteringizda YOLOv8 ni ishga tushirish uchun paketlarni tayyorlang.
 
-   * **A usuli (Mu muharriri muhitida)**: Mu muharririda ``opencv-python`` va ``requests`` paketlari allaqachon mavjud. Faqatgina **Sozlamalar (tishli g'ildirak) → [Third-party Packages]** bo'limiga o'tib, ``ultralytics`` deb yozing va [OK] bosing.
-   * **B usuli (VS Code va boshqa tashqi muharrirlarda)**: Mu dan tashqari standart Python muhitida ishlatayotgan bo'lsangiz, CMD yoki PowerShell da quyidagi buyruqni bajaring: ``pip install ultralytics opencv-python requests``.
+   * **A usuli (Mu muharriri muhitida)**:
+     Mu muharririda ``opencv-python`` va ``requests`` paketlari allaqachon mavjud. Faqatgina **Sozlamalar (tishli g'ildirak) → [Third-party Packages]** bo'limiga o'tib, ``ultralytics`` deb yozing va [OK] bosing.
 
-2. **1-bosqich: ESP32 Robot kodini yuklash (Mu [ESP32 rejimi] yoki Thonny / ``mpremote``)**:
+   * **B usuli (VS Code va boshqa tashqi muharrirlarda)**:
+     Mu dan tashqari standart Python muhitida ishlatayotgan bo'lsangiz, CMD yoki PowerShell da quyidagi buyruqni bajaring:
+
+     .. code-block:: bash
+
+         pip install ultralytics opencv-python requests
+
+2. **1-bosqich: ESP32 Robot kodini yuklash (Mu [ESP32 rejimi] yoki Thonny / mpremote)**:
    Quyidagi kodni plataga ``main.py`` nomi bilan saqlang (Mu da **ESP32 rejimi**, terminalda ``mpremote cp main.py :main.py``).
    (``main.py`` qilib saqlanganda, USB kabelni uzib, faqat batareya ulaganingizda ham plata o'z-o'zidan Wi-Fi ga ulanadi va simsiz video uzatishni boshlaydi. REPL da chiqqan ESP32 IP manzilini (masalan, ``192.168.0.50``) eslab qoling.)
 
@@ -692,10 +699,19 @@ Bu usul simlarni ulashni minimal darajaga tushiradi va shovqinli xonalarda ham a
 **Bosqichma-bosqich qo'llanma (Mu Muharriri / Standart Python IDElar)**:
 
 1. **Kompyuterda ovoz tanish muhitini tayyorlash**:
-   * **A usuli (Mu muharriri muhitida)**: Mu muharririda ``SpeechRecognition`` va ``requests`` paketlari allaqachon mavjud, shu sababli **hech qanday qo'shimcha o'rnatishlarsiz to'g'ridan-to'g'ri ishga tushirish mumkin**.
-   * **B usuli (VS Code va boshqa tashqi muharrirlarda)**: Standart Python muhitida ishlatayotgan bo'lsangiz, CMD yoki PowerShell da quyidagi buyruqni bajaring: ``pip install SpeechRecognition requests PyAudio``.
+   Ovozni aniqlash va ESP32 ga buyruq yuborish muhitini tayyorlang.
 
-2. **1-qadam: ESP32 Robot Avtomobili kodini yuklash (Mu [ESP32 Rejimi] yoki Thonny / ``mpremote``)**:
+   * **A usuli (Mu muharriri muhitida)**:
+     Mu muharririda ``SpeechRecognition`` va ``requests`` paketlari allaqachon mavjud, shu sababli **hech qanday qo'shimcha o'rnatishlarsiz to'g'ridan-to'g'ri ishga tushirish mumkin**.
+
+   * **B usuli (VS Code va boshqa tashqi muharrirlarda)**:
+     Standart Python muhitida ishlatayotgan bo'lsangiz, CMD yoki PowerShell da quyidagi buyruqni bajaring:
+
+     .. code-block:: bash
+
+         pip install SpeechRecognition requests PyAudio
+
+2. **1-qadam: ESP32 Robot Avtomobili kodini yuklash (Mu [ESP32 Rejimi] yoki Thonny / mpremote)**:
 
    .. literalinclude:: ../examples/voice_control_car.py
 
