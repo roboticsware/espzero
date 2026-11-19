@@ -8,7 +8,7 @@ espzero: The Easiest Coding Library for ESP32
    :align: center
    :alt: espzero logo
 
-**espzero** is a beginner-friendly hardware control library for ESP32 and ESP8266 microcontrollers. It brings the simplicity of the popular ``picozero`` library to the ESP32 ecosystem.
+**espzero** is a beginner-friendly hardware control library for ESP32 and ESP8266 microcontrollers. It brings the simplicity of the popular `picozero <https://picozero-rw.readthedocs.io/>`_ library to the ESP32 ecosystem.
 
 .. tip::
    🌐 **한국어 버전**: 이 문서의 한국어 버전은 ``docs/`` 루트 디렉토리에서 확인하실 수 있습니다.
@@ -31,11 +31,11 @@ Key Features
    * - Component
      - Supported Features
    * - **Output Devices**
-     - LED, PWM LED, RGB LED, Buzzer, Speaker (Melody), Motor
+     - LED, PWM LED, RGB LED, Buzzer, Speaker (Melody), Motor, OLED (SSD1306/SH1106), LCD (PCF8574/GPIO)
    * - **Input Devices**
      - Button, Switch, Motion Sensor, Touch, Potentiometer
    * - **Sensors**
-     - Distance (HC-SR04), Temperature (Internal/External)
+     - Distance (HC-SR04P / HC-SR04), Temperature (Internal/External)
    * - **Connectivity**
      - Simple WiFi connection and status management
 

@@ -8,7 +8,7 @@ espzero: ESP32 uchun eng oson dasturlash kutubxonasi
    :align: center
    :alt: espzero logotipi
 
-**espzero** — bu ESP32 va ESP8266 mikrokontrollerlari uchun yangi boshlovchilarga mo'ljallangan apparatni boshqarish kutubxonasi. U Raspberry Pi Pico uchun mashhur bo'lgan ``picozero`` kutubxonasining soddaligini ESP32 ekotizimiga olib keladi.
+**espzero** — bu ESP32 va ESP8266 mikrokontrollerlari uchun yangi boshlovchilarga mo'ljallangan apparatni boshqarish kutubxonasi. U Raspberry Pi Pico uchun mashhur bo'lgan `picozero <https://picozero-rw.readthedocs.io/>`_ kutubxonasining soddaligini ESP32 ekotizimiga olib keladi.
 
 Asosiy falsafa
 --------------
@@ -27,11 +27,11 @@ Asosiy xususiyatlar
    * - Komponent
      - Qo'llab-quvvatlanadigan xususiyatlar
    * - **Chiqish qurilmalari**
-     - LED, PWM LED, RGB LED, Buzzer, Speaker (Melody), Motor
+     - LED, PWM LED, RGB LED, Buzzer, Speaker (Melody), Motor, OLED (SSD1306/SH1106), LCD (PCF8574/GPIO)
    * - **Kirish qurilmalari**
      - Button, Switch, Motion Sensor, Touch, Potentiometer
    * - **Sensorlar**
-     - Distance (HC-SR04), Temperature (Internal/External)
+     - Distance (HC-SR04P / HC-SR04), Temperature (Internal/External)
    * - **Ulanish**
      - Oddiy WiFi ulanishi va holatni boshqarish
 

@@ -2,7 +2,7 @@ API 레퍼런스 (API Reference)
 ==========================
 
 이 섹션은 ``espzero`` 라이브러리의 모든 공개 클래스와 함수에 대한 상세 사양을 다룹니다.
-`roboticsware/picozero <https://github.com/roboticsware/picozero>`_ (`picozero-rw <https://pypi.org/project/picozero-rw/>`_) 와의 1:1 API 호환성을 유지하여, 라즈베리 파이 피코용으로 작성된 코드도 거의 수정 없이 ESP32에서 실행할 수 있습니다.
+`roboticsware/picozero <https://github.com/roboticsware/picozero>`_ (`picozero-rw <https://picozero-rw.readthedocs.io/>`_) 와의 1:1 API 호환성을 유지하여, 라즈베리 파이 피코용으로 작성된 코드도 거의 수정 없이 ESP32에서 실행할 수 있습니다.
 
 핵심 함수 (Core Functions)
 ------------------------

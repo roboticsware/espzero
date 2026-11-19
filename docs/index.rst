@@ -8,7 +8,7 @@ espzero: ESP32를 위한 가장 쉬운 코딩 라이브러리
    :align: center
    :alt: espzero logo
 
-**espzero**\ 는 ESP32 및 ESP8266 마이크로컨트롤러를 위한 초보자 친화적인 하드웨어 제어 라이브러리입니다. Raspberry Pi Pico의 인기 라이브러리인 ``picozero`` 의 사용법을 그대로 ESP32 환경에서 사용할 수 있게 해줍니다.
+**espzero**\ 는 ESP32 및 ESP8266 마이크로컨트롤러를 위한 초보자 친화적인 하드웨어 제어 라이브러리입니다. Raspberry Pi Pico의 인기 라이브러리인 `picozero <https://picozero-rw.readthedocs.io/>`_ 의 사용법을 그대로 ESP32 환경에서 사용할 수 있게 해줍니다.
 
 .. tip::
    🌐 **English Version**: You can find the English version of this documentation in the ``docs/en/`` directory.
@@ -31,11 +31,11 @@ espzero: ESP32를 위한 가장 쉬운 코딩 라이브러리
    * - 구성 요소
      - 지원 기능
    * - **출력 장치**
-     - LED, PWM LED, RGB LED, Buzzer, Speaker (Melody), Motor
+     - LED, PWM LED, RGB LED, Buzzer, Speaker (Melody), Motor, OLED (SSD1306/SH1106), LCD (PCF8574/GPIO)
    * - **입력 장치**
      - Button, Switch, Motion Sensor, Touch, Potentiometer
    * - **센서**
-     - Distance (HC-SR04), Temperature (Internal/External)
+     - Distance (HC-SR04P / HC-SR04), Temperature (Internal/External)
    * - **무선 통신**
      - WiFi 간편 연결 및 상태 관리
 
