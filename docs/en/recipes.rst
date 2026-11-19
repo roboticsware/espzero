@@ -401,6 +401,40 @@ I2C OLED Display (SSD1306 / SH1106, 3.3V Recommended)
     oled.rect(0, 36, 128, 20, color=1)
     oled.show()
 
+Robot Face Expressions & Gaze Tracking
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``oled.show_face()`` provides 10 expressive robot emotion presets (``"normal"``, ``"happy"``, ``"surprised"``, ``"love"``, ``"thinking"``, ``"sleep"``, ``"blink"``, ``"angry"``, ``"sad"``, ``"listening"``) with customizable gaze direction (``look_x``, ``look_y``).
+With ``oled.look_at(x, y)``, you can directly pass camera hand-tracking coordinates or joystick readings to have the robot eyes track user movements in real time.
+
+.. image:: ../images/oled_robot_faces.svg
+    :alt: ESPZero OLED Robot Face Diagram
+    :align: center
+
+.. code-block:: python
+
+    from espzero import OLED
+    from time import sleep
+
+    oled = OLED(scl=47, sda=21)
+
+    # 1. Emotion presets
+    oled.show_face("happy")      # Cheerful smile (^ ^)
+    sleep(1)
+    oled.show_face("surprised")  # Wide-eyed surprised (O O)
+    sleep(1)
+    oled.show_face("love")       # Heart-shaped eyes
+    sleep(1)
+
+    # 2. Gaze direction: Left (-1.0) / Right (1.0) / Up / Down
+    oled.show_face("normal", look_x=-1.0, look_y=0.0)  # Look left
+    sleep(1)
+    oled.show_face("normal", look_x=1.0, look_y=0.0)   # Look right
+    sleep(1)
+
+    # 3. Seamless eye gaze tracking with vision.get_hand() (desktop companion robot)
+    # oled.look_at(hand_x, hand_y, emotion="happy")
+
 LCD Display (16x2, PCF8574)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

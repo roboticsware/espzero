@@ -401,6 +401,40 @@ I2C OLED Displey (SSD1306 / SH1106, 3.3V Tavsiya etiladi)
     oled.rect(0, 36, 128, 20, color=1)
     oled.show()
 
+Robot yuzi his-tuyg'ulari va nigohni boshqarish (Robot Face & Gaze)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``oled.show_face()`` 10 xil robot his-tuyg'usi oldindan sozlangan holatlarini taqdim etadi (``"normal"``, ``"happy"``, ``"surprised"``, ``"love"``, ``"thinking"``, ``"sleep"``, ``"blink"``, ``"angry"``, ``"sad"``, ``"listening"``) va qorachiqlar yo'nalishini (``look_x``, ``look_y``) sozlash imkonini beradi.
+Shuningdek, ``oled.look_at(x, y)`` yordamida kamera qo'l koordinatalarini to'g'ridan-to'g'ri uzatib, robot ko'zlarini real vaqtda harakatga qaratish mumkin.
+
+.. image:: ../images/oled_robot_faces.svg
+    :alt: ESPZero OLED Robot Yuzi Diagrammasi
+    :align: center
+
+.. code-block:: python
+
+    from espzero import OLED
+    from time import sleep
+
+    oled = OLED(scl=47, sda=21)
+
+    # 1. His-tuyg'ularni o'zgartirish
+    oled.show_face("happy")      # Xursand yuz (^ ^)
+    sleep(1)
+    oled.show_face("surprised")  # Hayratlangan yuz (O O)
+    sleep(1)
+    oled.show_face("love")       # Yurak shaklidagi ko'zlar
+    sleep(1)
+
+    # 2. Nigohni boshqarish: Chapga (-1.0) / O'ngga (1.0) / Yuqoriga / Pastga
+    oled.show_face("normal", look_x=-1.0, look_y=0.0)  # Chapga qarash
+    sleep(1)
+    oled.show_face("normal", look_x=1.0, look_y=0.0)   # O'ngga qarash
+    sleep(1)
+
+    # 3. vision.get_hand() koordinatalari bilan nigohni kuzatish (interaktiv robot)
+    # oled.look_at(hand_x, hand_y, emotion="happy")
+
 LCD Displey (16x2, PCF8574)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

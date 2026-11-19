@@ -417,6 +417,40 @@ I2C OLED 디스플레이 (SSD1306 / SH1106, 3.3V 권장)
     oled.rect(0, 36, 128, 20, color=1)
     oled.show()
 
+로봇 얼굴 감정 표현 및 시선 추적 (Robot Face & Gaze)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``oled.show_face()``\ 는 10가지 감정 프리셋(``"normal"``, ``"happy"``, ``"surprised"``, ``"love"``, ``"thinking"``, ``"sleep"``, ``"blink"``, ``"angry"``, ``"sad"``, ``"listening"``)을 제공하며, 눈동자 위치(``look_x``, ``look_y``)를 미세 조절할 수 있습니다.
+또한 ``oled.look_at(x, y)``\ 를 사용하면 카메라 손 추적 좌표나 가변저항/조이스틱 좌표를 그대로 전달하여 로봇 눈동자가 사용자의 움직임을 실시간으로 쳐다보게 만들 수 있습니다.
+
+.. image:: /images/oled_robot_faces.svg
+    :alt: ESPZero OLED 로봇 표정 다이어그램
+    :align: center
+
+.. code-block:: python
+
+    from espzero import OLED
+    from time import sleep
+
+    oled = OLED(scl=47, sda=21)
+
+    # 1. 감정 표정 전환
+    oled.show_face("happy")      # 웃는 표정 (^ ^)
+    sleep(1)
+    oled.show_face("surprised")  # 깜짝 놀란 표정 (O O)
+    sleep(1)
+    oled.show_face("love")       # 하트 눈
+    sleep(1)
+
+    # 2. 시선 제어: 왼쪽(-1.0) / 오른쪽(1.0) / 위 / 아래
+    oled.show_face("normal", look_x=-1.0, look_y=0.0)  # 왼쪽 쳐다보기
+    sleep(1)
+    oled.show_face("normal", look_x=1.0, look_y=0.0)   # 오른쪽 쳐다보기
+    sleep(1)
+
+    # 3. vision.get_hand() 좌표와 결합한 실시간 시선 추적 (데스크탑 반려 로봇)
+    # oled.look_at(hand_x, hand_y, emotion="happy")
+
 LCD 디스플레이 (16x2, PCF8574)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
