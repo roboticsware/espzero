@@ -274,8 +274,8 @@ DC 모터 (Motor)
     from espzero import Robot
     from time import sleep
 
-    # left=(전진핀, 후진핀), right=(전진핀, 후진핀)
-    robot = Robot(left=(4, 5), right=(6, 7))
+    # left=(전진핀, 후진핀), right=(전진핀, 후진핀) — 카메라와 충돌하지 않는 안전 핀 사용
+    robot = Robot(left=(41, 42), right=(47, 21))
 
     # 기본 전진 / 후진
     robot.forward()
@@ -319,11 +319,16 @@ ESP32 및 ESP32-S3 칩에 내장된 정전용량식 터치 센서를 사용합�
 초음파 거리 센서 (Distance Sensor)
 -------------------------------
 
-HC-SR04 등의 초음파 센서를 사용하여 거리를 측정합니다.
+``HC-SR04P`` (3.3V~5V 겸용 신형 모델) 등의 초음파 센서를 사용하여 거리를 측정합니다.
 
 .. image:: /images/circuit_distance.svg
-    :alt: ESP32 초음파 센서 회로 연결도
+    :alt: ESP32-S3 HC-SR04P 초음파 센서 회로 연결도
     :align: center
+
+.. warning::
+    **구형 5V 전용 HC-SR04 사용 시 주의 (ECHO 핀 과전압 위험)**:
+    ESP32-S3 GPIO의 최대 허용 입력 전압은 **3.6V** 입니다. ``HC-SR04P`` (또는 ``HC-SR04+``) 신형 모델은 보드의 **3V3** 핀에 연결하면 3.3V 신호로 안전하게 직결됩니다.
+    만약 5V 전원이 필수인 **구형 HC-SR04** 센서를 사용하려면, ``ECHO`` 출력(5V)이 ``G14`` 핀을 손상시키지 않도록 **1kΩ + 2kΩ 저항 전압 분배 회로** (``ECHO → 1kΩ → G14``, ``G14 → 2kΩ → GND``)를 반드시 구성해 3.3V로 강압하여 연결하세요.
 
 .. code-block:: python
 
@@ -387,14 +392,40 @@ ESP32 칩 내부의 온도를 측정합니다. (주의: 외부 기온과는 차�
 
 .. literalinclude:: examples/stepper_automatic_blinds.py
 
-LCD 디스플레이 (LCD Display)
---------------------------
+디스플레이 (OLED & LCD Display)
+-------------------------------
+
+I2C OLED 디스플레이 (SSD1306 / SH1106, 3.3V 권장)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+0.96인치(``SSD1306``) 또는 1.3인치(``SH1106``) I2C OLED 디스플레이는 3.3V 전원과 I2C 신호를 기본 지원하므로 별도의 레벨 시프터 없이 ESP32-S3에 안전하게 직결할 수 있습니다.
+
+.. image:: /images/circuit_oled.svg
+    :alt: ESP32-S3 I2C OLED 디스플레이 회로 연결도
+    :align: center
+
+.. code-block:: python
+
+    from espzero import OLED
+
+    # 0.96인치 SSD1306 (1.3인치 모델은 driver="sh1106" 지정)
+    oled = OLED(scl=47, sda=21)
+
+    oled.clear()
+    oled.text("Hello, ESPZero!", 0, 0)
+    oled.text("ESP32-S3 OLED", 0, 20)
+    oled.rect(0, 36, 128, 20, color=1)
+    oled.show()
+
+LCD 디스플레이 (16x2, PCF8574)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 I2C 버스와 PCF8574 I2C 어댑터를 사용하여 LiquidCrystal 디스플레이(LCD)에 문자를 출력합니다.
 
-.. image:: /images/circuit_i2c_lcd.svg
-    :alt: ESP32 I2C LCD 디스플레이 회로 연결도
-    :align: center
+.. warning::
+    **PCF8574 (5V) I2C 백팩 사용 시 레벨 시프터 필수**:
+    대부분의 ``16x2 I2C LCD (PCF8574)`` 모듈은 5V 전원을 사용하며 내부 I2C 풀업 저항이 **5V** 에 연결되어 있습니다.
+    따라서 ESP32-S3(3.3V 로직)의 ``G21`` (SDA), ``G47`` (SCL) 핀을 보호하려면 보드와 LCD 모듈 사이에 **3.3V↔5V 양방향 I2C 로직 레벨 시프터(Logic Level Shifter)**\ 를 반드시 추가해야 합니다. (레벨 시프터 없이 간편하게 사용하려면 위 **3.3V OLED 디스플레이** 사용을 권장합니다.)
 
 .. literalinclude:: examples/i2c_lcd.py
 
@@ -482,8 +513,8 @@ ESP32 카메라 영상을 PC(에디터)로 전송하고, PC의 MediaPipe 라이�
        wifi = WiFi()
        wifi.connect("내_와이파이_이름", "비밀번호")
 
-       # 2. 2륜 구동 로봇 모터 설정 (왼쪽 모터 GPIO 4, 5 / 오른쪽 모터 GPIO 6, 7)
-       car = Robot(left=(4, 5), right=(6, 7))
+       # 2. 2륜 구동 로봇 모터 설정 (카메라와 충돌하지 않는 안전 핀: 왼쪽 41, 42 / 오른쪽 47, 21)
+       car = Robot(left=(41, 42), right=(47, 21))
 
        # 3. 무선 카메라 스트리밍 시작 (기본 포트: 8080)
        vision.start_wifi_stream(port=8080)

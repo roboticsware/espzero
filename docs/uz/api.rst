@@ -61,3 +61,21 @@ ESPTemperatureSensor
 ~~~~~~~~~~~~~~~~~~~~
 .. autoclass:: espzero.ESPTemperatureSensor
    :members:
+
+Displeylar (Displays)
+---------------------
+
+OLED
+~~~~
+.. autoclass:: espzero.OLED
+   :members:
+
+I2cLcd
+~~~~~~
+.. autoclass:: espzero.I2cLcd
+   :members:
+
+GpioLcd
+~~~~~~~
+.. autoclass:: espzero.GpioLcd
+   :members:

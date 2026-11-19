@@ -124,6 +124,11 @@ ESPTemperatureSensor
 디스플레이 (Displays)
 -------------------
 
+OLED
+~~~~
+.. autoclass:: espzero.OLED
+   :members:
+
 I2cLcd
 ~~~~~~
 .. autoclass:: espzero.I2cLcd

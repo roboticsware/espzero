@@ -116,16 +116,16 @@
     <text x="23" y="71" text-anchor="start" class="pin-silk" fill="#94a3b8">RST</text>
     <rect x="8" y="81" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
     <circle cx="13" cy="86" r="1.8" fill="#f1c40f"/>
-    <text x="23" y="89" text-anchor="start" class="pin-silk" fill="#ffffff">G4</text>
+    <text x="23" y="89" text-anchor="start" class="pin-silk" fill="#94a3b8">G4</text>
     <rect x="8" y="99" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
     <circle cx="13" cy="104" r="1.8" fill="#f1c40f"/>
-    <text x="23" y="107" text-anchor="start" class="pin-silk" fill="#ffffff">G5</text>
+    <text x="23" y="107" text-anchor="start" class="pin-silk" fill="#94a3b8">G5</text>
     <rect x="8" y="117" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
     <circle cx="13" cy="122" r="1.8" fill="#f1c40f"/>
-    <text x="23" y="125" text-anchor="start" class="pin-silk" fill="#ffffff">G6</text>
+    <text x="23" y="125" text-anchor="start" class="pin-silk" fill="#94a3b8">G6</text>
     <rect x="8" y="135" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
     <circle cx="13" cy="140" r="1.8" fill="#f1c40f"/>
-    <text x="23" y="143" text-anchor="start" class="pin-silk" fill="#ffffff">G7</text>
+    <text x="23" y="143" text-anchor="start" class="pin-silk" fill="#94a3b8">G7</text>
     <rect x="8" y="153" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
     <circle cx="13" cy="158" r="1.8" fill="#f1c40f"/>
     <text x="23" y="161" text-anchor="start" class="pin-silk" fill="#94a3b8">G15</text>
@@ -182,10 +182,10 @@
     <text x="195" y="107" text-anchor="end" class="pin-silk" fill="#94a3b8">G2</text>
     <rect x="200" y="117" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
     <circle cx="205" cy="122" r="1.8" fill="#f1c40f"/>
-    <text x="195" y="125" text-anchor="end" class="pin-silk" fill="#94a3b8">G42</text>
+    <text x="195" y="125" text-anchor="end" class="pin-silk" fill="#ffffff">G42</text>
     <rect x="200" y="135" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
     <circle cx="205" cy="140" r="1.8" fill="#f1c40f"/>
-    <text x="195" y="143" text-anchor="end" class="pin-silk" fill="#94a3b8">G41</text>
+    <text x="195" y="143" text-anchor="end" class="pin-silk" fill="#ffffff">G41</text>
     <rect x="200" y="153" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
     <circle cx="205" cy="158" r="1.8" fill="#f1c40f"/>
     <text x="195" y="161" text-anchor="end" class="pin-silk" fill="#94a3b8">G40</text>
@@ -215,10 +215,10 @@
     <text x="195" y="305" text-anchor="end" class="pin-silk" fill="#94a3b8">G48</text>
     <rect x="200" y="315" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
     <circle cx="205" cy="320" r="1.8" fill="#f1c40f"/>
-    <text x="195" y="323" text-anchor="end" class="pin-silk" fill="#94a3b8">G47</text>
+    <text x="195" y="323" text-anchor="end" class="pin-silk" fill="#ffffff">G47</text>
     <rect x="200" y="333" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
     <circle cx="205" cy="338" r="1.8" fill="#f1c40f"/>
-    <text x="195" y="341" text-anchor="end" class="pin-silk" fill="#94a3b8">G21</text>
+    <text x="195" y="341" text-anchor="end" class="pin-silk" fill="#ffffff">G21</text>
     <rect x="200" y="351" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
     <circle cx="205" cy="356" r="1.8" fill="#f1c40f"/>
     <text x="195" y="359" text-anchor="end" class="pin-silk" fill="#94a3b8">G20</text>
@@ -231,54 +231,54 @@
   </g>
   <!-- Wires -->
   <g>
-    <path d="M 161 212 L 26 212 L 26 24 L 410 24 L 410 426 L 752 426 L 752 362" fill="none" stroke="#fcfcfc" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 161 212 L 26 212 L 26 24 L 410 24 L 410 426 L 752 426 L 752 362" fill="none" stroke="#d68910" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 161 194 L 38 194 L 38 35 L 422 35 L 422 414 L 736 414 L 736 362" fill="none" stroke="#fcfcfc" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 161 194 L 38 194 L 38 35 L 422 35 L 422 414 L 736 414 L 736 362" fill="none" stroke="#e17055" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 161 176 L 50 176 L 50 46 L 434 46 L 434 402 L 720 402 L 720 362" fill="none" stroke="#fcfcfc" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 161 176 L 50 176 L 50 46 L 434 46 L 434 402 L 720 402 L 720 362" fill="none" stroke="#00b894" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 161 158 L 62 158 L 62 57 L 446 57 L 446 390 L 704 390 L 704 362" fill="none" stroke="#fcfcfc" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 161 158 L 62 158 L 62 57 L 446 57 L 446 390 L 704 390 L 704 362" fill="none" stroke="#0984e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 353 464 L 516 464 L 516 444 L 630 444 L 630 362" fill="none" stroke="#fcfcfc" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 353 464 L 516 464 L 516 444 L 630 444 L 630 362" fill="none" stroke="#2f3640" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 630 444 L 664 444 L 664 464" fill="none" stroke="#fcfcfc" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 630 444 L 664 444 L 664 464" fill="none" stroke="#2f3640" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 588 464 L 588 386 L 613 386 L 613 362" fill="none" stroke="#fcfcfc" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 588 464 L 588 386 L 613 386 L 613 362" fill="none" stroke="#e74c3c" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 588 242 L 548 235" fill="none" stroke="#fcfcfc" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 588 242 L 548 235" fill="none" stroke="#f39c12" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 588 262 L 548 255" fill="none" stroke="#fcfcfc" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 588 262 L 548 255" fill="none" stroke="#d35400" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 772 242 L 806 235" fill="none" stroke="#fcfcfc" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 772 242 L 806 235" fill="none" stroke="#f39c12" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 772 262 L 806 255" fill="none" stroke="#fcfcfc" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 772 262 L 806 255" fill="none" stroke="#d35400" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 212 L 452 212 L 452 374 L 726 374 L 726 359" fill="none" stroke="#fcfcfc" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 212 L 452 212 L 452 374 L 726 374 L 726 359" fill="none" stroke="#0984e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 194 L 464 194 L 464 383 L 742 383 L 742 359" fill="none" stroke="#fcfcfc" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 194 L 464 194 L 464 383 L 742 383 L 742 359" fill="none" stroke="#00b894" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 392 L 758 392 L 758 359" fill="none" stroke="#fcfcfc" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 392 L 758 392 L 758 359" fill="none" stroke="#e17055" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 410 L 774 410 L 774 359" fill="none" stroke="#fcfcfc" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 410 L 774 410 L 774 359" fill="none" stroke="#d68910" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 464 L 546 464 L 546 440 L 652 440 L 652 359" fill="none" stroke="#fcfcfc" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 464 L 546 464 L 546 440 L 652 440 L 652 359" fill="none" stroke="#2f3640" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 652 440 L 680 440 L 680 464" fill="none" stroke="#fcfcfc" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 652 440 L 680 440 L 680 464" fill="none" stroke="#2f3640" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 604 464 L 604 422 L 635 422 L 635 359" fill="none" stroke="#fcfcfc" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 604 464 L 604 422 L 635 422 L 635 359" fill="none" stroke="#e74c3c" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 610 239 L 570 232" fill="none" stroke="#fcfcfc" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 610 239 L 570 232" fill="none" stroke="#f39c12" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 610 259 L 570 252" fill="none" stroke="#fcfcfc" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 610 259 L 570 252" fill="none" stroke="#d35400" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 794 239 L 818 232" fill="none" stroke="#fcfcfc" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 794 239 L 818 232" fill="none" stroke="#f39c12" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 794 259 L 818 252" fill="none" stroke="#fcfcfc" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 794 259 L 818 252" fill="none" stroke="#d35400" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
-  <circle cx="630" cy="444" r="4.5" fill="#2f3640" stroke="#fcfcfc" stroke-width="1.2"/>
+  <circle cx="652" cy="440" r="4.5" fill="#2f3640" stroke="#fcfcfc" stroke-width="1.2"/>
   <!-- Active Pin Pads & External Callout Pills -->
-  <rect x="155.5" y="152.5" width="11" height="11" rx="2" fill="#0984e3" stroke="#ffffff" stroke-width="1.2"/>
-  <circle cx="161" cy="158" r="2.2" fill="#ffffff"/>
-  <g transform="translate(74, 150)">
-    <rect width="64" height="16" rx="3.5" fill="#0984e3" stroke="#ffffff" stroke-width="1"/>
-    <text x="32" y="11" text-anchor="middle" class="pill-text">G4 (IN1)</text>
-  </g>
-  <rect x="155.5" y="170.5" width="11" height="11" rx="2" fill="#00b894" stroke="#ffffff" stroke-width="1.2"/>
-  <circle cx="161" cy="176" r="2.2" fill="#ffffff"/>
-  <g transform="translate(74, 168)">
+  <rect x="347.5" y="188.5" width="11" height="11" rx="2" fill="#00b894" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="353" cy="194" r="2.2" fill="#ffffff"/>
+  <g transform="translate(376, 186)">
     <rect width="64" height="16" rx="3.5" fill="#00b894" stroke="#ffffff" stroke-width="1"/>
-    <text x="32" y="11" text-anchor="middle" class="pill-text">G5 (IN2)</text>
+    <text x="32" y="11" text-anchor="middle" class="pill-text">G42 (IN2)</text>
   </g>
-  <rect x="155.5" y="188.5" width="11" height="11" rx="2" fill="#e17055" stroke="#ffffff" stroke-width="1.2"/>
-  <circle cx="161" cy="194" r="2.2" fill="#ffffff"/>
-  <g transform="translate(74, 186)">
+  <rect x="347.5" y="206.5" width="11" height="11" rx="2" fill="#0984e3" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="353" cy="212" r="2.2" fill="#ffffff"/>
+  <g transform="translate(376, 204)">
+    <rect width="64" height="16" rx="3.5" fill="#0984e3" stroke="#ffffff" stroke-width="1"/>
+    <text x="32" y="11" text-anchor="middle" class="pill-text">G41 (IN1)</text>
+  </g>
+  <rect x="347.5" y="386.5" width="11" height="11" rx="2" fill="#e17055" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="353" cy="392" r="2.2" fill="#ffffff"/>
+  <g transform="translate(376, 384)">
     <rect width="64" height="16" rx="3.5" fill="#e17055" stroke="#ffffff" stroke-width="1"/>
-    <text x="32" y="11" text-anchor="middle" class="pill-text">G6 (IN3)</text>
+    <text x="32" y="11" text-anchor="middle" class="pill-text">G47 (IN3)</text>
   </g>
-  <rect x="155.5" y="206.5" width="11" height="11" rx="2" fill="#d68910" stroke="#ffffff" stroke-width="1.2"/>
-  <circle cx="161" cy="212" r="2.2" fill="#ffffff"/>
-  <g transform="translate(74, 204)">
+  <rect x="347.5" y="404.5" width="11" height="11" rx="2" fill="#d68910" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="353" cy="410" r="2.2" fill="#ffffff"/>
+  <g transform="translate(376, 402)">
     <rect width="64" height="16" rx="3.5" fill="#d68910" stroke="#ffffff" stroke-width="1"/>
-    <text x="32" y="11" text-anchor="middle" class="pill-text">G7 (IN4)</text>
+    <text x="32" y="11" text-anchor="middle" class="pill-text">G21 (IN4)</text>
   </g>
   <rect x="347.5" y="458.5" width="11" height="11" rx="2" fill="#2f3640" stroke="#ffffff" stroke-width="1.2"/>
   <circle cx="353" cy="464" r="2.2" fill="#ffffff"/>
@@ -287,7 +287,7 @@
     <text x="32" y="11" text-anchor="middle" class="pill-text">GND</text>
   </g>
   <!-- L298N Dual H-Bridge Motor Driver -->
-  <g transform="translate(590, 195)" filter="url(#shadow)">
+  <g transform="translate(612, 192)" filter="url(#shadow)">
     <rect width="182" height="168" rx="6" fill="#c0392b" stroke="#962d22" stroke-width="2"/>
     <!-- Aluminum Heat Sink -->
     <rect x="46" y="30" width="90" height="58" rx="4" fill="#1e293b" stroke="#0f172a" stroke-width="1.5"/>
@@ -307,7 +307,7 @@
     <circle cx="180" cy="48" r="4" fill="#f1c40f"/><circle cx="180" cy="68" r="4" fill="#f1c40f"/>
     <text x="163" y="61" text-anchor="end" class="mono-sm" style="font-size:7.5px;" fill="#ffffff">OUT3,4</text>
 
-    <!-- Power Block (abs 613 VCC, 630 GND, 647 5V) -->
+    <!-- Power Block (abs 635 VCC, 652 GND, 669 5V) -->
     <rect x="12" y="136" width="54" height="28" rx="3" fill="#2980b9" stroke="#1f618d"/>
     <circle cx="23" cy="150" r="4" fill="#f1c40f"/>
     <circle cx="40" cy="150" r="4" fill="#f1c40f"/>
@@ -316,7 +316,7 @@
     <text x="40" y="131" text-anchor="middle" class="mono-sm" style="font-size:7.5px;" fill="#e2e8f0">GND</text>
     <text x="57" y="131" text-anchor="middle" class="mono-sm" style="font-size:7.5px;" fill="#fef08a">5V</text>
 
-    <!-- Control Logic Pins IN1..IN4 (abs 704, 720, 736, 752) -->
+    <!-- Control Logic Pins IN1..IN4 (abs 726, 742, 758, 774) -->
     <circle cx="114" cy="152" r="4" fill="#0984e3" stroke="#ffffff" stroke-width="1"/>
     <circle cx="130" cy="152" r="4" fill="#00b894" stroke="#ffffff" stroke-width="1"/>
     <circle cx="146" cy="152" r="4" fill="#e17055" stroke="#ffffff" stroke-width="1"/>
@@ -327,26 +327,26 @@
     <text x="162" y="142" text-anchor="middle" class="mono-sm" style="font-size:7.5px;" fill="#ffffff">IN4</text>
   </g>
 
-  <!-- Left Motor (Shaft facing left, terminals on right at x=548) -->
-  <g transform="translate(476, 218)" filter="url(#shadow)">
-    <rect x="-18" y="21" width="18" height="10" rx="2" fill="#94a3b8" stroke="#64748b"/>
+  <!-- Left Motor (Shaft facing left, terminals on right at x=570) -->
+  <g transform="translate(498, 215)" filter="url(#shadow)">
+    <rect x="-16" y="21" width="16" height="10" rx="2" fill="#94a3b8" stroke="#64748b"/>
     <rect width="68" height="52" rx="8" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
     <rect x="68" y="8" width="8" height="36" rx="2" fill="#e74c3c"/>
     <circle cx="72" cy="17" r="2.8" fill="#f1c40f"/><circle cx="72" cy="37" r="2.8" fill="#f1c40f"/>
     <text x="34" y="30" text-anchor="middle" class="wire-lbl" style="font-size:10px;" fill="#1e293b">Left Motor</text>
   </g>
 
-  <!-- Right Motor (Terminals on left at x=806, shaft facing right) -->
-  <g transform="translate(810, 218)" filter="url(#shadow)">
+  <!-- Right Motor (Terminals on left at x=818, shaft facing right) -->
+  <g transform="translate(822, 215)" filter="url(#shadow)">
     <rect x="-8" y="8" width="8" height="36" rx="2" fill="#e74c3c"/>
-    <rect width="68" height="52" rx="8" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
-    <rect x="68" y="21" width="18" height="10" rx="2" fill="#94a3b8" stroke="#64748b"/>
+    <rect width="66" height="52" rx="8" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
+    <rect x="66" y="21" width="16" height="10" rx="2" fill="#94a3b8" stroke="#64748b"/>
     <circle cx="-4" cy="17" r="2.8" fill="#f1c40f"/><circle cx="-4" cy="37" r="2.8" fill="#f1c40f"/>
-    <text x="34" y="30" text-anchor="middle" class="wire-lbl" style="font-size:10px;" fill="#1e293b">Right Motor</text>
+    <text x="33" y="30" text-anchor="middle" class="wire-lbl" style="font-size:10px;" fill="#1e293b">Right Motor</text>
   </g>
 
   <!-- External Battery -->
-  <g transform="translate(566, 468)" filter="url(#shadow)">
+  <g transform="translate(582, 468)" filter="url(#shadow)">
     <rect x="17" y="-7" width="10" height="8" rx="1" fill="#e74c3c"/>
     <rect x="93" y="-7" width="10" height="8" rx="1" fill="#2f3640"/>
     <rect width="120" height="54" rx="6" fill="#334155" stroke="#1e293b" stroke-width="1.5"/>
@@ -360,9 +360,9 @@
     <rect width="442" height="98" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
     <text x="14" y="24" class="title">ESP32-S3 WROOM CAM — 2WD Robot Rover</text>
     <circle cx="22" cy="44" r="5" fill="#0984e3"/>
-    <text x="35" y="48" class="label">Left Motor : G4 (IN1), G5 (IN2)</text>
+    <text x="35" y="48" class="label">Left Motor : G41 (IN1), G42 (IN2) [Camera-Safe]</text>
     <circle cx="22" cy="64" r="5" fill="#e17055"/>
-    <text x="35" y="68" class="label">Right Motor : G6 (IN3), G7 (IN4)</text>
+    <text x="35" y="68" class="label">Right Motor : G47 (IN3), G21 (IN4) [Camera-Safe]</text>
     <circle cx="22" cy="84" r="5" fill="#2f3640"/>
     <text x="35" y="88" class="label">Common GND : ESP32 GND ↔ Driver GND ↔ Battery (-)</text>
   </g>

@@ -144,7 +144,7 @@ from ._core import (
     ESPTemperatureSensor,
     DigitalOutputDevice, PWMOutputDevice,
     DigitalInputDevice, AnalogInputDevice,
-    I2cLcd, GpioLcd,
+    I2cLcd, GpioLcd, OLED,
 )
 from ._wifi  import WiFi
 from ._touch import CapTouch
@@ -165,7 +165,7 @@ __all__ = [
     "ESPTemperatureSensor",
     "DigitalOutputDevice", "PWMOutputDevice",
     "DigitalInputDevice", "AnalogInputDevice",
-    "I2cLcd", "GpioLcd",
+    "I2cLcd", "GpioLcd", "OLED",
     "WiFi", "CapTouch",
     "vision",
 ]

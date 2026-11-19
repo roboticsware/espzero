@@ -258,8 +258,8 @@ Easily steer a 2-wheeled robot rover with forward, backward, left, and right mov
     from espzero import Robot
     from time import sleep
 
-    # left=(fwd_pin, bwd_pin), right=(fwd_pin, bwd_pin)
-    robot = Robot(left=(4, 5), right=(6, 7))
+    # left=(fwd_pin, bwd_pin), right=(fwd_pin, bwd_pin) using camera-safe GPIOs
+    robot = Robot(left=(41, 42), right=(47, 21))
 
     # Basic movements
     robot.forward()
@@ -303,11 +303,16 @@ Use the built-in capacitive touch peripheral on ESP32 / ESP32-S3. Detects touch 
 Distance Sensor
 ---------------
 
-Measure distance using an ultrasonic sensor like HC-SR04.
+Measure distance safely on ESP32-S3 using a 3.3V-compatible ultrasonic sensor such as ``HC-SR04P``.
 
 .. image:: /images/circuit_distance.svg
-    :alt: ESP32 Ultrasonic Distance Sensor Circuit Wiring Diagram
+    :alt: ESP32-S3 HC-SR04P Ultrasonic Distance Sensor Circuit Wiring Diagram
     :align: center
+
+.. warning::
+    **Overvoltage Risk with Legacy 5V-Only HC-SR04 Sensors**:
+    ESP32-S3 GPIOs have a maximum input tolerance of **3.6V**. Newer **HC-SR04P** / **HC-SR04+** sensors run directly from the board's **3V3** pin with safe 3.3V logic.
+    If you use a legacy 5V-only **HC-SR04**, its ``ECHO`` pin outputs **5V**, which can damage ``G14``. You must insert a **1kΩ + 2kΩ resistor voltage divider** (``ECHO → 1kΩ → G14``, ``G14 → 2kΩ → GND``) to step the ``ECHO`` signal down to ~3.3V.
 
 .. code-block:: python
 
@@ -371,14 +376,40 @@ Time-based blind controller:
 
 .. literalinclude:: examples/stepper_automatic_blinds.py
 
-LCD Display
------------
+Displays (OLED & LCD)
+---------------------
 
-Print characters on LiquidCrystal displays (LCD) by using the I2C bus and a PCF8574 I2C adapter.
+I2C OLED Display (SSD1306 / SH1106, 3.3V Recommended)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. image:: /images/circuit_i2c_lcd.svg
-    :alt: ESP32 I2C LCD Display Circuit Wiring Diagram
+0.96" (``SSD1306``) and 1.3" (``SH1106``) I2C OLED displays operate natively on 3.3V logic and can connect directly to the ESP32-S3 without a level shifter.
+
+.. image:: /images/circuit_oled.svg
+    :alt: ESP32-S3 I2C OLED Display Circuit Wiring Diagram
     :align: center
+
+.. code-block:: python
+
+    from espzero import OLED
+
+    # 0.96" SSD1306 (pass driver="sh1106" for 1.3" SH1106 panels)
+    oled = OLED(scl=47, sda=21)
+
+    oled.clear()
+    oled.text("Hello, ESPZero!", 0, 0)
+    oled.text("ESP32-S3 OLED", 0, 20)
+    oled.rect(0, 36, 128, 20, color=1)
+    oled.show()
+
+LCD Display (16x2, PCF8574)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Print characters on LiquidCrystal displays (LCD) using the I2C bus and a PCF8574 I2C adapter.
+
+.. warning::
+    **Level Shifter Required for 5V PCF8574 I2C Adapters**:
+    Most ``16x2 I2C LCD (PCF8574)`` modules operate at 5V and pull ``SDA`` / ``SCL`` up to **5V**.
+    To protect ESP32-S3's 3.3V pins (``G21``, ``G47``), always place a **3.3V↔5V bidirectional I2C logic level shifter** between the board and the PCF8574 module (or use the native **3.3V OLED display** shown above).
 
 .. literalinclude:: examples/i2c_lcd.py
 
@@ -466,8 +497,8 @@ However, by dividing responsibilities between the ESP32 and a PC over **Wi-Fi**,
        wifi = WiFi()
        wifi.connect("My_WiFi_SSID", "password")
 
-       # 2. Configure 2-wheel robot motors (Left: GPIO 4, 5 / Right: GPIO 6, 7)
-       car = Robot(left=(4, 5), right=(6, 7))
+       # 2. Configure 2-wheel robot motors using camera-safe pins (Left: GPIO 41, 42 / Right: GPIO 47, 21)
+       car = Robot(left=(41, 42), right=(47, 21))
 
        # 3. Start wireless camera stream (default port: 8080)
        vision.start_wifi_stream(port=8080)

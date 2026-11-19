@@ -258,8 +258,8 @@ Robot Rover (Ikki g'ildirakli robot platformasi)
     from espzero import Robot
     from time import sleep
 
-    # left=(oldinga_pin, orqaga_pin), right=(oldinga_pin, orqaga_pin)
-    robot = Robot(left=(4, 5), right=(6, 7))
+    # left=(oldinga_pin, orqaga_pin), right=(oldinga_pin, orqaga_pin) — kamera bilan to'qnashmaydigan xavfsiz pinlar
+    robot = Robot(left=(41, 42), right=(47, 21))
 
     # Asosiy harakatlar
     robot.forward()
@@ -303,11 +303,16 @@ ESP32 va ESP32-S3 chiplariga o'rnatilgan sig'imli sensorli periferiyadan foydala
 Masofa sensori (Distance Sensor)
 --------------------------------
 
-HC-SR04 kabi ultratovushli sensor yordamida masofani o'lchang.
+``HC-SR04P`` (3.3V–5V) kabi ultratovushli sensor yordamida ESP32-S3 bilan masofani xavfsiz o'lchang.
 
 .. image:: /images/circuit_distance.svg
-    :alt: ESP32 Masofa sensori sxemasi
+    :alt: ESP32-S3 HC-SR04P Masofa sensori sxemasi
     :align: center
+
+.. warning::
+    **Eski 5V faqat HC-SR04 sensorlarida kuchlanish oshishi xavfi (ECHO pin)**:
+    ESP32-S3 GPIO pinlarining maksimal kirish kuchlanishi **3.6V** dir. Yangi **HC-SR04P** / **HC-SR04+** modellari platadagi **3V3** piniga ulanib, xavfsiz 3.3V mantiqiy signal bilan ishlaydi.
+    Agar faqat 5V da ishlaydigan **eski HC-SR04** sensoridan foydalansangiz, uning ``ECHO`` chiqishi **5V** bo'ladi va ``G14`` pinini shikastlashi mumkin. Shu sababli ``ECHO`` signalini ~3.3V ga tushirish uchun **1kΩ + 2kΩ rezistorli kuchlanish bo'luvchi (Voltage Divider)** (``ECHO → 1kΩ → G14``, ``G14 → 2kΩ → GND``) ulashingiz shart.
 
 .. code-block:: python
 
@@ -371,14 +376,40 @@ Vaqtga asoslangan jalyuzi boshqaruvchisi:
 
 .. literalinclude:: examples/stepper_automatic_blinds.py
 
-LCD Displey (LCD Display)
--------------------------
+Displeylar (OLED & LCD)
+-----------------------
+
+I2C OLED Displey (SSD1306 / SH1106, 3.3V Tavsiya etiladi)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+0.96 dyuymli (``SSD1306``) yoki 1.3 dyuymli (``SH1106``) I2C OLED displeylar tabiiy ravishda 3.3V kuchlanish va I2C signalida ishlaydi, shu bois daraja o'zgartirgichsiz to'g'ridan-to'g'ri ESP32-S3 ga xavfsiz ulanadi.
+
+.. image:: /images/circuit_oled.svg
+    :alt: ESP32-S3 I2C OLED Displey sxemasi
+    :align: center
+
+.. code-block:: python
+
+    from espzero import OLED
+
+    # 0.96" SSD1306 (1.3" SH1106 ekranlar uchun driver="sh1106" kiriting)
+    oled = OLED(scl=47, sda=21)
+
+    oled.clear()
+    oled.text("Hello, ESPZero!", 0, 0)
+    oled.text("ESP32-S3 OLED", 0, 20)
+    oled.rect(0, 36, 128, 20, color=1)
+    oled.show()
+
+LCD Displey (16x2, PCF8574)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 I2C shinasidan va PCF8574 I2C adapteridan foydalanib LiquidCrystal displeylarida (LCD) belgilarni chop etish.
 
-.. image:: /images/circuit_i2c_lcd.svg
-    :alt: ESP32 I2C LCD Displey sxemasi
-    :align: center
+.. warning::
+    **5V PCF8574 I2C adapterlari uchun daraja o'zgartirgich (Level Shifter) zarur**:
+    Aksariyat ``16x2 I2C LCD (PCF8574)`` modullari 5V da ishlaydi va ``SDA`` / ``SCL`` liniyalarini **5V** ga tortadi (pull-up).
+    ESP32-S3 ning 3.3V pinlarini (``G21``, ``G47``) himoya qilish uchun plata va PCF8574 moduli orasiga **3.3V↔5V ikki yo'nalishli I2C mantiqiy daraja o'zgartirgich (Logic Level Shifter)** ulashingiz shart (yoki yuqoridagi **3.3V OLED displeydan** foydalaning).
 
 .. literalinclude:: examples/i2c_lcd.py
 
@@ -466,8 +497,8 @@ Biroq, ESP32 va kompyuter o'rtasida **Wi-Fi** orqali vazifalarni taqsimlash orqa
        wifi = WiFi()
        wifi.connect("Mening_WiFi_Nomi", "parol1234")
 
-       # 2. 2 g'ildirakli robot motorini sozlash (Chap: GPIO 4, 5 / O'ng: GPIO 6, 7)
-       car = Robot(left=(4, 5), right=(6, 7))
+       # 2. 2 g'ildirakli robot motorini kamera bilan to'qnashmaydigan pinlarda sozlash (Chap: 41, 42 / O'ng: 47, 21)
+       car = Robot(left=(41, 42), right=(47, 21))
 
        # 3. Simsiz kamera oqimini boshlash (standart port: 8080)
        vision.start_wifi_stream(port=8080)
