@@ -1,6 +1,8 @@
 espzero: The Easiest Coding Library for ESP32
 =============================================
 
+|pypibadge| |docsbadge|
+
 .. image:: /images/logo.png
    :width: 200px
    :align: center
@@ -83,6 +85,7 @@ Table of Contents
    :caption: Project Info
 
    contributing
+   changelog
    license
 
 Need Help?
@@ -90,3 +93,11 @@ Need Help?
 
 * **GitHub Repository**: Post your questions in the `Issues <https://github.com/roboticsware/espzero/issues>`_ tab.
 * **Community**: Share your projects and find examples on our blog or forums.
+
+.. |pypibadge| image:: https://badge.fury.io/py/espzero.svg
+   :target: https://badge.fury.io/py/espzero
+   :alt: PyPI Package Version
+
+.. |docsbadge| image:: https://readthedocs.org/projects/espzero/badge/
+   :target: https://espzero.readthedocs.io/
+   :alt: Documentation Status

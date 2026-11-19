@@ -1,5 +1,7 @@
 espzero: ESP32를 위한 가장 쉬운 코딩 라이브러리
-==========================================
+=================================================
+
+|pypibadge| |docsbadge|
 
 .. image:: /images/logo.png
    :width: 200px
@@ -13,14 +15,14 @@ espzero: ESP32를 위한 가장 쉬운 코딩 라이브러리
    🌐 **O'zbekcha versiya**: Ushbu hujjatning o'zbekcha versiyasini ``docs/uz/`` katalogida topishingiz mumkin.
 
 핵심 철학
---------
+---------
 
 * **단순함**: 복잡한 레지스터 설정이나 PWM 주파수 계산 없이, ``LED.on()`` 한 줄로 시작하세요.
 * **추상화**: 어떤 보드를 쓰더라도 코드는 동일하게 유지됩니다. 보드별 차이는 라이브러리가 자동으로 감지하여 처리합니다.
 * **현대적**: 비동기 스케줄러를 내장하여 백그라운드 작업을 손쉽게 처리합니다.
 
 주요 기능
---------
+---------
 
 .. list-table::
    :widths: 30 70
@@ -38,7 +40,7 @@ espzero: ESP32를 위한 가장 쉬운 코딩 라이브러리
      - WiFi 간편 연결 및 상태 관리
 
 시작하기
--------
+--------
 
 1. **설치**: 
    
@@ -83,10 +85,19 @@ espzero: ESP32를 위한 가장 쉬운 코딩 라이브러리
    :caption: 프로젝트 정보
 
    contributing
+   changelog
    license
 
 도움이 필요하신가요?
-------------------
+--------------------
 
 * **GitHub 저장소**: `Issues <https://github.com/roboticsware/espzero/issues>`_ 탭에 질문을 남겨주세요.
 * **커뮤니티**: 관련 포럼이나 블로그를 통해 다양한 활용 사례를 공유하고 있습니다.
+
+.. |pypibadge| image:: https://badge.fury.io/py/espzero.svg
+   :target: https://badge.fury.io/py/espzero
+   :alt: PyPI Package Version
+
+.. |docsbadge| image:: https://readthedocs.org/projects/espzero/badge/
+   :target: https://espzero.readthedocs.io/
+   :alt: Documentation Status

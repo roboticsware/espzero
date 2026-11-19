@@ -1,5 +1,7 @@
 espzero: ESP32 uchun eng oson dasturlash kutubxonasi
-=============================================
+=====================================================
+
+|pypibadge| |docsbadge|
 
 .. image:: /images/logo.png
    :width: 200px
@@ -79,6 +81,7 @@ Mundarija
    :caption: Loyiha haqida
 
    contributing
+   changelog
    license
 
 Yordam kerakmi?
@@ -86,3 +89,11 @@ Yordam kerakmi?
 
 * **GitHub ombori**: Savollaringizni `Issues <https://github.com/roboticsware/espzero/issues>`_ yorlig'ida qoldiring.
 * **Hamjamiyat**: Loyihalaringizni baham ko'ring va blogimiz yoki forumlarimizda misollar toping.
+
+.. |pypibadge| image:: https://badge.fury.io/py/espzero.svg
+   :target: https://badge.fury.io/py/espzero
+   :alt: PyPI Package Version
+
+.. |docsbadge| image:: https://readthedocs.org/projects/espzero/badge/
+   :target: https://espzero.readthedocs.io/
+   :alt: Documentation Status
