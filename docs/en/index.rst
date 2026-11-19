@@ -44,10 +44,16 @@ Getting Started
 
 1. **Install**: 
 
-   To install directly to your board, we recommend using ``mpremote``:
+   For beginners, you can easily install espzero via GUI using the `Mu Editor <gettingstarted.html#install-using-mu>`_\ 's package manager or file drag-and-drop (see the :doc:`gettingstarted` guide for details).
+
+   To install directly to your connected board from the command line, we recommend MicroPython's official CLI tool ``mpremote``:
    
    .. code-block:: bash
    
+       # Install mpremote on your PC
+       pip install mpremote
+
+       # Automatically download and install espzero onto your connected ESP32
        mpremote mip install espzero
 
    Alternatively, for IDE autocomplete and linting on your PC:

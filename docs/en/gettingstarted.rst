@@ -1,6 +1,44 @@
 Getting Started
 ===============
 
+This guide explains how to install the ``espzero`` library on your ESP32 using both the beginner-friendly **Mu Editor** and command-line tools (**mpremote / pip**).
+
+Install using Command Line Tools (CLI)
+--------------------------------------
+
+If you work in a terminal or command prompt (PowerShell, CMD, Bash), you can easily install espzero using CLI tools.
+
+Direct Install to Board via mpremote
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``mpremote`` is the official MicroPython command-line tool. It connects directly to your board via USB serial to manage files and automatically fetch and install packages via MIP.
+
+1. **Install mpremote on your PC**:
+   
+   .. code-block:: bash
+
+       pip install mpremote
+
+2. **Install espzero directly to the connected ESP32**:
+   
+   With your ESP32 connected to your PC via USB, run:
+
+   .. code-block:: bash
+
+       mpremote mip install espzero
+
+.. tip::
+    If multiple boards are connected or you need to specify a serial port explicitly, use ``mpremote connect COMx mip install espzero`` (Windows) or ``mpremote connect /dev/ttyUSB0 mip install espzero`` (macOS/Linux).
+
+Install via pip for PC Development (Autocomplete / Linting)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To enable code completion (IntelliSense) and type checking in desktop IDEs such as VS Code or PyCharm, install espzero in your Python environment:
+
+.. code-block:: bash
+
+    pip install espzero
+
 Install using Mu
 ----------------
 

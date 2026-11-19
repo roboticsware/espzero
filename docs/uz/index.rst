@@ -40,10 +40,16 @@ Ishni boshlash
 
 1. **O'rnatish**: 
 
-   Plataga to'g'ridan-to'g'ri o'rnatish uchun ``mpremote``-dan foydalanishni tavsiya etamiz:
+   Yangi boshlovchilar uchun `Mu Editor <gettingstarted.html#mu-yordamida-o-rnatish>`_\ dagi paket menejeri orqali avtomatik yoki fayllarni sudrab olib o'tish (drag & drop) orqali osongina o'rnatishni tavsiya qilamiz (batafsil ma'lumot uchun :doc:`gettingstarted` qo'llanmasiga qarang).
+
+   Terminal orqali plataga to'g'ridan-to'g'ri o'rnatish uchun rasmiy ``mpremote`` CLI vositasidan foydalanishni tavsiya etamiz:
    
    .. code-block:: bash
    
+       # Kompyuter terminalida mpremote CLI vositasini o'rnatish
+       pip install mpremote
+
+       # Ulangan ESP32 platasiga espzero-ni avtomatik yuklab olish va o'rnatish
        mpremote mip install espzero
 
    Yoki kompyuteringizda (IDE-da avtomatik to'ldirish uchun) ``pip`` orqali o'rnating:
