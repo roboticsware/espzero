@@ -467,15 +467,16 @@ ESP32-S3 kamerasi yordamida kompyuter ko'magidagi AI va mustaqil ishlaydigan qur
     Vizual funksiyalardan foydalanish uchun platangizga (ESP32-S3 WROOM CAM) **Kamera drayveri bilan yig'ilgan MicroPython proshivkasi (Camera-enabled Firmware)** o'rnatilgan bo'lishi kerak.
 
 .. note::
-    **Proshivka o'rnatish usullari (Mu muharriri / Tashqi vositalar)**:
+    **Mu Muharririda o'rnatilgan proshivka qilish yo'riqnomasi (Onlayn / Oflayn qo'llab-quvvatlanadi)**:
 
-    * **A usuli (Mu muharriri ichki fleshri)**: Mu pastki o'ng burchagidagi **Sozlamalar (tishli g'ildirak) → [ESP Firmware flasher]** (yoki **[ESP Online Flasher]**) bo'limiga o'ting, plata turini (ESP32-S3) va kamera proshivkasini (``.bin``) tanlab **[Erase & write firmware]** tugmasini bosing.
-    * **B usuli (Terminal / ``esptool``)**: VS Code, Thonny kabi boshqa muharrirlardan foydalanganda ``pip install esptool`` o'rnating va terminalda quyidagini bajaring:
+    Qo'shimcha murakkab dasturlarni (masalan, esptool) o'rnatish shart emas. Mu muharririning pastki o'ng burchagidagi **Sozlamalar (tishli g'ildirak)** bo'limida quyidagi ikki usuldan biri orqali kamerani qo'llab-quvvatlovchi proshivkani plataga osongina o'rnatishingiz mumkin:
 
-      .. code-block:: bash
+    * **Onlayn proshivka qilish ([ESP Online Flasher] bo'limi)**:
+      Kompyuteringiz internetga ulangan bo'lsa, proshivka faylini oldindan yuklab olish shart emas.
+      Plata turlari ro'yxatidan standart (Generic) emas, balki **kamera va PSRAM drayverlari kiritilgan variantni** (masalan, ``ESP32-S3 Camera (OV2640 / Octal SPIRAM)``) tanlang. So'ngra **[Versiyalarni olish] → [O'chirish va yozish]** tugmasini bosing — kamera drayveri kiritilgan eng so'nggi rasmiy MicroPython proshivkasi bulutdan avtomatik yuklab olinib, darhol plataga yoziladi.
 
-          esptool --chip esp32s3 --port COMx erase_flash
-          esptool --chip esp32s3 --port COMx --baud 460800 write_flash -z 0x0 firmware.bin
+    * **Oflayn proshivka qilish ([ESP Firmware flasher] bo'limi)**:
+      Internet bo'lmaganda yoki kompyuteringizda oldindan tayyorlab qo'yilgan ma'lum bir versiyadagi kamera proshivkasi (``.bin`` fayli) mavjud bo'lganda ishlatiladi. Plata turini (``ESP32-S3``) tanlang, kompyuteringizdagi faylni ko'rsating va **[O'chirish va yozish]** tugmasini bosing.
 
 PC ko'magidagi AI (MediaPipe bilan — Faqat Mu Muharriri)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

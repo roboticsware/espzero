@@ -467,15 +467,16 @@ Examples for using the ESP32-S3 camera with PC-assisted AI and standalone on-dev
     To use vision features, ensure your board (e.g. ESP32-S3 WROOM CAM) is flashed with a **Camera-enabled MicroPython firmware**.
 
 .. note::
-    **Firmware Flashing Options (Mu Editor / External Tools)**:
+    **Built-in Firmware Flashing in Mu Editor (Online / Offline Supported)**:
 
-    * **Option A (Mu Editor Built-in Flasher)**: Click **Settings (gear icon)** at bottom-right → **[ESP Firmware flasher]** tab (or **[ESP Online Flasher]** tab), select your board (ESP32-S3), choose your camera-enabled firmware (``.bin``), and click **[Erase & write firmware]**.
-    * **Option B (Terminal / ``esptool``)**: If using VS Code, Thonny, or another editor, install ``pip install esptool`` and flash via CLI:
+    You do not need to install complex external command-line tools (such as esptool). Simply open Mu Editor's **Settings (gear icon)** at the bottom-right and choose either method:
 
-      .. code-block:: bash
+    * **Online Flashing ([ESP Online Flasher] tab)**:
+      If connected to the internet, you do not need to download firmware files beforehand.
+      In the board drop-down menu, ensure you select the specific camera & PSRAM profile (e.g., ``ESP32-S3 Camera (OV2640 / Octal SPIRAM)``) rather than the standard Generic profile. Then click **[Get versions] → [Erase & write]** to automatically download and flash the latest camera-enabled official MicroPython firmware directly from the cloud.
 
-          esptool --chip esp32s3 --port COMx erase_flash
-          esptool --chip esp32s3 --port COMx --baud 460800 write_flash -z 0x0 firmware.bin
+    * **Offline Flashing ([ESP Firmware flasher] tab)**:
+      Useful when offline or using a pre-downloaded custom camera firmware (``.bin`` file). Select your board (``ESP32-S3``), browse for the firmware file on your computer, and click **[Erase & write firmware]** to flash directly.
 
 PC-Side AI (with MediaPipe — Mu Editor Only)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

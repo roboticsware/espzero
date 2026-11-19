@@ -483,15 +483,16 @@ ESP32-S3 AI 비전 카메라와 에디터 연동 및 단독 실행 AI 예제입�
     비전 기능을 사용하려면 보드(ESP32-S3 WROOM CAM)에 **카메라 드라이버가 포함 빌드된 MicroPython 펌웨어(Camera-enabled Firmware)**\ 가 플래싱되어 있어야 합니다.
 
 .. note::
-    **펌웨어 플래싱 방법 (Mu 에디터 / 외부 도구)**:
+    **Mu 에디터 내장 펌웨어 플래싱 안내 (온라인 / 오프라인 지원)**:
 
-    * **방법 A (Mu 에디터 내장 플래셔)**: 별도 도구 설치 없이 Mu 우측 하단의 **설정 (톱니바퀴 아이콘) → [ESP Firmware flasher]** 탭(또는 **[ESP Online Flasher]** 탭)에서 보드 종류(ESP32-S3)와 카메라 펌웨어(``.bin``)를 선택하고 **[Erase & write firmware]** 버튼을 클릭합니다.
-    * **방법 B (외부 터미널 / ``esptool``)**: VS Code, Thonny 등 타 에디터를 사용하는 경우 터미널에서 ``pip install esptool`` 설치 후 아래와 같이 플래싱합니다:
+    별도의 복잡한 도구(esptool 등)를 설치할 필요 없이, Mu 에디터 우측 하단의 **설정 (톱니바퀴 아이콘)**\ 에서 다음 두 가지 방법 중 하나로 간편하게 카메라 지원 펌웨어를 보드에 설치할 수 있습니다:
 
-      .. code-block:: bash
+    * **온라인 플래싱 ([ESP Online Flasher] 탭)**:
+      컴퓨터가 인터넷에 연결되어 있다면 별도의 펌웨어 파일을 미리 다운로드할 필요가 없습니다.
+      드롭다운 목록에서 일반 보드(Generic)가 아닌, **카메라와 PSRAM 드라이버가 포함된 보드 항목**\ (예: ``ESP32-S3 Camera (OV2640 / Octal SPIRAM)`` 등)을 정확히 선택한 후 **[버전 가져오기] → [지우고 쓰기]** 버튼을 누르면, 카메라 전용 공식 MicroPython 펌웨어를 클라우드에서 자동으로 내려받아 보드에 즉시 플래싱합니다.
 
-          esptool --chip esp32s3 --port COMx erase_flash
-          esptool --chip esp32s3 --port COMx --baud 460800 write_flash -z 0x0 firmware.bin
+    * **오프라인 플래싱 ([ESP Firmware flasher] 탭)**:
+      인터넷이 없는 환경이거나 미리 준비된 특정 버전의 카메라 펌웨어(``.bin`` 파일)를 보유하고 있는 경우에 사용합니다. 보드 종류(``ESP32-S3``)를 선택하고 컴퓨터에 저장된 펌웨어 파일을 지정한 뒤 **[지우고 쓰기]** 버튼을 클릭하여 보드에 직접 덮어씁니다.
 
 PC 연동 AI (MediaPipe 연동 — Mu 에디터 전용)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
