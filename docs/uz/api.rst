@@ -2,6 +2,7 @@ API ma'lumotnomasi
 ==================
 
 Ushbu bo'limda ``espzero`` kutubxonasidagi barcha ochiq klasslar va funksiyalar uchun batafsil texnik tavsiflar keltirilgan.
+U `roboticsware/picozero <https://github.com/roboticsware/picozero>`_ (`picozero-rw <https://pypi.org/project/picozero-rw/>`_) bilan 1:1 API mosligini ta'minlaydi, bu esa Raspberry Pi Pico uchun yozilgan kodlarni ESP32 da deyarli o'zgarishsiz ishlatish imkonini beradi.
 
 Asosiy funksiyalar (Core Functions)
 -----------------------------------

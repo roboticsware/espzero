@@ -2,6 +2,7 @@ API Reference
 =============
 
 This section provides detailed specifications for all public classes and functions in the ``espzero`` library.
+It maintains 1:1 API compatibility with `roboticsware/picozero <https://github.com/roboticsware/picozero>`_ (`picozero-rw <https://pypi.org/project/picozero-rw/>`_), allowing code written for the Raspberry Pi Pico to run on ESP32 with virtually no modification.
 
 Core Functions
 --------------
