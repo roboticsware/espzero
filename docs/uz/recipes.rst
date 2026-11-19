@@ -467,14 +467,23 @@ ESP32-S3 kamerasi yordamida kompyuter ko'magidagi AI va mustaqil ishlaydigan qur
     Vizual funksiyalardan foydalanish uchun platangizga (ESP32-S3 WROOM CAM) **Kamera drayveri bilan yig'ilgan MicroPython proshivkasi (Camera-enabled Firmware)** o'rnatilgan bo'lishi kerak.
 
 .. note::
-    **Mu muharririda to'g'ridan-to'g'ri proshivka o'rnatish**:
-    Qo'shimcha murakkab dasturlarni (masalan, esptool) o'rnatish shart emas. Mu muharririning o'zida proshivka qilish imkoni mavjud:
-    Mu ning pastki o'ng burchagidagi **Sozlamalar (tishli g'ildirak)** tugmasini bosing → **[ESP Firmware flasher]** (yoki **[ESP Online Flasher]**) bo'limiga o'ting, plata turini (ESP32-S3) va kamera proshivkasini (``.bin`` fayli) tanlang hamda **[Erase & write firmware]** tugmasini bosing.
+    **Proshivka o'rnatish usullari (Mu muharriri / Tashqi vositalar)**:
 
-PC ko'magidagi AI (MediaPipe bilan)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    * **A usuli (Mu muharriri ichki fleshri)**: Mu pastki o'ng burchagidagi **Sozlamalar (tishli g'ildirak) → [ESP Firmware flasher]** (yoki **[ESP Online Flasher]**) bo'limiga o'ting, plata turini (ESP32-S3) va kamera proshivkasini (``.bin``) tanlab **[Erase & write firmware]** tugmasini bosing.
+    * **B usuli (Terminal / ``esptool``)**: VS Code, Thonny kabi boshqa muharrirlardan foydalanganda ``pip install esptool`` o'rnating va terminalda quyidagini bajaring:
 
-Kamera tasvirlarini kompyuterga (Pico Editor) uzatadi va u real vaqt rejimida qo'llarni, yuzlarni va h.k.larni kuzatish uchun Google MediaPipe kutubxonasidan foydalanadi. Aniqlangan koordinatalar apparat boshqaruvi uchun ESP32 ga qaytarib yuboriladi.
+      .. code-block:: bash
+
+          esptool --chip esp32s3 --port COMx erase_flash
+          esptool --chip esp32s3 --port COMx --baud 460800 write_flash -z 0x0 firmware.bin
+
+PC ko'magidagi AI (MediaPipe bilan — Faqat Mu Muharriri)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+    **Faqat Mu Muharriri serial protokoli**: ``vision.start_stream_to_pc()`` USB serial orqali Mu muharririning ichki Kamera/MediaPipe ko'ruvchisi bilan bevosita ishlaydi. VS Code, Thonny kabi boshqa muharrirlarda quyidagi **Wi-Fi orqali video uzatish (``vision.start_wifi_stream()``)** usulidan foydalaning.
+
+Kamera tasvirlarini kompyuterga (Mu Muharriri) uzatadi va u real vaqt rejimida qo'llarni, yuzlarni va h.k.larni kuzatish uchun Google MediaPipe kutubxonasidan foydalanadi. Aniqlangan koordinatalar apparat boshqaruvi uchun ESP32 ga qaytarib yuboriladi.
 
 .. code-block:: python
 
@@ -514,16 +523,16 @@ Biroq, ESP32 va kompyuter o'rtasida **Wi-Fi** orqali vazifalarni taqsimlash orqa
       - Wi-Fi video oqimini qabul qiladi va kompyuterning yuqori quvvatli CPU/GPU sida YOLOv8 ni ishlatadi
       - Odam/to'siq aniqlanganda darhol 'STOP', yo'l ochiq bo'lsa 'GO' buyrug'ini yuboradi
 
-**Mu Muharririda Bosqichma-bosqich Amaliy Qo'llanma**:
+**Bosqichma-bosqich Amaliy Qo'llanma (Mu Muharriri / Standart Python IDElar)**:
 
 1. **Kompyuterda YOLO muhitini tayyorlash**:
-   Kompyuteringizda YOLOv8 ni ishga tushirish uchun kerakli paketlarni o'rnating:
+   Kompyuteringizda YOLOv8 ni ishga tushirish uchun paketlarni tayyorlang:
 
-   * **A usuli (Mu sozlamalarida)**: Mu pastki o'ng burchagidagi **Sozlamalar (tishli g'ildirak)** tugmasini bosing → **[Third-party Packages (Uchinchi tomon paketlari)]** bo'limiga o'ting, ``ultralytics`` deb yozing va [OK] tugmasini bosing.
-   * **B usuli (Terminalda)**: CMD yoki PowerShell da ``pip install ultralytics opencv-python requests`` buyrug'ini bajaring.
+   * **A usuli (Mu muharriri muhitida)**: Mu muharririda ``opencv-python`` va ``requests`` paketlari allaqachon mavjud. Faqatgina **Sozlamalar (tishli g'ildirak) → [Third-party Packages]** bo'limiga o'tib, ``ultralytics`` deb yozing va [OK] bosing.
+   * **B usuli (VS Code va boshqa tashqi muharrirlarda)**: Mu dan tashqari standart Python muhitida ishlatayotgan bo'lsangiz, CMD yoki PowerShell da quyidagi buyruqni bajaring: ``pip install ultralytics opencv-python requests``.
 
-2. **1-bosqich: ESP32 Robot kodini yuklash (Mu [ESP32 rejimi])**:
-   Mu muharririning rejimini **ESP32 rejimi**\ ga o'tkazing va quyidagi kodni yozib, plataga ``main.py`` nomi bilan saqlang.
+2. **1-bosqich: ESP32 Robot kodini yuklash (Mu [ESP32 rejimi] yoki Thonny / ``mpremote``)**:
+   Quyidagi kodni plataga ``main.py`` nomi bilan saqlang (Mu da **ESP32 rejimi**, terminalda ``mpremote cp main.py :main.py``).
    (``main.py`` qilib saqlanganda, USB kabelni uzib, faqat batareya ulaganingizda ham plata o'z-o'zidan Wi-Fi ga ulanadi va simsiz video uzatishni boshlaydi. REPL da chiqqan ESP32 IP manzilini (masalan, ``192.168.0.50``) eslab qoling.)
 
    .. code-block:: python
@@ -551,9 +560,8 @@ Biroq, ESP32 va kompyuter o'rtasida **Wi-Fi** orqali vazifalarni taqsimlash orqa
                    car.stop()       # Odam yoki to'siq aniqlanganda to'xtash
            sleep(0.05)
 
-3. **2-bosqich: Kompyuter AI Avtonom Boshqaruvchisini ishga tushirish (Mu [Python 3 rejimi])**:
-   Mu muharririning yuqori chap burchagidagi **[Rejim (Mode)]** tugmasini bosib **Python 3 rejimi**\ ga o'ting.
-   Yangi oynada quyidagi skriptni yozing, yuqorida olingan ESP32 IP manzilini ``STREAM_URL`` va ``CMD_URL`` ga kiriting hamda **[Boshlash (Play)]** tugmasini bosing.
+3. **2-bosqich: Kompyuter AI Avtonom Boshqaruvchisini ishga tushirish (Mu [Python 3 rejimi] yoki standart Python)**:
+   Mu muharririda **Python 3 rejimi**\ da ishga tushiring, yoki VS Code / terminalda ``yolo_drive.py`` fayliga saqlab ``python yolo_drive.py`` buyrug'i bilan bajaring (avval ``STREAM_URL`` va ``CMD_URL`` ga ESP32 IP manzilini kiriting).
    Kompyuteringizda real vaqtda aniqlangan obyektlar ramka bilan ko'rsatilgan video oyna ochiladi va robot mashina avtonom harakatni boshlaydi.
 
    .. code-block:: python
@@ -650,4 +658,98 @@ Mahalliy AI xulosalarini chiqarish uchun bevosita ESP32 fayl tizimidan ``.tflite
             result = model.detect(img)
             print("Aniqlangan sinf ID:", result.class_id)
         sleep(0.5)
+
+
+AI Ovoz (AI Voice)
+------------------
+
+ESP32 platasiga alohida I2S mikrofon qo'shmasdan ham, **kompyuter yoki noutbukning yuqori sifatli ichki mikrofonidan** foydalanib Wi-Fi orqali ESP32 avtomobil va robotini ovoz bilan boshqarish mumkin.
+
+Kompyuter mikrofoni orqali ovoz bilan boshqariladigan aqlli avtomobil
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Bu usul simlarni ulashni minimal darajaga tushiradi va shovqinli xonalarda ham aniq ovoz tanishni ta'minlaydi.
+
+**Ishlash prinsipi va vazifalar taqsimoti**:
+
+.. code-block:: text
+
+    [ Foydalanuvchi ]
+      🗣️ "Oldinga!" / "To'xta!" / "Aylan!"
+      │
+      ▼ (Kompyuter / Noutbuk ichki mikrofonida yozib olinadi)
+    [ Mu Muharriri (Kompyuter) - Python 3 Rejimi ] (Quloq va Aql)
+      - Kompyuter mikrofonidan ovoz oladi va ichki SpeechRecognition yordamida tahlil qiladi
+      - Wi-Fi HTTP so'rovi orqali buyruqlarni yuboradi:
+        requests.get("http://<ESP32_IP>:8080/ai?action=GO")
+      ▲
+      │  (Wi-Fi tarmog'i: Matnli buyruqlarni uzatish)
+      ▼
+    [ ESP32 Robot Avtomobili ] (Tana, Mikrofon/OLED keraksiz!)
+      - Qabul qilingan action ("GO") buyrug'ini darhol bajaradi
+      - Motorlarni harakatga keltiradi va platadagi LED orqali holatni bildiradi
+
+**Bosqichma-bosqich qo'llanma (Mu Muharriri / Standart Python IDElar)**:
+
+1. **Kompyuterda ovoz tanish muhitini tayyorlash**:
+   * **A usuli (Mu muharriri muhitida)**: Mu muharririda ``SpeechRecognition`` va ``requests`` paketlari allaqachon mavjud, shu sababli **hech qanday qo'shimcha o'rnatishlarsiz to'g'ridan-to'g'ri ishga tushirish mumkin**.
+   * **B usuli (VS Code va boshqa tashqi muharrirlarda)**: Standart Python muhitida ishlatayotgan bo'lsangiz, CMD yoki PowerShell da quyidagi buyruqni bajaring: ``pip install SpeechRecognition requests PyAudio``.
+
+2. **1-qadam: ESP32 Robot Avtomobili kodini yuklash (Mu [ESP32 Rejimi] yoki Thonny / ``mpremote``)**:
+
+   .. literalinclude:: ../examples/voice_control_car.py
+
+3. **2-qadam: Kompyuter Ovozli Boshqaruv skriptini ishga tushirish (Mu [Python 3 Rejimi] yoki standart Python)**:
+   Mu muharririda **Python 3 Rejimida** (yoki VS Code / terminalda ``python voice_controller.py`` orqali) ``ESP_IP`` o'rniga platangiz IP manzilini kiritib ishga tushiring:
+
+   .. code-block:: python
+
+       import requests
+       import speech_recognition as sr
+
+       ESP_IP = "192.168.0.50"  # ESP32 IP manzili
+       CMD_URL = f"http://{ESP_IP}:8080/ai"
+
+       recognizer = sr.Recognizer()
+       mic = sr.Microphone()  # Kompyuter mikrofoni
+
+       print("=== Ovoz bilan boshqariladigan avtomobil boshqaruvchisi ===")
+       print("Buyruqlar: 'oldinga', 'orqaga', 'chapga', "o'ngga", "to'xta", 'raqs'")
+
+       with mic as source:
+           recognizer.adjust_for_ambient_noise(source)
+
+       while True:
+           print("\n[Eshitmoqdaman... Gapiring]")
+           with mic as source:
+               audio = recognizer.listen(source)
+
+           try:
+               # O'zbek tili (uz-UZ) da Google Speech Recognition orqali ovozni aniqlash
+               text = recognizer.recognize_google(audio, language="uz-UZ").lower()
+               print("Eshitildi:", text)
+
+               action = None
+
+               if "oldinga" in text or "yur" in text or "ketdik" in text:
+                   action = "GO"
+               elif "orqaga" in text:
+                   action = "BACK"
+               elif "chap" in text:
+                   action = "LEFT"
+               elif "o'ng" in text or "ong" in text:
+                   action = "RIGHT"
+               elif "to'xta" in text or "toxta" in text or "stop" in text:
+                   action = "STOP"
+               elif "raqs" in text or "o'yna" in text:
+                   action = "DANCE"
+
+               if action:
+                   requests.get(CMD_URL, params={"action": action}, timeout=0.5)
+
+           except sr.UnknownValueError:
+               pass
+           except Exception as e:
+               print("Xatolik:", e)
+
 

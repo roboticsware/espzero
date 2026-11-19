@@ -483,14 +483,23 @@ ESP32-S3 AI 비전 카메라와 에디터 연동 및 단독 실행 AI 예제입�
     비전 기능을 사용하려면 보드(ESP32-S3 WROOM CAM)에 **카메라 드라이버가 포함 빌드된 MicroPython 펌웨어(Camera-enabled Firmware)**\ 가 플래싱되어 있어야 합니다.
 
 .. note::
-    **Mu 에디터에서 직접 펌웨어 플래싱 지원**:
-    별도의 복잡한 도구(esptool 등)를 설치할 필요 없이 Mu 에디터 안에서 카메라 지원 펌웨어를 직접 플래싱할 수 있습니다.
-    Mu 우측 하단의 **설정 (톱니바퀴 아이콘) → [ESP Firmware flasher]** 탭(또는 **[ESP Online Flasher]** 탭)에서 보드 종류(ESP32-S3)를 선택하고 카메라 펌웨어(``.bin`` 파일)를 지정한 뒤 **[Erase & write firmware]** 버튼을 누르면 자동으로 보드에 플래싱됩니다.
+    **펌웨어 플래싱 방법 (Mu 에디터 / 외부 도구)**:
 
-PC 연동 AI (MediaPipe 연동)
-~~~~~~~~~~~~~~~~~~~~~~~~~
+    * **방법 A (Mu 에디터 내장 플래셔)**: 별도 도구 설치 없이 Mu 우측 하단의 **설정 (톱니바퀴 아이콘) → [ESP Firmware flasher]** 탭(또는 **[ESP Online Flasher]** 탭)에서 보드 종류(ESP32-S3)와 카메라 펌웨어(``.bin``)를 선택하고 **[Erase & write firmware]** 버튼을 클릭합니다.
+    * **방법 B (외부 터미널 / ``esptool``)**: VS Code, Thonny 등 타 에디터를 사용하는 경우 터미널에서 ``pip install esptool`` 설치 후 아래와 같이 플래싱합니다:
 
-ESP32 카메라 영상을 PC(에디터)로 전송하고, PC의 MediaPipe 라이브러리를 사용해 손가락 관절 등을 실시간으로 분석합니다. 분석된 좌표는 다시 ESP32에 전송되어 제어에 사용됩니다.
+      .. code-block:: bash
+
+          esptool --chip esp32s3 --port COMx erase_flash
+          esptool --chip esp32s3 --port COMx --baud 460800 write_flash -z 0x0 firmware.bin
+
+PC 연동 AI (MediaPipe 연동 — Mu 에디터 전용)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+    **Mu 에디터 전용 시리얼 프로토콜**: ``vision.start_stream_to_pc()``\ 는 USB 시리얼을 통해 Mu 에디터 내장 카메라/MediaPipe 뷰어와 직접 통신하는 기능입니다. VS Code, Thonny 등 타 에디터에서 사용하려면 아래의 **무선 Wi-Fi 스트리밍(``vision.start_wifi_stream()``)** 방식을 사용하세요.
+
+ESP32 카메라 영상을 PC(Mu 에디터)로 전송하고, PC의 MediaPipe 라이브러리를 사용해 손가락 관절 등을 실시간으로 분석합니다. 분석된 좌표는 다시 ESP32에 전송되어 제어에 사용됩니다.
 
 .. code-block:: python
 
@@ -530,16 +539,16 @@ ESP32 카메라 영상을 PC(에디터)로 전송하고, PC의 MediaPipe 라이�
       - Wi-Fi 영상 스트림을 받아 PC의 고성능 CPU/GPU로 YOLOv8 실시간 객체 추론
       - 사람/장애물 감지 시 즉시 'STOP', 전방 안전 시 'GO' 주행 명령 전송
 
-**Mu 에디터 단계별 실습 가이드**:
+**단계별 실습 가이드 (Mu 에디터 / 일반 Python 에디터 공통)**:
 
 1. **PC YOLO 환경 준비**:
-   PC에서 YOLO 추론을 실행하기 위해 필요한 패키지를 설치합니다:
+   PC에서 YOLO 추론을 실행하기 위해 필요한 패키지를 준비합니다:
 
-   * **방법 A (Mu 에디터 설정)**: Mu 우측 하단의 **설정 (톱니바퀴 아이콘) → [Third-party Packages (서드파티 패키지)]** 탭에서 ``ultralytics`` 입력 후 [OK] 버튼을 클릭합니다.
-   * **방법 B (터미널)**: CMD 또는 PowerShell에서 ``pip install ultralytics opencv-python requests`` 명령을 실행합니다.
+   * **방법 A (Mu 에디터 환경)**: Mu 에디터에는 ``opencv-python``과 ``requests`` 패키지가 이미 기본 내장되어 있으므로, 우측 하단의 **설정 (톱니바퀴 아이콘) → [Third-party Packages (서드파티 패키지)]** 탭에서 ``ultralytics``\ 만 입력 후 [OK] 버튼을 누르면 즉시 사용할 수 있습니다.
+   * **방법 B (VS Code 등 외부 에디터 환경)**: Mu가 아닌 일반 Python 환경을 사용할 경우, CMD 또는 PowerShell에서 ``pip install ultralytics opencv-python requests`` 명령을 실행하여 필요한 패키지를 모두 설치합니다.
 
-2. **1단계: ESP32 로봇 자동차 코드 업로드 (Mu [ESP32 모드])**:
-   Mu 에디터 상단 모드를 **ESP32 모드**\ 로 설정하고 아래 코드를 작성한 후, 파일 이름을 ``main.py`` 파일로 지정하여 ESP32 보드에 저장합니다.
+2. **1단계: ESP32 로봇 자동차 코드 업로드 (Mu [ESP32 모드] 또는 Thonny / ``mpremote``)**:
+   아래 코드를 ``main.py`` 파일로 저장하여 ESP32 보드에 업로드합니다 (Mu 에디터에서는 **ESP32 모드** 사용, CLI에서는 ``mpremote cp main.py :main.py``).
    (``main.py`` 파일로 저장해 두면 PC와 USB 케이블을 분리하고 배터리만 연결해도 전원이 켜지는 즉시 스스로 Wi-Fi에 접속하여 무선 스트리밍을 시작합니다. 실행 시 터미널에 표시되는 ESP32의 IP 주소(예: ``http://192.168.0.50:8080/``)를 확인합니다.)
 
    .. code-block:: python
@@ -567,10 +576,9 @@ ESP32 카메라 영상을 PC(에디터)로 전송하고, PC의 MediaPipe 라이�
                    car.stop()       # 사람/장애물 감지 시 정지
            sleep(0.05)
 
-3. **2단계: PC AI 자율주행 컨트롤러 실행 (Mu [Python 3 모드])**:
-   Mu 에디터 좌측 상단의 **[모드(Mode)]** 버튼을 클릭하여 **Python 3 모드**\ 로 변경합니다.
-   새 탭에 아래 스크립트를 작성하고, 앞서 확인한 ESP32의 IP 주소를 ``STREAM_URL`` 및 ``CMD_URL`` 변수에 입력한 뒤 **[실행(Play)]** 버튼을 누릅니다.
-   PC 화면에 실시간 감지 결과가 표시되는 비디오 창이 열리며 로봇 자동차가 자율주행을 시작합니다.
+3. **2단계: PC AI 자율주행 컨트롤러 실행 (Mu [Python 3 모드] 또는 일반 Python)**:
+   Mu 에디터에서는 좌측 상단의 **[모드(Mode)]**\ 를 **Python 3 모드**\ 로 변경해 실행하고, VS Code나 터미널에서는 일반 ``.py`` 파일로 저장 후 ``python yolo_drive.py``\ 로 실행합니다.
+   앞서 확인한 ESP32의 IP 주소를 ``STREAM_URL`` 및 ``CMD_URL`` 변수에 입력한 뒤 실행하면, PC 화면에 실시간 감지 결과가 표시되는 비디오 창이 열리며 로봇 자동차가 자율주행을 시작합니다.
 
    .. code-block:: python
 
@@ -666,4 +674,98 @@ ESP32 내부에 다운로드한 ``.tflite`` 모델 파일을 읽어와 직접 AI
             result = model.detect(img)
             print("인식된 클래스 ID:", result.class_id)
         sleep(0.5)
+
+
+AI 음성 (AI Voice)
+------------------
+
+ESP32 보드에 별도의 I2S 디지털 마이크 부품을 달지 않고도, **PC나 노트북의 고성능 내장 마이크**\ 를 통해 음성을 인식하고 Wi-Fi 무선 통신으로 ESP32 자동차와 로봇을 조작할 수 있습니다.
+
+PC 음성 인식 기반 스마트카 무선 조작
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+이 방식은 하드웨어 배선이 가장 단순하며 소음이 많은 교실이나 야외에서도 높은 음성 인식률을 보장합니다.
+
+**동작 원리 및 역할 분담**:
+
+.. code-block:: text
+
+    [ 사용자 ]
+      🗣️ "앞으로!" / "멈춰!" / "돌아봐!"
+      │
+      ▼ (PC/노트북 내장 마이크로 수음)
+    [ PC의 Mu 에디터 - Python 3 모드 ] (귀와 두뇌 역할)
+      - PC 마이크로 음성을 듣고 내장된 SpeechRecognition으로 한국어/영어 분석
+      - 분석된 명령어를 Wi-Fi HTTP 요청으로 전송:
+        requests.get("http://<ESP32_IP>:8080/ai?action=GO")
+      ▲
+      │  (Wi-Fi 무선 네트워크: 텍스트 명령 전송)
+      ▼
+    [ ESP32 로봇 자동차 ] (몸 역할, 마이크/OLED 불필요!)
+      - Wi-Fi로 수신된 action("GO") 명령 즉시 처리
+      - 2륜 모터 구동 및 LED 상태 표시
+
+**단계별 실습 가이드 (Mu 에디터 / 일반 Python 에디터 공통)**:
+
+1. **PC 음성 인식 환경 준비**:
+   * **방법 A (Mu 에디터 환경)**: Mu 에디터에는 ``SpeechRecognition``과 ``requests`` 패키지가 이미 기본 내장되어 있으므로 **별도 패키지 설치 없이 곧바로 실행**할 수 있습니다.
+   * **방법 B (VS Code 등 외부 에디터 환경)**: Mu가 아닌 일반 Python 환경을 사용할 경우, CMD 또는 PowerShell에서 ``pip install SpeechRecognition requests PyAudio`` 명령을 실행하여 마이크 수음 및 통신 패키지를 설치합니다.
+
+2. **1단계: ESP32 로봇 자동차 코드 업로드 (Mu [ESP32 모드] 또는 Thonny / ``mpremote``)**:
+   아래 코드를 작성하여 ESP32 보드에 업로드합니다. 보드가 Wi-Fi에 접속되면 터미널에 표시되는 IP 주소(예: ``http://192.168.0.50:8080/``)를 확인합니다.
+
+   .. literalinclude:: examples/voice_control_car.py
+
+3. **2단계: PC 음성 인식 컨트롤러 실행 (Mu [Python 3 모드] 또는 일반 Python)**:
+   Mu 에디터에서는 **[모드(Mode)]**\ 를 **Python 3 모드**\ 로 변경해 실행하고, VS Code나 터미널에서는 ``python voice_controller.py``\ 로 실행합니다. 앞서 확인한 ESP32의 IP 주소를 ``ESP_IP``\ 에 입력한 뒤 실행하면, PC 마이크가 켜지고 음성 명령 대기 상태가 됩니다.
+
+   .. code-block:: python
+
+       import requests
+       import speech_recognition as sr
+
+       ESP_IP = "192.168.0.50"  # ESP32 보드의 IP 주소
+       CMD_URL = f"http://{ESP_IP}:8080/ai"
+
+       recognizer = sr.Recognizer()
+       mic = sr.Microphone()  # PC/노트북 내장 마이크 사용
+
+       print("=== PC 음성 인식 스마트카 컨트롤러 ===")
+       print("명령어 예시: '출발', '뒤로', '왼쪽', '오른쪽', '멈춰', '춤춰'")
+
+       with mic as source:
+           recognizer.adjust_for_ambient_noise(source)
+
+       while True:
+           print("\n[말씀하세요...]")
+           with mic as source:
+               audio = recognizer.listen(source)
+
+           try:
+               text = recognizer.recognize_google(audio, language="ko-KR")
+               print("인식된 음성:", text)
+
+               action = None
+
+               if "출발" in text or "앞으로" in text or "가자" in text:
+                   action = "GO"
+               elif "뒤로" in text or "후진" in text:
+                   action = "BACK"
+               elif "왼쪽" in text:
+                   action = "LEFT"
+               elif "오른쪽" in text:
+                   action = "RIGHT"
+               elif "멈춰" in text or "정지" in text:
+                   action = "STOP"
+               elif "춤" in text:
+                   action = "DANCE"
+
+               if action:
+                   requests.get(CMD_URL, params={"action": action}, timeout=0.5)
+
+           except sr.UnknownValueError:
+               pass
+           except Exception as e:
+               print("전송 오류:", e)
+
 

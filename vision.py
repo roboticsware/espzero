@@ -325,6 +325,7 @@ def _wifi_server_loop(streamer, port, delay, is_modern):
                         ai_dict = getattr(__main__, "__pc_ai_data", {})
                         if not isinstance(ai_dict, dict):
                             ai_dict = {}
+                        ai_dict.update(p_dict)
                         ai_dict["hand_x"] = hx
                         ai_dict["hand_y"] = hy
                         ai_dict["hand_detected"] = det

@@ -467,14 +467,23 @@ Examples for using the ESP32-S3 camera with PC-assisted AI and standalone on-dev
     To use vision features, ensure your board (e.g. ESP32-S3 WROOM CAM) is flashed with a **Camera-enabled MicroPython firmware**.
 
 .. note::
-    **Direct 1-Click Firmware Flashing in Mu Editor**:
-    You do not need external tools (like esptool) to flash your board. Mu Editor has a built-in firmware flasher:
-    Click **Settings (gear icon)** at the bottom-right → **[ESP Firmware flasher]** tab (or **[ESP Online Flasher]** tab), select your device type (ESP32-S3), pick your camera-enabled firmware (``.bin`` file), and click **[Erase & write firmware]** to flash directly.
+    **Firmware Flashing Options (Mu Editor / External Tools)**:
 
-PC-Side AI (with MediaPipe)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    * **Option A (Mu Editor Built-in Flasher)**: Click **Settings (gear icon)** at bottom-right → **[ESP Firmware flasher]** tab (or **[ESP Online Flasher]** tab), select your board (ESP32-S3), choose your camera-enabled firmware (``.bin``), and click **[Erase & write firmware]**.
+    * **Option B (Terminal / ``esptool``)**: If using VS Code, Thonny, or another editor, install ``pip install esptool`` and flash via CLI:
 
-Streams camera images to the PC (Pico Editor), which uses Google's MediaPipe library to track hands, faces, etc., in real time. The detected coordinates are sent back to the ESP32 for hardware control.
+      .. code-block:: bash
+
+          esptool --chip esp32s3 --port COMx erase_flash
+          esptool --chip esp32s3 --port COMx --baud 460800 write_flash -z 0x0 firmware.bin
+
+PC-Side AI (with MediaPipe — Mu Editor Only)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+    **Mu Editor Serial Protocol Only**: ``vision.start_stream_to_pc()`` streams JPEG frames over USB serial directly to Mu Editor's built-in Camera/MediaPipe viewer. If you are using VS Code, Thonny, or another IDE, use the **Wi-Fi Video Streaming (``vision.start_wifi_stream()``)** workflow below instead.
+
+Streams camera images to the PC (Mu Editor), which uses Google's MediaPipe library to track hands, faces, etc., in real time. The detected coordinates are sent back to the ESP32 for hardware control.
 
 .. code-block:: python
 
@@ -514,16 +523,16 @@ However, by dividing responsibilities between the ESP32 and a PC over **Wi-Fi**,
       - Receives Wi-Fi video stream and runs YOLOv8 in real time on PC CPU/GPU
       - Detects obstacles/pedestrians and sends 'STOP' or 'GO' commands wirelessly
 
-**Step-by-Step Practical Guide with Mu Editor**:
+**Step-by-Step Practical Guide (Mu Editor / Standard Python IDEs)**:
 
 1. **PC YOLO Environment Setup**:
-   Install the required packages to run YOLO inference on your PC:
+   Prepare the required packages to run YOLO inference on your PC:
 
-   * **Option A (In Mu Editor)**: Click the **Settings (gear icon)** at bottom-right → **[Third-party Packages]** tab, enter ``ultralytics``, and click [OK].
-   * **Option B (In Terminal)**: Open CMD or PowerShell and run ``pip install ultralytics opencv-python requests``.
+   * **Option A (In Mu Editor)**: Mu Editor already has ``opencv-python`` and ``requests`` built-in. Simply click the **Settings (gear icon)** at bottom-right → **[Third-party Packages]** tab, enter ``ultralytics``, and click [OK].
+   * **Option B (External Editors like VS Code)**: If running outside Mu, install all necessary packages via CMD or PowerShell: ``pip install ultralytics opencv-python requests``.
 
-2. **Step 1: Upload ESP32 Robot Car Code (Mu [ESP32 Mode])**:
-   Switch Mu Editor to **ESP32 mode** and save the code below as ``main.py`` on the board.
+2. **Step 1: Upload ESP32 Robot Car Code (Mu [ESP32 Mode] or Thonny / ``mpremote``)**:
+   Save the code below as ``main.py`` on the ESP32 board (use **ESP32 mode** in Mu, or ``mpremote cp main.py :main.py`` from CLI).
    (Saving as ``main.py`` allows you to unplug the USB cable and power the car with batteries; it will automatically connect to Wi-Fi and start streaming on boot. Check the ESP32 IP address printed in the REPL, e.g., ``192.168.0.50``.)
 
    .. code-block:: python
@@ -551,9 +560,8 @@ However, by dividing responsibilities between the ESP32 and a PC over **Wi-Fi**,
                    car.stop()       # Stop if pedestrian or obstacle detected
            sleep(0.05)
 
-3. **Step 2: Run PC AI Autonomous Driving Controller (Mu [Python 3 Mode])**:
-   Switch Mu Editor mode to **Python 3 mode** via the **[Mode]** button at top-left.
-   Paste the script below into a new tab, replace the ESP32 IP address in ``STREAM_URL`` and ``CMD_URL``, and click **[Play]**.
+3. **Step 2: Run PC AI Autonomous Driving Controller (Mu [Python 3 Mode] or Standard Python)**:
+   Run the script below in Mu Editor's **Python 3 mode**, or save it as ``yolo_drive.py`` and run ``python yolo_drive.py`` in VS Code / terminal after updating ``STREAM_URL`` and ``CMD_URL`` with your ESP32 IP address.
    A live video window showing real-time detection boxes will appear on your PC, autonomously piloting the robot car!
 
    .. code-block:: python
@@ -650,4 +658,97 @@ Loads a ``.tflite`` model file directly from the ESP32's file system to perform 
             result = model.detect(img)
             print("Detected class ID:", result.class_id)
         sleep(0.5)
+
+
+AI Voice
+--------
+
+Control ESP32 cars and robots with your voice **without adding a physical microphone** to the ESP32 board, by leveraging your PC/laptop's high-quality built-in microphone over Wi-Fi.
+
+Voice-Controlled Smart Car via PC Microphone
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This approach requires minimal hardware wiring and ensures high speech recognition accuracy even in noisy classrooms.
+
+**How it Works**:
+
+.. code-block:: text
+
+    [ User ]
+      🗣️ "Go forward!" / "Stop!" / "Spin around!"
+      │
+      ▼ (Captured by PC / Laptop Microphone)
+    [ Mu Editor on PC - Python 3 Mode ] (Ears & Brain)
+      - Listens via PC mic and transcribes speech using built-in SpeechRecognition
+      - Sends movement commands over Wi-Fi HTTP:
+        requests.get("http://<ESP32_IP>:8080/ai?action=GO")
+      ▲
+      │  (Wi-Fi Network: Text Command Transmission)
+      ▼
+    [ ESP32 Robot Car ] (Body, No Mic/OLED Needed!)
+      - Executes received action ("GO") commands immediately
+      - Steers 2WD motors and indicates status via onboard LED
+
+**Step-by-Step Guide (Mu Editor / Standard Python IDEs)**:
+
+1. **PC Speech Recognition Environment Setup**:
+   * **Option A (In Mu Editor)**: Mu Editor already has ``SpeechRecognition`` and ``requests`` built-in, so you can **run the script directly without installing anything**.
+   * **Option B (External Editors like VS Code)**: If running in a generic Python environment, install the packages via CMD or PowerShell: ``pip install SpeechRecognition requests PyAudio``.
+
+2. **Step 1: Upload ESP32 Robot Car Script (Mu [ESP32 Mode] or Thonny / ``mpremote``)**:
+
+   .. literalinclude:: ../examples/voice_control_car.py
+
+3. **Step 2: Run the PC Voice Controller (Mu [Python 3 Mode] or Standard Python)**:
+   Run the script below in Mu Editor's **Python 3 Mode** (or via ``python voice_controller.py`` in VS Code / terminal) after replacing ``ESP_IP`` with your ESP32's IP address:
+
+   .. code-block:: python
+
+       import requests
+       import speech_recognition as sr
+
+       ESP_IP = "192.168.0.50"  # Replace with your ESP32 IP
+       CMD_URL = f"http://{ESP_IP}:8080/ai"
+
+       recognizer = sr.Recognizer()
+       mic = sr.Microphone()  # Built-in PC microphone
+
+       print("=== Voice-Controlled Car PC Controller ===")
+       print("Commands: 'forward', 'backward', 'left', 'right', 'stop', 'dance'")
+
+       with mic as source:
+           recognizer.adjust_for_ambient_noise(source)
+
+       while True:
+           print("\n[Listening...]")
+           with mic as source:
+               audio = recognizer.listen(source)
+
+           try:
+               text = recognizer.recognize_google(audio, language="en-US").lower()
+               print("Heard:", text)
+
+               action = None
+
+               if "forward" in text or "go" in text:
+                   action = "GO"
+               elif "back" in text or "reverse" in text:
+                   action = "BACK"
+               elif "left" in text:
+                   action = "LEFT"
+               elif "right" in text:
+                   action = "RIGHT"
+               elif "stop" in text:
+                   action = "STOP"
+               elif "dance" in text:
+                   action = "DANCE"
+
+               if action:
+                   requests.get(CMD_URL, params={"action": action}, timeout=0.5)
+
+           except sr.UnknownValueError:
+               pass
+           except Exception as e:
+               print("Network error:", e)
+
 

@@ -78,7 +78,7 @@ espzero.begin("esp32_devkit_v1")   # or "esp32_38pin_nodemcu", "esp32_s3_devkit"
 ### 4. Components & Features
 
 ```python
-from espzero import LED, Button, Servo, WiFi, CapTouch
+from espzero import LED, Button, Servo, WiFi, CapTouch, OLED
 
 led = LED(2)                       # or LED("internal")
 btn = Button(0)                    # GPIO 0 (BOOT button)
@@ -93,6 +93,10 @@ print("IP:", ip)
 touch = CapTouch(pin=4)            # GPIO 4 = T0
 if touch.is_touched:
     esp_led.on()
+
+# I2C OLED Display with built-in robot expressions (SSD1306 / SH1106)
+oled = OLED(scl=47, sda=21)
+oled.show_face("happy")            # 10 emotion presets + look_at(x, y)
 ```
 
 ---
@@ -102,10 +106,11 @@ if touch.is_touched:
 ```
 espzero/
 ├── __init__.py          # Public API entry point + begin()
-├── _hal.py              # Hardware Abstraction Layer (HAL)
-├── _core.py             # Ported picozero core logic
+├── _hal.py              # Hardware Abstraction Layer (HAL + CPython mock)
+├── _core.py             # Ported picozero core logic + OLED/LCD/Stepper
 ├── _wifi.py             # ESP32-specific: WiFi class
 ├── _touch.py            # ESP32-specific: capacitive touch class
+├── vision.py            # Camera MJPEG Wi-Fi/serial streaming & AI bridge
 └── profiles/
     ├── _base.py         # Abstract BoardProfile base class
     ├── auto.py          # Runtime board auto-detection
@@ -398,11 +403,11 @@ Phase 2 — ESP32-specific features (complete)
   [x] _touch.py                 — CapTouch class
   [x] Additional board profiles — S3, C3, M5Stack, Wemos
 
-Phase 3 — Mu Editor integration (complete)
-  [x] mu/resources/esp32/       — Library bundled with Mu Editor
-  [x] mu/logic.py               — esp32_lib auto-provisioned to mu_code/
-  [x] mu/interface/editor.py    — Jedi search path includes esp32_lib
-                                  (dynamic autocomplete via source analysis)
+Phase 3 — Displays, Vision & IDE Support (complete)
+  [x] OLED (SSD1306 / SH1106)   — Text, shapes, robot face expressions & gaze tracking
+  [x] vision.py                 — Wi-Fi MJPEG camera streaming & AI feedback endpoint (/ai)
+  [x] CPython HAL mock (_hal.py)— Editor-agnostic autocomplete & headless testing
+                                  (VS Code, PyCharm, Thonny, mpremote, Mu Editor)
 ```
 
 ---
@@ -416,11 +421,11 @@ Phase 3 — Mu Editor integration (complete)
 | 3 | **Strapping pin warning** | `make_digital_in()` checks `STRAPPING_PINS` and prints a warning |
 | 4 | **NeoPixel built-in LED** | `INTERNAL_LED_TYPE = "neopixel"` profile field selects `NeoPixelLED` wrapper automatically |
 | 5 | **Lazy profile loading** | `_PROFILE_MAP` dict + `importlib` — only the selected board's module is imported |
-| 6 | **Autocomplete** | Jedi analyses live source in `mu/resources/esp32/` — no separate static API file needed |
+| 6 | **Editor-agnostic IDE support** | Pure-Python source with CPython HAL mocks enables autocomplete & testing in any IDE (VS Code, PyCharm, Thonny, Mu) |
 
 ---
 
 ## License
 
 MIT License — contributions welcome.  
-This library is part of the [Mu Editor](https://github.com/roboticsware/mu) project for educational IoT programming.
+Full documentation & tutorials: [espzero.readthedocs.io](https://espzero.readthedocs.io/)
