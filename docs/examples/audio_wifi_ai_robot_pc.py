@@ -14,15 +14,15 @@ with requests.get(f"http://{ESP_IP}:8081/", stream=True) as resp:
         if not pcm:
             break
         try:
-            text = r.recognize_google(sr.AudioData(pcm, 16000, 2), language="ko-KR").lower()
+            text = r.recognize_google(sr.AudioData(pcm, 16000, 2), language="en-US").lower()
             print("Voice:", text)
 
             action = None
-            if any(w in text for w in ("출발", "앞으로", "go", "forward")):
+            if any(w in text for w in ("go", "forward")):
                 action = "GO"
-            elif any(w in text for w in ("멈춰", "정지", "stop")):
+            elif "stop" in text:
                 action = "STOP"
-            elif any(w in text for w in ("춤", "dance")):
+            elif "dance" in text:
                 action = "DANCE"
 
             if action:

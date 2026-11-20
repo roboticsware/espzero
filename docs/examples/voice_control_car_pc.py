@@ -15,21 +15,21 @@ while True:
     with mic as source:
         audio = r.listen(source)
     try:
-        text = r.recognize_google(audio, language="ko-KR").lower()
+        text = r.recognize_google(audio, language="en-US").lower()
         print("Voice:", text)
 
         action = None
-        if any(w in text for w in ("출발", "앞으로", "forward", "go")):
+        if any(w in text for w in ("forward", "go")):
             action = "GO"
-        elif any(w in text for w in ("뒤로", "후진", "back")):
+        elif any(w in text for w in ("back", "reverse")):
             action = "BACK"
-        elif any(w in text for w in ("왼쪽", "left")):
+        elif "left" in text:
             action = "LEFT"
-        elif any(w in text for w in ("오른쪽", "right")):
+        elif "right" in text:
             action = "RIGHT"
-        elif any(w in text for w in ("멈춰", "정지", "stop")):
+        elif "stop" in text:
             action = "STOP"
-        elif any(w in text for w in ("춤", "dance")):
+        elif "dance" in text:
             action = "DANCE"
 
         if action:

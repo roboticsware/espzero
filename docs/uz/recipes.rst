@@ -483,7 +483,7 @@ Faqat GPIO pinlari yordamida LiquidCrystal displeylarida (LCD) belgilarni chop e
 .. literalinclude:: examples/lcd.py
 
 
-AI Vision (AI vizualizatsiyasi)
+AI vizualizatsiyasi (AI vision)
 -------------------------------
 
 ESP32-S3 kamerasi yordamida kompyuter ko'magidagi AI va mustaqil ishlaydigan qurilmadagi AI misollari.
@@ -695,7 +695,7 @@ Mahalliy AI xulosalarini chiqarish uchun bevosita ESP32 fayl tizimidan ``.tflite
         sleep(0.5)
 
 
-AI Ovoz (AI Voice)
+AI ovoz (AI voice)
 ------------------
 
 ESP32 platasiga alohida I2S mikrofon qo'shmasdan ham, **kompyuter yoki noutbukning yuqori sifatli ichki mikrofonidan** foydalanib Wi-Fi orqali ESP32 avtomobil va robotini ovoz bilan boshqarish mumkin.

@@ -16,12 +16,12 @@ def listen_audio():
             if not pcm:
                 break
             try:
-                text = r.recognize_google(sr.AudioData(pcm, 16000, 2), language="ko-KR").lower()
-                if any(w in text for w in ("웃어", "smile")):
+                text = r.recognize_google(sr.AudioData(pcm, 16000, 2), language="en-US").lower()
+                if "smile" in text or "happy" in text:
                     requests.get(f"http://{ESP_IP}:8081/ai?action=HAPPY", timeout=0.5)
-                elif any(w in text for w in ("놀라", "surprise")):
+                elif "surprise" in text:
                     requests.get(f"http://{ESP_IP}:8081/ai?action=SURPRISED", timeout=0.5)
-                elif any(w in text for w in ("사랑", "love")):
+                elif "love" in text:
                     requests.get(f"http://{ESP_IP}:8081/ai?action=LOVE", timeout=0.5)
             except sr.UnknownValueError:
                 pass
