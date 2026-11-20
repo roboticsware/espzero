@@ -186,7 +186,7 @@ Real vaqtda OLED audio spektr analizatori (FFT Spectrum)
 
 ``mic.spectrum(bins=16)`` orqali 16 diapazonli chastota energiyasini ajratib olib, OLED displeyida real vaqtda ekvalayzer ustunlarini (``oled.show_spectrum()``) chizish va ritmga moslab RGB LEDni miltillatish mumkin.
 
-.. literalinclude:: ../examples/audio_spectrum_oled.py
+.. literalinclude:: examples/audio_spectrum_oled.py
       :start-at: from espzero import
 
 Kirish qurilmalari (Input Devices)
@@ -476,11 +476,11 @@ I2C shinasidan va PCF8574 I2C adapteridan foydalanib LiquidCrystal displeylarida
     :alt: ESP32-S3 I2C LCD va mantiqiy daraja o'zgartirgich sxemasi
     :align: center
 
-.. literalinclude:: ../examples/i2c_lcd.py
+.. literalinclude:: examples/i2c_lcd.py
 
 Faqat GPIO pinlari yordamida LiquidCrystal displeylarida (LCD) belgilarni chop etish.
 
-.. literalinclude:: ../examples/lcd.py
+.. literalinclude:: examples/lcd.py
 
 
 AI Vision (AI vizualizatsiyasi)
@@ -741,12 +741,12 @@ Bu usul simlarni ulashni minimal darajaga tushiradi va shovqinli xonalarda ham a
 
 2. **1-qadam: ESP32 Robot Avtomobili kodini yuklash (Mu [ESP32 Rejimi] yoki Thonny / mpremote)**:
 
-   .. literalinclude:: ../examples/voice_control_car_esp32.py
+   .. literalinclude:: examples/voice_control_car_esp32.py
       :start-at: from espzero import
 
 3. **2-qadam: Kompyuter Ovozli Boshqaruv skriptini ishga tushirish (Mu [Python 3 Rejimi] yoki standart Python)**:
 
-   .. literalinclude:: ../examples/voice_control_car_pc.py
+   .. literalinclude:: examples/voice_control_car_pc.py
       :start-at: import requests
 
 Simsiz Wi-Fi audio uzatish va ovozli robot boshqaruvi
@@ -771,13 +771,13 @@ Kompyuterda (Python 3 rejimida) Whisper, SpeechRecognition yoki Edge Impulse mod
 
 1. **ESP32-S3 Ovozli AI robot kodini yuklash (Mu [ESP32 Rejimi])**:
 
-   .. literalinclude:: ../examples/audio_wifi_ai_robot_esp32.py
+   .. literalinclude:: examples/audio_wifi_ai_robot_esp32.py
       :start-at: from espzero import
 
 2. **Kompyuter Ovoz Boshqaruvchisini ishga tushirish (Mu [Python 3 Rejimi])**:
    ESP32 audio strimiga ulanib, real vaqtda ovozli buyruqlarni taniydi va robotga yo'naltiradi:
 
-   .. literalinclude:: ../examples/audio_wifi_ai_robot_pc.py
+   .. literalinclude:: examples/audio_wifi_ai_robot_pc.py
       :start-at: import io
 
 Qurilmaning o'zida mustaqil TinyML ovoz tasnifi (Edge Impulse & MFCC)
@@ -838,14 +838,14 @@ Ichki RGB LED, servo motor (qulf mexanizmi) va zummerni birlashtirib, ruxsat ber
     :alt: ESP32-S3 Aqlli eshik qulfi ulanish sxemasi
     :align: center
 
-.. literalinclude:: ../examples/smart_doorlock.py
+.. literalinclude:: examples/smart_doorlock.py
 
 Potentiometr bilan robot nigohini boshqarish (Potentiometer Gaze)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Potentiometr buragichini aylantirganda OLED robot ko'zlari chapga va o'ngga harakatlanadi, tugma bosilganda esa yurakcha (``"love"``) ifodasi paydo bo'ladi.
 
-.. literalinclude:: ../examples/oled_pot_gaze.py
+.. literalinclude:: examples/oled_pot_gaze.py
    :start-at: from espzero import
 
 Analog soat (Analog Clock)
@@ -853,14 +853,14 @@ Analog soat (Analog Clock)
 
 Stepper motor yordamida har 60 soniyada 1 marta to'liq aylanadigan analog soat soniya milini yarating.
 
-.. literalinclude:: ../examples/stepper_analog_clock.py
+.. literalinclude:: examples/stepper_analog_clock.py
 
 Avtomatik jalyuzilar (Automatic Blinds)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Stepper motor yordamida vaqtga asoslangan avtomatik jalyuzi boshqaruvchisi.
 
-.. literalinclude:: ../examples/stepper_automatic_blinds.py
+.. literalinclude:: examples/stepper_automatic_blinds.py
 
 Aqlli avtoturargoh ogohlantiruvchisi (Smart Parking Assist)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -871,7 +871,7 @@ Ultratovush sensori yordamida to'siqqacha masofani o'lchab, yaqinlashgan sari OL
     :alt: ESP32-S3 Aqlli avtoturargoh ogohlantiruvchisi sxemasi
     :align: center
 
-.. literalinclude:: ../examples/smart_parking_assist.py
+.. literalinclude:: examples/smart_parking_assist.py
    :start-at: from espzero import
 
 Qarsak bilan ochiladigan aqlli eshik (Clap Smart Door)
@@ -879,7 +879,7 @@ Qarsak bilan ochiladigan aqlli eshik (Clap Smart Door)
 
 I2S mikrofonining qarsakni aniqlash hodisasi (``when_clap``) yordamida Wi-Fi va kompyutersiz qarsak chalinganda servo eshikni ochib-yopuvchi va OLED yuzini o'zgartiruvchi tizim.
 
-.. literalinclude:: ../examples/clap_smart_door.py
+.. literalinclude:: examples/clap_smart_door.py
    :start-at: from espzero import
 
 To'siqlarni aylanib o'tuvchi avtonom robot (Obstacle-Avoiding Rover)
@@ -891,7 +891,7 @@ Old ultratovush sensori va 2WD robot shassisini birlashtirib, 20 sm masofada to'
     :alt: ESP32-S3 To'siqlarni aylanib o'tuvchi avtonom robot sxemasi
     :align: center
 
-.. literalinclude:: ../examples/obstacle_avoiding_rover.py
+.. literalinclude:: examples/obstacle_avoiding_rover.py
    :start-at: from espzero import
 
 Multimodal AI hamroh robot (Vision AI + Voice AI)
@@ -901,10 +901,10 @@ ESP32-S3 ning kamera videosi (``8080``-port) va I2S mikrofoni audiosini (``8081`
 
 1. **ESP32-S3 Multimodal robot kodini yuklash (Mu [ESP32 Rejimi])**:
 
-   .. literalinclude:: ../examples/multimodal_companion_robot_esp32.py
+   .. literalinclude:: examples/multimodal_companion_robot_esp32.py
       :start-at: from espzero import
 
 2. **Kompyuter Multimodal AI boshqaruvchisini ishga tushirish (Mu [Python 3 Rejimi])**:
 
-   .. literalinclude:: ../examples/multimodal_companion_robot_pc.py
+   .. literalinclude:: examples/multimodal_companion_robot_pc.py
       :start-at: import threading

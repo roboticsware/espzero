@@ -186,7 +186,7 @@ Real-Time OLED Audio Spectrum Visualizer (FFT Spectrum)
 
 Compute a 16-band frequency spectrum using ``mic.spectrum(bins=16)`` and render real-time equalizer bars on an OLED display (``oled.show_spectrum()``), while pulsing the RGB LED on strong bass beats.
 
-.. literalinclude:: ../examples/audio_spectrum_oled.py
+.. literalinclude:: examples/audio_spectrum_oled.py
       :start-at: from espzero import
 
 Input Devices
@@ -476,11 +476,11 @@ Print characters on LiquidCrystal displays (LCD) using the I2C bus and a PCF8574
     :alt: ESP32-S3 I2C LCD with Logic Level Shifter Circuit Wiring Diagram
     :align: center
 
-.. literalinclude:: ../examples/i2c_lcd.py
+.. literalinclude:: examples/i2c_lcd.py
 
 Print characters on LiquidCrystal displays (LCD) by using GPIO pins only.
 
-.. literalinclude:: ../examples/lcd.py
+.. literalinclude:: examples/lcd.py
 
 
 AI Vision
@@ -568,12 +568,12 @@ However, by dividing responsibilities between the ESP32 and a PC over **Wi-Fi**,
 
 2. **Step 1: Upload ESP32 Robot Car Code (Mu [ESP32 Mode] or Thonny / mpremote)**:
 
-   .. literalinclude:: ../examples/vision_yolo_car_esp32.py
+   .. literalinclude:: examples/vision_yolo_car_esp32.py
       :start-at: from espzero import
 
 3. **Step 2: Run PC AI Autonomous Driving Controller (Mu [Python 3 Mode] or Standard Python)**:
 
-   .. literalinclude:: ../examples/vision_yolo_car_pc.py
+   .. literalinclude:: examples/vision_yolo_car_pc.py
       :start-at: import cv2
 
 .. tip::
@@ -674,12 +674,12 @@ This approach requires minimal hardware wiring and ensures high speech recogniti
 
 2. **Step 1: Upload ESP32 Robot Car Script (Mu [ESP32 Mode] or Thonny / mpremote)**:
 
-   .. literalinclude:: ../examples/voice_control_car_esp32.py
+   .. literalinclude:: examples/voice_control_car_esp32.py
       :start-at: from espzero import
 
 3. **Step 2: Run the PC Voice Controller (Mu [Python 3 Mode] or Standard Python)**:
 
-   .. literalinclude:: ../examples/voice_control_car_pc.py
+   .. literalinclude:: examples/voice_control_car_pc.py
       :start-at: import requests
 
 Wireless Wi-Fi Audio Streaming & Voice Robot Control
@@ -704,13 +704,13 @@ On your PC (Python 3 mode), speech recognition libraries like Whisper, Google Sp
 
 1. **Upload ESP32-S3 Voice AI Robot Code (Mu [ESP32 Mode])**:
 
-   .. literalinclude:: ../examples/audio_wifi_ai_robot_esp32.py
+   .. literalinclude:: examples/audio_wifi_ai_robot_esp32.py
       :start-at: from espzero import
 
 2. **Run PC Voice Controller (Mu [Python 3 Mode])**:
    Connects to the ESP32 audio stream, transcribes voice commands in real time, and sends robot actions:
 
-   .. literalinclude:: ../examples/audio_wifi_ai_robot_pc.py
+   .. literalinclude:: examples/audio_wifi_ai_robot_pc.py
       :start-at: import io
 
 On-Device TinyML Sound Classification (Edge Impulse & MFCC)
@@ -771,14 +771,14 @@ Combine the onboard RGB LED, a servo motor (bolt lock), and a buzzer to build an
     :alt: ESP32-S3 Smart Doorlock Circuit Diagram
     :align: center
 
-.. literalinclude:: ../examples/smart_doorlock.py
+.. literalinclude:: examples/smart_doorlock.py
 
 Potentiometer Gaze Controller
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Turn a potentiometer dial to steer the OLED robot's eyes left and right in real time, and press the button to show a ``"love"`` expression.
 
-.. literalinclude:: ../examples/oled_pot_gaze.py
+.. literalinclude:: examples/oled_pot_gaze.py
    :start-at: from espzero import
 
 Analog Clock
@@ -786,14 +786,14 @@ Analog Clock
 
 Create a continuously-running analog clock second hand rotating 1 revolution every 60 seconds using a stepper motor.
 
-.. literalinclude:: ../examples/stepper_analog_clock.py
+.. literalinclude:: examples/stepper_analog_clock.py
 
 Automatic Blinds
 ~~~~~~~~~~~~~~~~
 
 Time-based window blind controller driven by a stepper motor.
 
-.. literalinclude:: ../examples/stepper_automatic_blinds.py
+.. literalinclude:: examples/stepper_automatic_blinds.py
 
 Smart Parking Assist
 ~~~~~~~~~~~~~~~~~~~~
@@ -804,7 +804,7 @@ Measures obstacle distance via an ultrasonic sensor and escalates OLED robot exp
     :alt: ESP32-S3 Smart Parking Assist Circuit Diagram
     :align: center
 
-.. literalinclude:: ../examples/smart_parking_assist.py
+.. literalinclude:: examples/smart_parking_assist.py
    :start-at: from espzero import
 
 Clap-Controlled Smart Door
@@ -812,7 +812,7 @@ Clap-Controlled Smart Door
 
 Uses the I2S microphone's ``when_clap`` event to toggle a servo-driven door and update the OLED robot face completely on-device with no Wi-Fi or PC required.
 
-.. literalinclude:: ../examples/clap_smart_door.py
+.. literalinclude:: examples/clap_smart_door.py
    :start-at: from espzero import
 
 Autonomous Obstacle-Avoiding Rover
@@ -824,7 +824,7 @@ Combines a front-mounted ultrasonic sensor with a 2WD robot chassis to automatic
     :alt: ESP32-S3 Autonomous Obstacle-Avoiding Rover Circuit Diagram
     :align: center
 
-.. literalinclude:: ../examples/obstacle_avoiding_rover.py
+.. literalinclude:: examples/obstacle_avoiding_rover.py
    :start-at: from espzero import
 
 Multimodal AI Companion Robot (Vision AI + Voice AI)
@@ -834,10 +834,10 @@ Streams live camera video (port ``8080``) and I2S microphone audio (port ``8081`
 
 1. **Upload ESP32-S3 Multimodal Robot Code (Mu [ESP32 Mode])**:
 
-   .. literalinclude:: ../examples/multimodal_companion_robot_esp32.py
+   .. literalinclude:: examples/multimodal_companion_robot_esp32.py
       :start-at: from espzero import
 
 2. **Run PC Multimodal AI Controller (Mu [Python 3 Mode])**:
 
-   .. literalinclude:: ../examples/multimodal_companion_robot_pc.py
+   .. literalinclude:: examples/multimodal_companion_robot_pc.py
       :start-at: import threading
