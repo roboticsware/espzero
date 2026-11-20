@@ -270,6 +270,20 @@ ESP32-S3 WROOM CAM 보드의 기본 핀(``SCK=41``, ``WS=42``, ``SD=2``)에 별�
     # 부드러운 왕복 스위핑 (0도 <-> 180도 연속 왕복)
     servo.pulse(fade_in_time=1, fade_out_time=1)
 
+온도 센서 (Temperature Sensor)
+----------------------------
+
+내장 온도 센서
+~~~~~~~~~~~~
+
+ESP32 칩 내부의 온도를 측정합니다. (주의: 외부 기온과는 차이가 있을 수 있습니다.)
+
+.. code-block:: python
+
+    from espzero import esp_temp_sensor
+
+    print("칩 내부 온도:", esp_temp_sensor.temp, "C")
+
 모터 및 로봇 (Motor & Robot)
 ---------------------------
 
@@ -385,56 +399,28 @@ ESP32 및 ESP32-S3 칩에 내장된 정전용량식 터치 센서를 사용합�
         print("거리: ", ds.distance, "cm")
         sleep(0.5)
 
-온도 센서 (Temperature Sensor)
-----------------------------
-
-내장 온도 센서
-~~~~~~~~~~~~
-
-ESP32 칩 내부의 온도를 측정합니다. (주의: 외부 기온과는 차이가 있을 수 있습니다.)
-
-.. code-block:: python
-
-    from espzero import esp_temp_sensor
-
-    print("칩 내부 온도:", esp_temp_sensor.temp, "C")
-
-복합 예제: 버튼으로 조명 제어
---------------------------
-
-버튼을 누를 때마다 LED가 토글되는 예제입니다.
-
-.. code-block:: python
-
-    from espzero import LED, Button, begin
-
-    begin()
-    led = LED(4)
-    btn = Button(5)
-
-    btn.when_pressed = led.toggle
-
-    while True:
-        pass # 이벤트 대기
-
 스텝 모터 (Stepper Motor)
-------------------------
+-------------------------
 
-드라이버 보드(예: ULN2003)를 통해 연결된 스텝 모터를 제어합니다.
+ULN2003 드라이버 보드와 28BYJ-48 스텝 모터를 연결하여 원하는 각도나 회전수만큼 정밀하게 제어합니다.
 
-아날로그 시계 (Analog clock)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. image:: /images/circuit_stepper.svg
+    :alt: ESP32-S3 ULN2003 28BYJ-48 스텝 모터 회로 연결도
+    :align: center
 
-연속으로 회전하는 아날로그 시계의 초침을 만듭니다:
+.. code-block:: python
 
-.. literalinclude:: examples/stepper_analog_clock.py
+    from espzero import Stepper
+    from time import sleep
 
-자동 블라인드 (Automatic blinds)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # 카메라 안전 핀 4개 연결 (IN1=42, IN2=41, IN3=47, IN4=21)
+    stepper = Stepper((42, 41, 47, 21))
+    stepper.set_speed(10)          # 10 RPM 속도 설정
 
-시간 기반 블라인드 컨트롤러:
-
-.. literalinclude:: examples/stepper_automatic_blinds.py
+    stepper.turn(90, "cw")         # 시계 방향으로 90도 회전
+    sleep(0.5)
+    stepper.rotate(1, "ccw")       # 반시계 방향으로 1바퀴(360도) 회전
+    stepper.off()                  # 코일 전원 차단 (발열 방지)
 
 디스플레이 (OLED & LCD Display)
 -------------------------------
@@ -778,3 +764,61 @@ PC와의 무선 통신 없이 ESP32-S3 기기 단독으로 키워드 인식(KWS)
     # 1초 분량 학습용 음향 샘플 플래시 저장
     mic.save_wav("cough_sample.wav", duration=1.0)
     print("WAV 오디오 샘플 저장 완료!")
+
+복합 예제 (Combined Examples)
+-----------------------------
+
+여러 센서와 액추에이터, 그리고 AI 기능을 결합하여 실생활에 활용할 수 있는 완성형 프로젝트 예제입니다.
+
+버튼으로 조명 제어 (Button-Controlled Light)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+버튼을 누를 때마다 LED가 토글되는 가장 기본적인 입출력 결합 예제입니다.
+
+.. code-block:: python
+
+    from espzero import LED, Button
+
+    led = LED(4)
+    btn = Button(5)
+
+    btn.when_pressed = led.toggle
+
+    while True:
+        pass # 이벤트 대기
+
+스마트 안심 도어락 (Smart Doorlock)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+내장 RGB LED, 서보 모터(잠금장치), 부저(경보/알림음)를 결합하여 출입 인증 성공 시 초록색 점등 및 알림음과 함께 문을 열고, 일정 시간 뒤 자동으로 잠그는 스마트 도어락 예제입니다.
+
+.. literalinclude:: examples/smart_doorlock.py
+
+아날로그 시계 (Analog Clock)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+스텝 모터를 60초에 1바퀴(2048 스텝) 속도로 정밀 구동하여 연속으로 회전하는 아날로그 시계의 초침을 만듭니다.
+
+.. literalinclude:: examples/stepper_analog_clock.py
+
+자동 블라인드 (Automatic Blinds)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+스텝 모터를 활용해 정해진 시간 간격에 맞춰 창문 블라인드를 자동으로 여닫는 컨트롤러입니다.
+
+.. literalinclude:: examples/stepper_automatic_blinds.py
+
+멀티모달 AI 반려 로봇 (Vision AI + Voice AI)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ESP32-S3의 카메라 영상(포트 ``8080``)과 I2S 디지털 마이크 음성(포트 ``8081``)을 동시에 PC로 무선 스트리밍하고, PC에서 시각(손/얼굴 시선 추적)과 음성(감정 명령어)을 병렬 분석해 OLED 로봇 표정(``look_at`` / ``show_face``)과 RGB LED로 반응하는 통합 AI 반려 로봇입니다.
+
+1. **ESP32-S3 멀티모달 로봇 코드 업로드 (Mu [ESP32 모드])**:
+
+   .. literalinclude:: examples/multimodal_companion_robot_esp32.py
+      :start-at: from espzero import
+
+2. **PC 멀티모달 AI 컨트롤러 실행 (Mu [Python 3 모드])**:
+
+   .. literalinclude:: examples/multimodal_companion_robot_pc.py
+      :start-at: import threading

@@ -254,6 +254,20 @@ Standart servo motorlarni nisbat (0.0 dan 1.0 gacha) yoki burchak (0 dan 180 gra
     # Ravon tebranish (0 <-> 180 gradus uzluksiz harakat)
     servo.pulse(fade_in_time=1, fade_out_time=1)
 
+Harorat sensori (Temperature Sensor)
+------------------------------------
+
+Ichki harorat
+~~~~~~~~~~~~~
+
+ESP32 chipining ichki haroratini o'lchang. (Eslatma: Atrof-muhit haroratidan farq qilishi mumkin).
+
+.. code-block:: python
+
+    from espzero import esp_temp_sensor
+
+    print("Chip ichki harorati:", esp_temp_sensor.temp, "C")
+
 Motorlar va Robotlar (Motor & Robot)
 ------------------------------------
 
@@ -369,56 +383,28 @@ Masofa sensori (Distance Sensor)
         print("Masofa: ", ds.distance, "cm")
         sleep(0.5)
 
-Harorat sensori (Temperature Sensor)
-------------------------------------
-
-Ichki harorat
-~~~~~~~~~~~~~
-
-ESP32 chipining ichki haroratini o'lchang. (Eslatma: Atrof-muhit haroratidan farq qilishi mumkin).
-
-.. code-block:: python
-
-    from espzero import esp_temp_sensor
-
-    print("Chip ichki harorati:", esp_temp_sensor.temp, "C")
-
-Murakkab misol: Tugma bilan chiroqni boshqarish
-----------------------------------------------
-
-Tugma bosilganda LED holatini o'zgartirish.
-
-.. code-block:: python
-
-    from espzero import LED, Button, begin
-
-    begin()
-    led = LED(4)
-    btn = Button(5)
-
-    btn.when_pressed = led.toggle
-
-    while True:
-        pass # Hodisalarni kutish
-
-Stepper motor (Stepper motor)
+Stepper motor (Stepper Motor)
 -----------------------------
 
-Drayver platasi (masalan, ULN2003) orqali ulangan stepper motorni boshqarish.
+ULN2003 drayver platasi va 28BYJ-48 stepper motorini ulab, aniq burchak yoki aylanishlar soni bo'yicha boshqaring.
 
-Analog soat (Analog clock)
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. image:: /images/circuit_stepper.svg
+    :alt: ESP32-S3 ULN2003 28BYJ-48 Stepper motor ulanish sxemasi
+    :align: center
 
-Uzluksiz ishlaydigan analog soat soniya mili yarating:
+.. code-block:: python
 
-.. literalinclude:: examples/stepper_analog_clock.py
+    from espzero import Stepper
+    from time import sleep
 
-Avtomatik jalyuzilar (Automatic blinds)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # 4 ta kamera uchun xavfsiz GPIO pinlari (IN1=42, IN2=41, IN3=47, IN4=21)
+    stepper = Stepper((42, 41, 47, 21))
+    stepper.set_speed(10)          # Aylanish tezligini 10 RPM ga sozlash
 
-Vaqtga asoslangan jalyuzi boshqaruvchisi:
-
-.. literalinclude:: examples/stepper_automatic_blinds.py
+    stepper.turn(90, "cw")         # Soat strelkasi bo'yicha 90 daraja burish
+    sleep(0.5)
+    stepper.rotate(1, "ccw")       # Soat strelkasiga qarshi 1 marta to'liq aylantirish
+    stepper.off()                  # Qizib ketmasligi uchun g'altaklarni o'chirish
 
 Displeylar (OLED & LCD)
 -----------------------
@@ -493,11 +479,11 @@ I2C shinasidan va PCF8574 I2C adapteridan foydalanib LiquidCrystal displeylarida
     :alt: ESP32-S3 I2C LCD va mantiqiy daraja o'zgartirgich sxemasi
     :align: center
 
-.. literalinclude:: examples/i2c_lcd.py
+.. literalinclude:: ../examples/i2c_lcd.py
 
 Faqat GPIO pinlari yordamida LiquidCrystal displeylarida (LCD) belgilarni chop etish.
 
-.. literalinclude:: examples/lcd.py
+.. literalinclude:: ../examples/lcd.py
 
 
 AI Vision (AI vizualizatsiyasi)
@@ -823,3 +809,61 @@ Kompyutersiz, to'g'ridan-to'g'ri ESP32-S3 ning o'zida kalit so'zlarni tanish (KW
     # 1.0 soniyalik audio namunani xotiraga yozib olish
     mic.save_wav("cough_sample.wav", duration=1.0)
     print("WAV audio namunasi xotiraga saqlandi!")
+
+Murakkab misollar (Combined Examples)
+-------------------------------------
+
+Bir nechta sensorlar, aktuatorlar va AI funksiyalarini birlashtirgan amaliy loyiha misollari.
+
+Tugma bilan chiroqni boshqarish (Button-Controlled Light)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Tugma bosilganda LED holatini o'zgartirish.
+
+.. code-block:: python
+
+    from espzero import LED, Button
+
+    led = LED(4)
+    btn = Button(5)
+
+    btn.when_pressed = led.toggle
+
+    while True:
+        pass # Hodisalarni kutish
+
+Aqlli xavfsiz eshik qulfi (Smart Doorlock)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Ichki RGB LED, servo motor (qulf mexanizmi) va zummerni birlashtirib, ruxsat berilganda yashil chiroq va signal bilan eshikni ochadigan hamda avtomatik yopadigan aqlli eshik qulfi misoli.
+
+.. literalinclude:: ../examples/smart_doorlock.py
+
+Analog soat (Analog Clock)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Stepper motor yordamida har 60 soniyada 1 marta to'liq aylanadigan analog soat soniya milini yarating.
+
+.. literalinclude:: ../examples/stepper_analog_clock.py
+
+Avtomatik jalyuzilar (Automatic Blinds)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Stepper motor yordamida vaqtga asoslangan avtomatik jalyuzi boshqaruvchisi.
+
+.. literalinclude:: ../examples/stepper_automatic_blinds.py
+
+Multimodal AI hamroh robot (Vision AI + Voice AI)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ESP32-S3 ning kamera videosi (``8080``-port) va I2S mikrofoni audiosini (``8081``-port) bir vaqtning o'zida kompyuterga simsiz uzatadi. Kompyuterda tasvir va ovoz parallel tahlil qilinib, OLED robot yuz ifodalari (``look_at`` / ``show_face``) va RGB LED simsiz boshqariladi.
+
+1. **ESP32-S3 Multimodal robot kodini yuklash (Mu [ESP32 Rejimi])**:
+
+   .. literalinclude:: ../examples/multimodal_companion_robot_esp32.py
+      :start-at: from espzero import
+
+2. **Kompyuter Multimodal AI boshqaruvchisini ishga tushirish (Mu [Python 3 Rejimi])**:
+
+   .. literalinclude:: ../examples/multimodal_companion_robot_pc.py
+      :start-at: import threading

@@ -254,6 +254,20 @@ Control standard servo motors via ratio (0.0 to 1.0) or angles (0 to 180 degrees
     # Smooth sweeping back and forth (0 deg <-> 180 deg)
     servo.pulse(fade_in_time=1, fade_out_time=1)
 
+Temperature Sensor
+------------------
+
+Internal Temperature
+~~~~~~~~~~~~~~~~~~~~
+
+Measure the internal temperature of the ESP32 chip. (Note: May differ from ambient temperature).
+
+.. code-block:: python
+
+    from espzero import esp_temp_sensor
+
+    print("Internal chip temp:", esp_temp_sensor.temp, "C")
+
 Motors & Robots (Motor & Robot)
 -------------------------------
 
@@ -369,56 +383,28 @@ Measure distance safely on ESP32-S3 using a 3.3V-compatible ultrasonic sensor su
         print("Distance: ", ds.distance, "cm")
         sleep(0.5)
 
-Temperature Sensor
-------------------
-
-Internal Temperature
-~~~~~~~~~~~~~~~~~~~~
-
-Measure the internal temperature of the ESP32 chip. (Note: May differ from ambient temperature).
-
-.. code-block:: python
-
-    from espzero import esp_temp_sensor
-
-    print("Internal chip temp:", esp_temp_sensor.temp, "C")
-
-Complex Example: Button-controlled Light
----------------------------------------
-
-Toggle an LED each time a button is pressed.
-
-.. code-block:: python
-
-    from espzero import LED, Button, begin
-
-    begin()
-    led = LED(4)
-    btn = Button(5)
-
-    btn.when_pressed = led.toggle
-
-    while True:
-        pass # Wait for events
-
 Stepper Motor
 -------------
 
-Control a stepper motor connected via a driver board (e.g. ULN2003).
+Control a 28BYJ-48 stepper motor precisely by angle or full revolutions via a ULN2003 driver board.
 
-Analog clock
-~~~~~~~~~~~~
+.. image:: /images/circuit_stepper.svg
+    :alt: ESP32-S3 ULN2003 28BYJ-48 Stepper Motor Circuit Diagram
+    :align: center
 
-Create a continuously-running analog clock second hand:
+.. code-block:: python
 
-.. literalinclude:: examples/stepper_analog_clock.py
+    from espzero import Stepper
+    from time import sleep
 
-Automatic blinds
-~~~~~~~~~~~~~~~~
+    # Connect 4 camera-safe GPIOs (IN1=42, IN2=41, IN3=47, IN4=21)
+    stepper = Stepper((42, 41, 47, 21))
+    stepper.set_speed(10)          # Set rotation speed to 10 RPM
 
-Time-based blind controller:
-
-.. literalinclude:: examples/stepper_automatic_blinds.py
+    stepper.turn(90, "cw")         # Turn 90 degrees clockwise
+    sleep(0.5)
+    stepper.rotate(1, "ccw")       # Rotate 1 full revolution counter-clockwise
+    stepper.off()                  # De-energize coils to prevent heating
 
 Displays (OLED & LCD)
 ---------------------
@@ -493,11 +479,11 @@ Print characters on LiquidCrystal displays (LCD) using the I2C bus and a PCF8574
     :alt: ESP32-S3 I2C LCD with Logic Level Shifter Circuit Wiring Diagram
     :align: center
 
-.. literalinclude:: examples/i2c_lcd.py
+.. literalinclude:: ../examples/i2c_lcd.py
 
 Print characters on LiquidCrystal displays (LCD) by using GPIO pins only.
 
-.. literalinclude:: examples/lcd.py
+.. literalinclude:: ../examples/lcd.py
 
 
 AI Vision
@@ -756,3 +742,61 @@ For standalone Keyword Spotting (KWS) or acoustic anomaly detection running enti
     # Record a 1.0-second sound sample to flash
     mic.save_wav("cough_sample.wav", duration=1.0)
     print("WAV audio sample saved to flash!")
+
+Combined Examples
+-----------------
+
+Complete mini-projects combining multiple sensors, actuators, and AI capabilities.
+
+Button-Controlled Light
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Toggle an LED each time a button is pressed.
+
+.. code-block:: python
+
+    from espzero import LED, Button
+
+    led = LED(4)
+    btn = Button(5)
+
+    btn.when_pressed = led.toggle
+
+    while True:
+        pass # Wait for events
+
+Smart Doorlock
+~~~~~~~~~~~~~~
+
+Combine the onboard RGB LED, a servo motor (bolt lock), and a buzzer to build an automated smart doorlock that flashes green with a double beep, unlocks the door, and re-locks it automatically.
+
+.. literalinclude:: ../examples/smart_doorlock.py
+
+Analog Clock
+~~~~~~~~~~~~
+
+Create a continuously-running analog clock second hand rotating 1 revolution every 60 seconds using a stepper motor.
+
+.. literalinclude:: ../examples/stepper_analog_clock.py
+
+Automatic Blinds
+~~~~~~~~~~~~~~~~
+
+Time-based window blind controller driven by a stepper motor.
+
+.. literalinclude:: ../examples/stepper_automatic_blinds.py
+
+Multimodal AI Companion Robot (Vision AI + Voice AI)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Streams live camera video (port ``8080``) and I2S microphone audio (port ``8081``) simultaneously from the ESP32-S3 to a PC. The PC runs visual tracking and speech recognition in parallel, driving expressive OLED robot faces (``look_at`` / ``show_face``) and RGB LED feedback wirelessly.
+
+1. **Upload ESP32-S3 Multimodal Robot Code (Mu [ESP32 Mode])**:
+
+   .. literalinclude:: ../examples/multimodal_companion_robot_esp32.py
+      :start-at: from espzero import
+
+2. **Run PC Multimodal AI Controller (Mu [Python 3 Mode])**:
+
+   .. literalinclude:: ../examples/multimodal_companion_robot_pc.py
+      :start-at: import threading
