@@ -187,6 +187,7 @@ Real-Time OLED Audio Spectrum Visualizer (FFT Spectrum)
 Compute a 16-band frequency spectrum using ``mic.spectrum(bins=16)`` and render real-time equalizer bars on an OLED display (``oled.show_spectrum()``), while pulsing the RGB LED on strong bass beats.
 
 .. literalinclude:: ../examples/audio_spectrum_oled.py
+      :start-at: from espzero import
 
 Input Devices
 -------------
@@ -583,81 +584,14 @@ However, by dividing responsibilities between the ESP32 and a PC over **Wi-Fi**,
          pip install ultralytics opencv-python requests
 
 2. **Step 1: Upload ESP32 Robot Car Code (Mu [ESP32 Mode] or Thonny / mpremote)**:
-   Save the code below as ``main.py`` on the ESP32 board (use **ESP32 mode** in Mu, or ``mpremote cp main.py :main.py`` from CLI).
-   (Saving as ``main.py`` allows you to unplug the USB cable and power the car with batteries; it will automatically connect to Wi-Fi and start streaming on boot. Check the ESP32 IP address printed in the REPL, e.g., ``192.168.0.50``.)
 
-   .. code-block:: python
-
-       from espzero import WiFi, vision, Robot
-       from time import sleep
-
-       # 1. Connect to Wi-Fi access point
-       wifi = WiFi()
-       wifi.connect("My_WiFi_SSID", "password")
-
-       # 2. Configure 2-wheel robot motors using camera-safe pins (Left: GPIO 41, 42 / Right: GPIO 47, 21)
-       car = Robot(left=(41, 42), right=(47, 21))
-
-       # 3. Start wireless camera stream (default port: 8080)
-       vision.start_wifi_stream(port=8080)
-
-       # 4. Driving loop reading AI decisions from PC
-       while True:
-           if "__pc_ai_data" in globals():
-               action = __pc_ai_data.get("action", "STOP")
-               if action == "GO":
-                   car.forward(0.6) # Move forward when clear
-               else:
-                   car.stop()       # Stop if pedestrian or obstacle detected
-           sleep(0.05)
+   .. literalinclude:: ../examples/vision_yolo_car_esp32.py
+      :start-at: from espzero import
 
 3. **Step 2: Run PC AI Autonomous Driving Controller (Mu [Python 3 Mode] or Standard Python)**:
-   Run the script below in Mu Editor's **Python 3 mode**, or save it as ``yolo_drive.py`` and run ``python yolo_drive.py`` in VS Code / terminal after updating ``STREAM_URL`` and ``CMD_URL`` with your ESP32 IP address.
-   A live video window showing real-time detection boxes will appear on your PC, autonomously piloting the robot car!
 
-   .. code-block:: python
-
-       import cv2
-       import requests
-       from ultralytics import YOLO
-
-       # Load lightweight YOLOv8 nano model and configure ESP32 stream URL
-       model = YOLO("yolov8n.pt")
-       STREAM_URL = "http://192.168.0.50:8080/"  # ESP32 IP address
-       CMD_URL = "http://192.168.0.50:8080/ai"
-
-       cap = cv2.VideoCapture(STREAM_URL)
-
-       while cap.isOpened():
-           ret, frame = cap.read()
-           if not ret:
-               break
-
-           # Real-time object inference (Class 0: Person, 9: Traffic Light)
-           results = model(frame, verbose=False)
-           person_detected = False
-
-           for r in results:
-               for box in r.boxes:
-                   cls_id = int(box.cls[0])
-                   if cls_id == 0: # Person detected
-                       person_detected = True
-
-           # Send GO / STOP action wirelessly
-           cmd = "STOP" if person_detected else "GO"
-           try:
-               requests.get(f"{CMD_URL}?action={cmd}", timeout=0.1)
-           except Exception:
-               pass
-
-           # Display annotated bounding box video
-           annotated = results[0].plot()
-           cv2.imshow("ESP32-S3 YOLO AI Auto-Driving", annotated)
-           if cv2.waitKey(1) & 0xFF == ord('q'):
-               break
-
-       cap.release()
-       cv2.destroyAllWindows()
+   .. literalinclude:: ../examples/vision_yolo_car_pc.py
+      :start-at: import cv2
 
 .. tip::
     **Standalone Battery Operation & Outdoor Hotspot (AP Mode) Tips**
@@ -758,9 +692,67 @@ This approach requires minimal hardware wiring and ensures high speech recogniti
 2. **Step 1: Upload ESP32 Robot Car Script (Mu [ESP32 Mode] or Thonny / mpremote)**:
 
    .. literalinclude:: ../examples/voice_control_car_esp32.py
+      :start-at: from espzero import
 
 3. **Step 2: Run the PC Voice Controller (Mu [Python 3 Mode] or Standard Python)**:
 
    .. literalinclude:: ../examples/voice_control_car_pc.py
+      :start-at: import requests
 
+Wireless Wi-Fi Audio Streaming & Voice Robot Control
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Streams 16-bit WAV PCM audio captured by the ESP32-S3's I2S microphone in real-time over Wi-Fi (default port ``8081``) to a PC.
+On your PC (Python 3 mode), speech recognition libraries like Whisper, Google SpeechRecognition, or Edge Impulse classify voice commands and send action parameters back to the ``/ai?action=...`` endpoint to control robot motions and OLED face expressions.
+
+**How it Works**:
+
+.. code-block:: text
+
+    [ ESP32-S3 Board ] (Ears & Body)
+      - Streams live I2S mic audio over Wi-Fi HTTP (WAV stream on port 8081)
+      - Receives voice AI commands ('GO' / 'STOP' / 'DANCE') and drives motors & OLED faces
+      ▲
+      │  (Wi-Fi Network: Real-Time Audio Stream & Control Commands)
+      ▼
+    [ PC Mu Editor - Python 3 Mode ] (Voice AI Brain)
+      - Reads audio chunks from http://<ESP32_IP>:8081/ and transcribes speech
+      - Dispatches recognized commands to http://<ESP32_IP>:8081/ai?action=GO
+
+1. **Upload ESP32-S3 Voice AI Robot Code (Mu [ESP32 Mode])**:
+
+   .. literalinclude:: ../examples/audio_wifi_ai_robot_esp32.py
+      :start-at: from espzero import
+
+2. **Run PC Voice Controller (Mu [Python 3 Mode])**:
+   Connects to the ESP32 audio stream, transcribes voice commands in real time, and sends robot actions:
+
+   .. literalinclude:: ../examples/audio_wifi_ai_robot_pc.py
+      :start-at: import io
+
+On-Device TinyML Sound Classification (Edge Impulse & MFCC)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For standalone Keyword Spotting (KWS) or acoustic anomaly detection running entirely on the ESP32-S3 without a PC, use ``mic.mfcc()``:
+
+.. note::
+    **Edge Impulse & TinyML Audio Development**:
+    To train custom keyword spotting or acoustic anomaly detection models in your browser and export them directly to microcontrollers, visit `Edge Impulse Studio <https://www.edgeimpulse.com/>`_ (https://www.edgeimpulse.com/) and the `Edge Impulse Audio Tutorial <https://docs.edgeimpulse.com/docs/tutorials/audio>`_. Pre-trained audio classification models can also be downloaded from `Kaggle Models <https://www.kaggle.com/models?framework=liteRT>`_ and `LiteRT Community <https://huggingface.co/litert-community>`_.
+
+* **MFCC Feature Extraction**: ``mic.mfcc(num_cepstra=13)`` computes 13-dimensional Mel-Frequency Cepstral Coefficients, the standard audio feature representation for TinyML and TensorFlow Lite Micro models.
+* **Dataset Collection**: ``mic.save_wav("sample.wav", duration=1.0)`` records microphone samples directly to onboard flash as 16-bit WAV files, ideal for building Edge Impulse training sets.
+
+.. code-block:: python
+
+    from espzero import I2SMic
+    from time import sleep
+
+    mic = I2SMic()
+
+    # Extract 13-dimensional MFCC feature vector for TinyML sound models
+    features = mic.mfcc(num_cepstra=13)
+    print("MFCC features:", features[:5], "... (13 coefficients total)")
+
+    # Record a 1.0-second sound sample to flash
+    mic.save_wav("cough_sample.wav", duration=1.0)
+    print("WAV audio sample saved to flash!")

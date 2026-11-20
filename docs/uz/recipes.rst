@@ -187,6 +187,7 @@ Real vaqtda OLED audio spektr analizatori (FFT Spectrum)
 ``mic.spectrum(bins=16)`` orqali 16 diapazonli chastota energiyasini ajratib olib, OLED displeyida real vaqtda ekvalayzer ustunlarini (``oled.show_spectrum()``) chizish va ritmga moslab RGB LEDni miltillatish mumkin.
 
 .. literalinclude:: ../examples/audio_spectrum_oled.py
+      :start-at: from espzero import
 
 Kirish qurilmalari (Input Devices)
 ----------------------------------
@@ -758,9 +759,67 @@ Bu usul simlarni ulashni minimal darajaga tushiradi va shovqinli xonalarda ham a
 2. **1-qadam: ESP32 Robot Avtomobili kodini yuklash (Mu [ESP32 Rejimi] yoki Thonny / mpremote)**:
 
    .. literalinclude:: ../examples/voice_control_car_esp32.py
+      :start-at: from espzero import
 
 3. **2-qadam: Kompyuter Ovozli Boshqaruv skriptini ishga tushirish (Mu [Python 3 Rejimi] yoki standart Python)**:
 
    .. literalinclude:: ../examples/voice_control_car_pc.py
+      :start-at: import requests
 
+Simsiz Wi-Fi audio uzatish va ovozli robot boshqaruvi
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+ESP32-S3 ning I2S mikrofoni orqali yozib olingan audio Wi-Fi orqali real vaqtda 16-bitli WAV strimi (standart port ``8081``) sifatida kompyuterga yuboriladi.
+Kompyuterda (Python 3 rejimida) Whisper, SpeechRecognition yoki Edge Impulse modellari orqali ovozli buyruqlar tahlil qilinadi va ``/ai?action=...`` oxirgi nuqtasiga yuborilib robot harakati hamda OLED yuz ifodalari simsiz boshqariladi.
+
+**Ishlash prinsipi va vazifalar taqsimoti**:
+
+.. code-block:: text
+
+    [ ESP32-S3 Platasi ] (Quloq va Tana)
+      - I2S mikrofon audiosini Wi-Fi (HTTP WAV strimi, 8081-port) orqali uzatadi
+      - Qabul qilingan ovozli buyruqlar ('GO' / 'STOP' / 'DANCE') asosida robot va OLED yuzini boshqaradi
+      ▲
+      │  (Wi-Fi tarmog'i: Real vaqtda audio strim va buyruqlar almashinuvi)
+      ▼
+    [ Kompyuter Mu Muharriri - Python 3 Rejimi ] (Ovozli AI Aqli)
+      - http://<ESP32_IP>:8081/ manzilidan audio o'qib ovozli buyruqlarni taniydi
+      - Aniqlangan buyruqlarni http://<ESP32_IP>:8081/ai?action=GO ga yuboradi
+
+1. **ESP32-S3 Ovozli AI robot kodini yuklash (Mu [ESP32 Rejimi])**:
+
+   .. literalinclude:: ../examples/audio_wifi_ai_robot_esp32.py
+      :start-at: from espzero import
+
+2. **Kompyuter Ovoz Boshqaruvchisini ishga tushirish (Mu [Python 3 Rejimi])**:
+   ESP32 audio strimiga ulanib, real vaqtda ovozli buyruqlarni taniydi va robotga yo'naltiradi:
+
+   .. literalinclude:: ../examples/audio_wifi_ai_robot_pc.py
+      :start-at: import io
+
+Qurilmaning o'zida mustaqil TinyML ovoz tasnifi (Edge Impulse & MFCC)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Kompyutersiz, to'g'ridan-to'g'ri ESP32-S3 ning o'zida kalit so'zlarni tanish (KWS) yoki nostandart tovushlarni aniqlash uchun ``mic.mfcc()`` dan foydalaning:
+
+.. note::
+    **Edge Impulse va TinyML audio modelini yaratish**:
+    Mikrokontrollerlar uchun maxsus ovozli kalit so'zlarni yoki nostandart tovushlarni aniqlash modellarini to'g'ridan-to'g'ri brauzerda o'rgatish va eksport qilish uchun `Edge Impulse Studio <https://www.edgeimpulse.com/>`_ (https://www.edgeimpulse.com/) hamda `Edge Impulse Audio Qo'llanmasi <https://docs.edgeimpulse.com/docs/tutorials/audio>`_ dan foydalanishingiz mumkin. Shuningdek, oldindan o'rgatilgan audio modellarini `Kaggle Models <https://www.kaggle.com/models?framework=liteRT>`_ va `LiteRT Community <https://huggingface.co/litert-community>`_ dan ham yuklab olish mumkin.
+
+* **MFCC belgilar vektorini ajratish**: ``mic.mfcc(num_cepstra=13)`` TinyML va TensorFlow Lite Micro modellari uchun standart bo'lgan 13 o'lchamli Mel-chastotali sepsral koeffitsientlarni tezkor hisoblaydi.
+* **O'rganish uchun ma'lumot to'plash**: ``mic.save_wav("sample.wav", duration=1.0)`` mikrofon ovozini to'g'ridan-to'g'ri plata xotirasiga 16-bitli WAV fayl sifatida yozib oladi, bu esa Edge Impulse uchun ma'lumotlar to'plamini yig'ishda juda qulaydir.
+
+.. code-block:: python
+
+    from espzero import I2SMic
+    from time import sleep
+
+    mic = I2SMic()
+
+    # TinyML modeli uchun 13 o'lchamli MFCC belgilar vektorini olish
+    features = mic.mfcc(num_cepstra=13)
+    print("MFCC belgilari:", features[:5], "... (jami 13 ta)")
+
+    # 1.0 soniyalik audio namunani xotiraga yozib olish
+    mic.save_wav("cough_sample.wav", duration=1.0)
+    print("WAV audio namunasi xotiraga saqlandi!")
