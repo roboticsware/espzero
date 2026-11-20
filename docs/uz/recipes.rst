@@ -257,9 +257,6 @@ Standart servo motorlarni nisbat (0.0 dan 1.0 gacha) yoki burchak (0 dan 180 gra
 Harorat sensori (Temperature Sensor)
 ------------------------------------
 
-Ichki harorat
-~~~~~~~~~~~~~
-
 ESP32 chipining ichki haroratini o'lchang. (Eslatma: Atrof-muhit haroratidan farq qilishi mumkin).
 
 .. code-block:: python
@@ -267,6 +264,31 @@ ESP32 chipining ichki haroratini o'lchang. (Eslatma: Atrof-muhit haroratidan far
     from espzero import esp_temp_sensor
 
     print("Chip ichki harorati:", esp_temp_sensor.temp, "C")
+
+Masofa sensori (Distance Sensor)
+--------------------------------
+
+``HC-SR04P`` (3.3V–5V) kabi ultratovushli sensor yordamida ESP32-S3 bilan masofani xavfsiz o'lchang.
+
+.. image:: /images/circuit_distance.svg
+    :alt: ESP32-S3 HC-SR04P Masofa sensori sxemasi
+    :align: center
+
+.. warning::
+    **Eski 5V faqat HC-SR04 sensorlarida kuchlanish oshishi xavfi (ECHO pin)**:
+    ESP32-S3 GPIO pinlarining maksimal kirish kuchlanishi **3.6V** dir. Yangi **HC-SR04P** / **HC-SR04+** modellari platadagi **3V3** piniga ulanib, xavfsiz 3.3V mantiqiy signal bilan ishlaydi.
+    Agar faqat 5V da ishlaydigan **eski HC-SR04** sensoridan foydalansangiz, uning ``ECHO`` chiqishi **5V** bo'ladi va ``G14`` pinini shikastlashi mumkin. Shu sababli ``ECHO`` signalini ~3.3V ga tushirish uchun **1kΩ + 2kΩ rezistorli kuchlanish bo'luvchi (Voltage Divider)** (``ECHO → 1kΩ → G14``, ``G14 → 2kΩ → GND``) ulashingiz shart.
+
+.. code-block:: python
+
+    from espzero import DistanceSensor
+
+    # echo=14, trigger=13
+    ds = DistanceSensor(echo=14, trigger=13)
+
+    while True:
+        print("Masofa: ", ds.distance, "cm")
+        sleep(0.5)
 
 Motorlar va Robotlar (Motor & Robot)
 ------------------------------------
@@ -357,31 +379,6 @@ ESP32 va ESP32-S3 chiplariga o'rnatilgan sig'imli sensorli periferiyadan foydala
         # is_touched: threshold (standart 300) dan kichik bo'lsa True
         print("Xom qiymat:", touch.value, "Tegildi:", touch.is_touched)
         sleep(0.2)
-
-Masofa sensori (Distance Sensor)
---------------------------------
-
-``HC-SR04P`` (3.3V–5V) kabi ultratovushli sensor yordamida ESP32-S3 bilan masofani xavfsiz o'lchang.
-
-.. image:: /images/circuit_distance.svg
-    :alt: ESP32-S3 HC-SR04P Masofa sensori sxemasi
-    :align: center
-
-.. warning::
-    **Eski 5V faqat HC-SR04 sensorlarida kuchlanish oshishi xavfi (ECHO pin)**:
-    ESP32-S3 GPIO pinlarining maksimal kirish kuchlanishi **3.6V** dir. Yangi **HC-SR04P** / **HC-SR04+** modellari platadagi **3V3** piniga ulanib, xavfsiz 3.3V mantiqiy signal bilan ishlaydi.
-    Agar faqat 5V da ishlaydigan **eski HC-SR04** sensoridan foydalansangiz, uning ``ECHO`` chiqishi **5V** bo'ladi va ``G14`` pinini shikastlashi mumkin. Shu sababli ``ECHO`` signalini ~3.3V ga tushirish uchun **1kΩ + 2kΩ rezistorli kuchlanish bo'luvchi (Voltage Divider)** (``ECHO → 1kΩ → G14``, ``G14 → 2kΩ → GND``) ulashingiz shart.
-
-.. code-block:: python
-
-    from espzero import DistanceSensor
-
-    # echo=14, trigger=13
-    ds = DistanceSensor(echo=14, trigger=13)
-
-    while True:
-        print("Masofa: ", ds.distance, "cm")
-        sleep(0.5)
 
 Stepper motor (Stepper Motor)
 -----------------------------
@@ -813,7 +810,7 @@ Kompyutersiz, to'g'ridan-to'g'ri ESP32-S3 ning o'zida kalit so'zlarni tanish (KW
 Murakkab misollar (Combined Examples)
 -------------------------------------
 
-Bir nechta sensorlar, aktuatorlar va AI funksiyalarini birlashtirgan amaliy loyiha misollari.
+Bir nechta sensorlar, aktuatorlar va AI funksiyalarini birlashtirgan amaliy loyihalar. Oddiydan murakkabga qarab tartiblangan.
 
 Tugma bilan chiroqni boshqarish (Button-Controlled Light)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -837,7 +834,19 @@ Aqlli xavfsiz eshik qulfi (Smart Doorlock)
 
 Ichki RGB LED, servo motor (qulf mexanizmi) va zummerni birlashtirib, ruxsat berilganda yashil chiroq va signal bilan eshikni ochadigan hamda avtomatik yopadigan aqlli eshik qulfi misoli.
 
+.. image:: /images/circuit_smart_doorlock.svg
+    :alt: ESP32-S3 Aqlli eshik qulfi ulanish sxemasi
+    :align: center
+
 .. literalinclude:: ../examples/smart_doorlock.py
+
+Potentiometr bilan robot nigohini boshqarish (Potentiometer Gaze)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Potentiometr buragichini aylantirganda OLED robot ko'zlari chapga va o'ngga harakatlanadi, tugma bosilganda esa yurakcha (``"love"``) ifodasi paydo bo'ladi.
+
+.. literalinclude:: ../examples/oled_pot_gaze.py
+   :start-at: from espzero import
 
 Analog soat (Analog Clock)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -852,6 +861,38 @@ Avtomatik jalyuzilar (Automatic Blinds)
 Stepper motor yordamida vaqtga asoslangan avtomatik jalyuzi boshqaruvchisi.
 
 .. literalinclude:: ../examples/stepper_automatic_blinds.py
+
+Aqlli avtoturargoh ogohlantiruvchisi (Smart Parking Assist)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Ultratovush sensori yordamida to'siqqacha masofani o'lchab, yaqinlashgan sari OLED robot yuz ifodasi (``happy`` → ``surprised`` → ``angry``), LED rangi va zummer signalini bosqichma-bosqich o'zgartiradi.
+
+.. image:: /images/circuit_parking_assist.svg
+    :alt: ESP32-S3 Aqlli avtoturargoh ogohlantiruvchisi sxemasi
+    :align: center
+
+.. literalinclude:: ../examples/smart_parking_assist.py
+   :start-at: from espzero import
+
+Qarsak bilan ochiladigan aqlli eshik (Clap Smart Door)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+I2S mikrofonining qarsakni aniqlash hodisasi (``when_clap``) yordamida Wi-Fi va kompyutersiz qarsak chalinganda servo eshikni ochib-yopuvchi va OLED yuzini o'zgartiruvchi tizim.
+
+.. literalinclude:: ../examples/clap_smart_door.py
+   :start-at: from espzero import
+
+To'siqlarni aylanib o'tuvchi avtonom robot (Obstacle-Avoiding Rover)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Old ultratovush sensori va 2WD robot shassisini birlashtirib, 20 sm masofada to'siq aniqlanganda mustaqil ravishda orqaga qaytib buriladigan avtonom robot.
+
+.. image:: /images/circuit_obstacle_rover.svg
+    :alt: ESP32-S3 To'siqlarni aylanib o'tuvchi avtonom robot sxemasi
+    :align: center
+
+.. literalinclude:: ../examples/obstacle_avoiding_rover.py
+   :start-at: from espzero import
 
 Multimodal AI hamroh robot (Vision AI + Voice AI)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

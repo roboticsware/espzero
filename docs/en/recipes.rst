@@ -257,9 +257,6 @@ Control standard servo motors via ratio (0.0 to 1.0) or angles (0 to 180 degrees
 Temperature Sensor
 ------------------
 
-Internal Temperature
-~~~~~~~~~~~~~~~~~~~~
-
 Measure the internal temperature of the ESP32 chip. (Note: May differ from ambient temperature).
 
 .. code-block:: python
@@ -267,6 +264,31 @@ Measure the internal temperature of the ESP32 chip. (Note: May differ from ambie
     from espzero import esp_temp_sensor
 
     print("Internal chip temp:", esp_temp_sensor.temp, "C")
+
+Distance Sensor
+---------------
+
+Measure distance safely on ESP32-S3 using a 3.3V-compatible ultrasonic sensor such as ``HC-SR04P``.
+
+.. image:: /images/circuit_distance.svg
+    :alt: ESP32-S3 HC-SR04P Ultrasonic Distance Sensor Circuit Wiring Diagram
+    :align: center
+
+.. warning::
+    **Overvoltage Risk with Legacy 5V-Only HC-SR04 Sensors**:
+    ESP32-S3 GPIOs have a maximum input tolerance of **3.6V**. Newer **HC-SR04P** / **HC-SR04+** sensors run directly from the board's **3V3** pin with safe 3.3V logic.
+    If you use a legacy 5V-only **HC-SR04**, its ``ECHO`` pin outputs **5V**, which can damage ``G14``. You must insert a **1kΩ + 2kΩ resistor voltage divider** (``ECHO → 1kΩ → G14``, ``G14 → 2kΩ → GND``) to step the ``ECHO`` signal down to ~3.3V.
+
+.. code-block:: python
+
+    from espzero import DistanceSensor
+
+    # echo=14, trigger=13
+    ds = DistanceSensor(echo=14, trigger=13)
+
+    while True:
+        print("Distance: ", ds.distance, "cm")
+        sleep(0.5)
 
 Motors & Robots (Motor & Robot)
 -------------------------------
@@ -357,31 +379,6 @@ Use the built-in capacitive touch peripheral on ESP32 / ESP32-S3. Detects touch 
         # is_touched: True if raw value drops below threshold (default: 300)
         print("Raw:", touch.value, "Touched:", touch.is_touched)
         sleep(0.2)
-
-Distance Sensor
----------------
-
-Measure distance safely on ESP32-S3 using a 3.3V-compatible ultrasonic sensor such as ``HC-SR04P``.
-
-.. image:: /images/circuit_distance.svg
-    :alt: ESP32-S3 HC-SR04P Ultrasonic Distance Sensor Circuit Wiring Diagram
-    :align: center
-
-.. warning::
-    **Overvoltage Risk with Legacy 5V-Only HC-SR04 Sensors**:
-    ESP32-S3 GPIOs have a maximum input tolerance of **3.6V**. Newer **HC-SR04P** / **HC-SR04+** sensors run directly from the board's **3V3** pin with safe 3.3V logic.
-    If you use a legacy 5V-only **HC-SR04**, its ``ECHO`` pin outputs **5V**, which can damage ``G14``. You must insert a **1kΩ + 2kΩ resistor voltage divider** (``ECHO → 1kΩ → G14``, ``G14 → 2kΩ → GND``) to step the ``ECHO`` signal down to ~3.3V.
-
-.. code-block:: python
-
-    from espzero import DistanceSensor
-
-    # echo=14, trigger=13
-    ds = DistanceSensor(echo=14, trigger=13)
-
-    while True:
-        print("Distance: ", ds.distance, "cm")
-        sleep(0.5)
 
 Stepper Motor
 -------------
@@ -746,7 +743,7 @@ For standalone Keyword Spotting (KWS) or acoustic anomaly detection running enti
 Combined Examples
 -----------------
 
-Complete mini-projects combining multiple sensors, actuators, and AI capabilities.
+Complete mini-projects combining multiple sensors, actuators, and AI capabilities, arranged in order of difficulty from beginner to advanced.
 
 Button-Controlled Light
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -770,7 +767,19 @@ Smart Doorlock
 
 Combine the onboard RGB LED, a servo motor (bolt lock), and a buzzer to build an automated smart doorlock that flashes green with a double beep, unlocks the door, and re-locks it automatically.
 
+.. image:: /images/circuit_smart_doorlock.svg
+    :alt: ESP32-S3 Smart Doorlock Circuit Diagram
+    :align: center
+
 .. literalinclude:: ../examples/smart_doorlock.py
+
+Potentiometer Gaze Controller
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Turn a potentiometer dial to steer the OLED robot's eyes left and right in real time, and press the button to show a ``"love"`` expression.
+
+.. literalinclude:: ../examples/oled_pot_gaze.py
+   :start-at: from espzero import
 
 Analog Clock
 ~~~~~~~~~~~~
@@ -785,6 +794,38 @@ Automatic Blinds
 Time-based window blind controller driven by a stepper motor.
 
 .. literalinclude:: ../examples/stepper_automatic_blinds.py
+
+Smart Parking Assist
+~~~~~~~~~~~~~~~~~~~~
+
+Measures obstacle distance via an ultrasonic sensor and escalates OLED robot expressions (``happy`` → ``surprised`` → ``angry``), RGB LED color, and buzzer beep tempo as objects get closer.
+
+.. image:: /images/circuit_parking_assist.svg
+    :alt: ESP32-S3 Smart Parking Assist Circuit Diagram
+    :align: center
+
+.. literalinclude:: ../examples/smart_parking_assist.py
+   :start-at: from espzero import
+
+Clap-Controlled Smart Door
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Uses the I2S microphone's ``when_clap`` event to toggle a servo-driven door and update the OLED robot face completely on-device with no Wi-Fi or PC required.
+
+.. literalinclude:: ../examples/clap_smart_door.py
+   :start-at: from espzero import
+
+Autonomous Obstacle-Avoiding Rover
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Combines a front-mounted ultrasonic sensor with a 2WD robot chassis to automatically reverse and turn whenever an obstacle comes within 20 cm.
+
+.. image:: /images/circuit_obstacle_rover.svg
+    :alt: ESP32-S3 Autonomous Obstacle-Avoiding Rover Circuit Diagram
+    :align: center
+
+.. literalinclude:: ../examples/obstacle_avoiding_rover.py
+   :start-at: from espzero import
 
 Multimodal AI Companion Robot (Vision AI + Voice AI)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

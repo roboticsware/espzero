@@ -273,9 +273,6 @@ ESP32-S3 WROOM CAM 보드의 기본 핀(``SCK=41``, ``WS=42``, ``SD=2``)에 별�
 온도 센서 (Temperature Sensor)
 ----------------------------
 
-내장 온도 센서
-~~~~~~~~~~~~
-
 ESP32 칩 내부의 온도를 측정합니다. (주의: 외부 기온과는 차이가 있을 수 있습니다.)
 
 .. code-block:: python
@@ -283,6 +280,31 @@ ESP32 칩 내부의 온도를 측정합니다. (주의: 외부 기온과는 차�
     from espzero import esp_temp_sensor
 
     print("칩 내부 온도:", esp_temp_sensor.temp, "C")
+
+초음파 거리 센서 (Distance Sensor)
+-------------------------------
+
+``HC-SR04P`` (3.3V~5V 겸용 신형 모델) 등의 초음파 센서를 사용하여 거리를 측정합니다.
+
+.. image:: /images/circuit_distance.svg
+    :alt: ESP32-S3 HC-SR04P 초음파 센서 회로 연결도
+    :align: center
+
+.. warning::
+    **구형 5V 전용 HC-SR04 사용 시 주의 (ECHO 핀 과전압 위험)**:
+    ESP32-S3 GPIO의 최대 허용 입력 전압은 **3.6V** 입니다. ``HC-SR04P`` (또는 ``HC-SR04+``) 신형 모델은 보드의 **3V3** 핀에 연결하면 3.3V 신호로 안전하게 직결됩니다.
+    만약 5V 전원이 필수인 **구형 HC-SR04** 센서를 사용하려면, ``ECHO`` 출력(5V)이 ``G14`` 핀을 손상시키지 않도록 **1kΩ + 2kΩ 저항 전압 분배 회로** (``ECHO → 1kΩ → G14``, ``G14 → 2kΩ → GND``)를 반드시 구성해 3.3V로 강압하여 연결하세요.
+
+.. code-block:: python
+
+    from espzero import DistanceSensor
+
+    # echo=14, trigger=13
+    ds = DistanceSensor(echo=14, trigger=13)
+
+    while True:
+        print("거리: ", ds.distance, "cm")
+        sleep(0.5)
 
 모터 및 로봇 (Motor & Robot)
 ---------------------------
@@ -373,31 +395,6 @@ ESP32 및 ESP32-S3 칩에 내장된 정전용량식 터치 센서를 사용합�
         # is_touched: threshold(기본값 300)보다 작으면 True
         print("Raw:", touch.value, "터치됨:", touch.is_touched)
         sleep(0.2)
-
-초음파 거리 센서 (Distance Sensor)
--------------------------------
-
-``HC-SR04P`` (3.3V~5V 겸용 신형 모델) 등의 초음파 센서를 사용하여 거리를 측정합니다.
-
-.. image:: /images/circuit_distance.svg
-    :alt: ESP32-S3 HC-SR04P 초음파 센서 회로 연결도
-    :align: center
-
-.. warning::
-    **구형 5V 전용 HC-SR04 사용 시 주의 (ECHO 핀 과전압 위험)**:
-    ESP32-S3 GPIO의 최대 허용 입력 전압은 **3.6V** 입니다. ``HC-SR04P`` (또는 ``HC-SR04+``) 신형 모델은 보드의 **3V3** 핀에 연결하면 3.3V 신호로 안전하게 직결됩니다.
-    만약 5V 전원이 필수인 **구형 HC-SR04** 센서를 사용하려면, ``ECHO`` 출력(5V)이 ``G14`` 핀을 손상시키지 않도록 **1kΩ + 2kΩ 저항 전압 분배 회로** (``ECHO → 1kΩ → G14``, ``G14 → 2kΩ → GND``)를 반드시 구성해 3.3V로 강압하여 연결하세요.
-
-.. code-block:: python
-
-    from espzero import DistanceSensor
-
-    # echo=14, trigger=13
-    ds = DistanceSensor(echo=14, trigger=13)
-
-    while True:
-        print("거리: ", ds.distance, "cm")
-        sleep(0.5)
 
 스텝 모터 (Stepper Motor)
 -------------------------
@@ -768,7 +765,7 @@ PC와의 무선 통신 없이 ESP32-S3 기기 단독으로 키워드 인식(KWS)
 복합 예제 (Combined Examples)
 -----------------------------
 
-여러 센서와 액추에이터, 그리고 AI 기능을 결합하여 실생활에 활용할 수 있는 완성형 프로젝트 예제입니다.
+여러 센서와 액추에이터, 그리고 AI 기능을 결합한 완성형 프로젝트 예제입니다. 입문부터 고급까지 난이도 순으로 구성되어 있습니다.
 
 버튼으로 조명 제어 (Button-Controlled Light)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -790,9 +787,21 @@ PC와의 무선 통신 없이 ESP32-S3 기기 단독으로 키워드 인식(KWS)
 스마트 안심 도어락 (Smart Doorlock)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-내장 RGB LED, 서보 모터(잠금장치), 부저(경보/알림음)를 결합하여 출입 인증 성공 시 초록색 점등 및 알림음과 함께 문을 열고, 일정 시간 뒤 자동으로 잠그는 스마트 도어락 예제입니다.
+내장 RGB LED, 서보 모터(잠금장치), 부저(알림음)를 결합하여 출입 인증 성공 시 초록색 점등 및 알림음과 함께 문을 열고, 일정 시간 뒤 자동으로 잠그는 스마트 도어락 예제입니다.
+
+.. image:: /images/circuit_smart_doorlock.svg
+    :alt: ESP32-S3 스마트 안심 도어락 회로 연결도
+    :align: center
 
 .. literalinclude:: examples/smart_doorlock.py
+
+다이얼로 시선을 조종하는 로봇 눈 (Potentiometer Gaze)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+가변저항 다이얼을 돌리면 OLED 로봇 눈동자가 좌우로 실시간 움직이고, 버튼을 누르면 하트(``"love"``) 표정을 짓는 인터랙티브 데스크탑 토이입니다.
+
+.. literalinclude:: examples/oled_pot_gaze.py
+   :start-at: from espzero import
 
 아날로그 시계 (Analog Clock)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -808,10 +817,42 @@ PC와의 무선 통신 없이 ESP32-S3 기기 단독으로 키워드 인식(KWS)
 
 .. literalinclude:: examples/stepper_automatic_blinds.py
 
+자동차 후방 주차 경보기 (Smart Parking Assist)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+초음파 센서로 장애물과의 거리를 측정해 가까워질수록 OLED 로봇 표정(``happy`` → ``surprised`` → ``angry``), LED 색상(초록 → 노랑 → 빨강), 부저 경고음 주기가 단계적으로 변하는 실생활 안전 경보기입니다.
+
+.. image:: /images/circuit_parking_assist.svg
+    :alt: ESP32-S3 자동차 후방 주차 경보기 회로 연결도
+    :align: center
+
+.. literalinclude:: examples/smart_parking_assist.py
+   :start-at: from espzero import
+
+박수 소리로 여닫는 스마트 자동문 (Clap Smart Door)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+I2S 디지털 마이크의 박수 감지 이벤트(``when_clap``)를 활용해, PC나 Wi-Fi 없이 손뼉을 칠 때마다 OLED 표정이 바뀌며 서보 모터로 문을 여닫는 온디바이스 자동문입니다.
+
+.. literalinclude:: examples/clap_smart_door.py
+   :start-at: from espzero import
+
+초음파 자율주행 장애물 회피 로봇 (Obstacle-Avoiding Rover)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+전방 초음파 센서와 2륜 구동 로봇을 결합하여, 20cm 이내에 장애물이 감지되면 스스로 후진 후 방향을 전환해 주행을 이어가는 완전 자율주행 로버입니다.
+
+.. image:: /images/circuit_obstacle_rover.svg
+    :alt: ESP32-S3 초음파 장애물 회피 로봇 회로 연결도
+    :align: center
+
+.. literalinclude:: examples/obstacle_avoiding_rover.py
+   :start-at: from espzero import
+
 멀티모달 AI 반려 로봇 (Vision AI + Voice AI)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ESP32-S3의 카메라 영상(포트 ``8080``)과 I2S 디지털 마이크 음성(포트 ``8081``)을 동시에 PC로 무선 스트리밍하고, PC에서 시각(손/얼굴 시선 추적)과 음성(감정 명령어)을 병렬 분석해 OLED 로봇 표정(``look_at`` / ``show_face``)과 RGB LED로 반응하는 통합 AI 반려 로봇입니다.
+ESP32-S3의 카메라 영상(포트 ``8080``)과 I2S 디지털 마이크 음성(포트 ``8081``)을 동시에 PC로 무선 스트리밍하고, PC에서 시각과 음성을 병렬 분석해 OLED 로봇 표정(``look_at`` / ``show_face``)과 RGB LED로 반응하는 통합 AI 반려 로봇입니다.
 
 1. **ESP32-S3 멀티모달 로봇 코드 업로드 (Mu [ESP32 모드])**:
 

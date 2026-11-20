@@ -1,0 +1,16 @@
+"""Autonomous Obstacle-Avoiding Rover (Ultrasonic + 2WD Robot)"""
+from espzero import Robot, DistanceSensor, esp_led
+from time import sleep
+
+car = Robot(left=(41, 42), right=(47, 21))
+ds = DistanceSensor(echo=14, trigger=13)
+
+while True:
+    if ds.distance < 20:
+        esp_led.color = "red"
+        car.backward(0.5, t=0.4, wait=True)
+        car.right(0.6, t=0.5, wait=True)
+    else:
+        esp_led.color = "green"
+        car.forward(0.6)
+    sleep(0.05)

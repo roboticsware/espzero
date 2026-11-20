@@ -1,0 +1,27 @@
+"""Clap-Controlled Smart Door (I2S Mic + Servo + OLED + RGB LED)"""
+from espzero import I2SMic, Servo, OLED, esp_led
+from time import sleep
+
+mic = I2SMic()
+door = Servo(13)
+oled = OLED(scl=47, sda=21)
+
+is_open = False
+oled.show_face("normal")
+
+def toggle_door():
+    global is_open
+    is_open = not is_open
+    if is_open:
+        oled.show_face("happy")
+        esp_led.color = "green"
+        door.move_to_degree(90)
+    else:
+        oled.show_face("sleep")
+        esp_led.off()
+        door.move_to_degree(0)
+
+mic.when_clap = toggle_door
+
+while True:
+    sleep(0.1)
