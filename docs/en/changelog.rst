@@ -3,6 +3,26 @@ Change log
 
 .. currentmodule:: espzero
 
+0.0.9 - 2026-11-20
+------------------
++ Introduced ``audio.py`` (``I2SMic``) supporting INMP441 I2S microphones and DSP signal analysis (FFT spectrum, MFCC acoustic feature extraction)
++ Added real-time Wi-Fi audio streaming server (``audio.start_wifi_stream``) and AI inference feedback interface (``audio.get_ai_result``)
++ Added 5 new high-resolution SVG circuit wiring diagrams:
+  - INMP441 I2S digital microphone module (``circuit_inmp441_mic.svg``)
+  - 28BYJ-48 5-wire stepper motor & ULN2003 driver (``circuit_stepper.svg``)
+  - Smart security doorlock with servo, RGB LED, and buzzer (``circuit_smart_doorlock.svg``)
+  - Ultrasonic parking assist system with dynamic beep rate (``circuit_parking_assist.svg``)
+  - Autonomous obstacle-avoiding rover with panning ultrasonic sensor (``circuit_obstacle_rover.svg``)
++ Reorganized Recipes with a comprehensive **Combined Examples** section:
+  - Structured 8-tier step-by-step projects (LED button toggle, smart doorlock, potentiometer gaze, analog clock, automatic blinds, parking assist, clap door, obstacle rover, multimodal companion robot)
+  - Streamlined and minimalized source code with essential logic highlighted for beginners
+  - Paired architecture for all Wi-Fi AI projects with dedicated ESP32 firmware (``_esp32.py``) and PC inference (``_pc.py``) scripts
++ Reorganized sensor navigation structure:
+  - Simplified ``Temperature Sensor`` into a standalone main section placed immediately after ``Input Devices``
+  - Relocated ``Distance Sensor`` right after ``Temperature Sensor`` for cohesive sensor exploration
+  - Placed ``Microphone`` section right after ``Buzzer & Speaker`` for seamless audio I/O workflow
++ Enhanced Mock I2S HAL for desktop emulation and CI testing
+
 0.0.8 - 2026-11-20
 ------------------
 + Introduced ``OLED`` class supporting SSD1306 and SH1106 I2C displays

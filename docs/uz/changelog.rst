@@ -3,6 +3,26 @@ O'zgarishlar tarixi
 
 .. currentmodule:: espzero
 
+0.0.9 - 2026-11-20
+------------------
++ INMP441 I2S raqamli mikrofonlari va DSP signallarni tahlil qilish modulini (FFT spektri, MFCC akustik xususiyatlarini ajratish) qo'llab-quvvatlovchi ``audio.py`` (``I2SMic``) kiritildi
++ Real vaqt rejimida Wi-Fi audio oqim serveri (``audio.start_wifi_stream``) va AI natijalarini qabul qilish interfeysi (``audio.get_ai_result``) joriy etildi
++ 5 ta yangi yuqori aniqlikdagi SVG elektron ulanish sxemalari qo'shildi:
+  - INMP441 I2S mikrofon moduli sxemasi (``circuit_inmp441_mic.svg``)
+  - 28BYJ-48 5-simli qadamli motor va ULN2003 drayveri sxemasi (``circuit_stepper.svg``)
+  - Servo motor, RGB LED va buzzer asosidagi aqlli xavfsiz eshik qulfi sxemasi (``circuit_smart_doorlock.svg``)
+  - Ultratovushli masofa sensori va buzzer asosidagi aqlli to'xtash yordamchisi sxemasi (``circuit_parking_assist.svg``)
+  - Ultratovushli avtonom to'siqlarni aylanib o'tuvchi robot sxemasi (``circuit_obstacle_rover.svg``)
++ Retseptlar bo'limi tubdan yangilandi va keng qamrovli **Murakkab misollar (Combined Examples)** bo'limi yaratildi:
+  - Qiyinlik darajasiga ko'ra 8 bosqichli amaliy loyihalar (tugma bilan chiroqni boshqarish, aqlli eshik qulfi, potentsiometr nigohi, analog soat, avtomatik parda, aqlli to'xtash yordamchisi, qarsak bilan eshik ochish, to'siqlarni aylanuvchi rover, multimodal AI hamroh roboti)
+  - Yangi boshlovchilar uchun murakkab loyiha kodlari soddalashtirildi va asosiy mantiqqa e'tibor qaratildi
+  - Barcha Wi-Fi AI loyihalari uchun ESP32 qurilma kodi (``_esp32.py``) va kompyuter AI kodi (``_pc.py``) juftligi taqdim etildi
++ Datchiklar bo'limlari tuzilishi optimallashtirildi:
+  - ``Harorat sensori`` alohida asosiy bo'lim sifatida soddalashtirildi va ``Kiritish qurilmalari``dan so'ng joylashtirildi
+  - ``Ultratovush masofa sensori`` to'g'ridan-to'g'ri ``Harorat sensori``dan keyinga o'tkazildi
+  - Mikrofon bo'limi buzzer va dinamikdan keyin joylashtirilib, audio kiritish-chiqarish yaxlitligi ta'minlandi
++ Desktop sinovlari uchun Mock I2S HAL interfeysi kengaytirildi
+
 0.0.8 - 2026-11-20
 ------------------
 + 10 xil his-tuyg'uni aks ettiruvchi robot yuz ifodalari (`show_face`) va nigohni boshqarish (`look_at`) qo'shildi
