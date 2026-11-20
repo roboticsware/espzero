@@ -160,6 +160,49 @@ ESP32-S3 또는 M5Stack 등 보드 자체에 WS2812 NeoPixel RGB LED가 내장�
     ]
     spk.play(tune)
 
+마이크 (I2S Microphone)
+-----------------------
+
+ESP32-S3의 빠른 연산 속도와 I2S 하드웨어 인터페이스를 사용하여 고성능 24-bit 디지털 MEMS 마이크(INMP441 등)로부터 오디오 신호를 직접 수음하고 실시간으로 분석합니다.
+
+I2S 마이크 연결 (INMP441, 3.3V)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``INMP441``\ 은 3.3V 전원과 디지털 I2S 버스(SCK, WS, SD)를 지원하여 아날로그 마이크에 비해 노이즈가 매우 적고 선명한 음질을 제공합니다.
+ESP32-S3 WROOM CAM 보드의 기본 핀(``SCK=41``, ``WS=42``, ``SD=2``)에 별도의 레벨 시프터 없이 3.3V 신호로 안전하게 직결할 수 있습니다.
+(단일 모노 마이크로 사용할 경우 ``L/R`` 핀을 ``GND``\ 에 연결하여 좌측 채널로 설정합니다.)
+
+.. image:: /images/circuit_inmp441_mic.svg
+    :alt: ESP32-S3 I2S 디지털 마이크(INMP441) 회로 연결도
+    :align: center
+
+기본 사용 및 소리 감지 (I2SMic)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+보드 프로파일의 기본 핀을 자동으로 할당받아 인스턴스를 생성하며, 현재 소리 크기(``level``, ``0.0 ~ 1.0``), 데시벨(``decibels``), 기본 주파수 음계(``note``) 및 박수 이벤트(``when_clap``)를 직관적으로 다룹니다.
+
+.. code-block:: python
+
+    from espzero import I2SMic, esp_led
+    from time import sleep
+
+    # 기본 I2S 핀 자동 매핑 (ESP32-S3: SCK=41, WS=42, SD=2)
+    mic = I2SMic()
+
+    # 박수 또는 큰 소리가 감지될 때마다 내장 LED 토글
+    mic.when_clap = esp_led.toggle
+
+    while True:
+        print("소리 크기:", round(mic.level, 3), "| dB:", int(mic.decibels), "| 음계:", mic.note or "---")
+        sleep(0.2)
+
+실시간 OLED 오디오 스펙트럼 분석기 (FFT Spectrum)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``mic.spectrum(bins=16)``\ 으로 추출한 16밴드 주파수 에너지를 OLED 화면에 실시간 막대 그래프(``oled.show_spectrum()``)로 렌더링하고, 강한 비트에 맞춰 RGB LED를 제어합니다.
+
+.. literalinclude:: examples/audio_spectrum_oled.py
+
 입력 장치 (Input Devices)
 -----------------------
 
@@ -556,233 +599,107 @@ ESP32 카메라 영상을 PC(Mu 에디터)로 전송하고, PC의 MediaPipe 라�
          pip install ultralytics opencv-python requests
 
 2. **1단계: ESP32 로봇 자동차 코드 업로드 (Mu [ESP32 모드] 또는 Thonny / mpremote)**:
-   아래 코드를 ``main.py`` 파일로 저장하여 ESP32 보드에 업로드합니다 (Mu 에디터에서는 **ESP32 모드** 사용, CLI에서는 ``mpremote cp main.py :main.py``).
-   (``main.py`` 파일로 저장해 두면 PC와 USB 케이블을 분리하고 배터리만 연결해도 전원이 켜지는 즉시 스스로 Wi-Fi에 접속하여 무선 스트리밍을 시작합니다. 실행 시 터미널에 표시되는 ESP32의 IP 주소(예: ``http://192.168.0.50:8080/``)를 확인합니다.)
+   아래 코드를 작성하여 ESP32 보드에 업로드합니다. 보드가 Wi-Fi에 접속되면 터미널에 표시되는 IP 주소(예: ``http://192.168.0.50:8080/``)를 확인합니다.
 
-   .. code-block:: python
+   .. literalinclude:: examples/voice_control_car_esp32.py
 
-       from espzero import WiFi, vision, Robot
-       from time import sleep
+3. **2단계: PC 음성 인식 컨트롤러 실행 (Mu [Python 3 모드] 또는 일반 Python)**:
+   Mu 에디터에서는 **[모드(Mode)]**\ 를 **Python 3 모드**\ 로 변경해 실행하고, VS Code나 터미널에서는 ``python voice_control_car_pc.py``\ 로 실행합니다. 앞서 확인한 ESP32의 IP 주소를 ``ESP_IP``\ 에 입력한 뒤 실행하면, PC 마이크가 켜지고 음성 명령 대기 상태가 됩니다.
 
-       # 1. WiFi 공유기 연결
-       wifi = WiFi()
-       wifi.connect("내_와이파이_이름", "비밀번호")
+   .. literalinclude:: examples/voice_control_car_pc.py
 
-       # 2. 2륜 구동 로봇 모터 설정 (카메라와 충돌하지 않는 안전 핀: 왼쪽 41, 42 / 오른쪽 47, 21)
-       car = Robot(left=(41, 42), right=(47, 21))
+무선 Wi-Fi 오디오 스트리밍 & PC 음성 AI 로봇 제어 (``audio.start_wifi_stream``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-       # 3. 무선 카메라 스트리밍 시작 (기본 포트: 8080)
-       vision.start_wifi_stream(port=8080)
-
-       # 4. PC AI 판단 데이터 수신 및 주행 루프
-       while True:
-           if "__pc_ai_data" in globals():
-               action = __pc_ai_data.get("action", "STOP")
-               if action == "GO":
-                   car.forward(0.6) # 전방 안전 시 전진
-               else:
-                   car.stop()       # 사람/장애물 감지 시 정지
-           sleep(0.05)
-
-3. **2단계: PC AI 자율주행 컨트롤러 실행 (Mu [Python 3 모드] 또는 일반 Python)**:
-   Mu 에디터에서는 좌측 상단의 **[모드(Mode)]**\ 를 **Python 3 모드**\ 로 변경해 실행하고, VS Code나 터미널에서는 일반 ``.py`` 파일로 저장 후 ``python yolo_drive.py``\ 로 실행합니다.
-   앞서 확인한 ESP32의 IP 주소를 ``STREAM_URL`` 및 ``CMD_URL`` 변수에 입력한 뒤 실행하면, PC 화면에 실시간 감지 결과가 표시되는 비디오 창이 열리며 로봇 자동차가 자율주행을 시작합니다.
-
-   .. code-block:: python
-
-       import cv2
-       import requests
-       from ultralytics import YOLO
-
-       # 경량 고속 모델 로드 및 ESP32 카메라 스트림 주소 설정
-       model = YOLO("yolov8n.pt")
-       STREAM_URL = "http://192.168.0.50:8080/"  # ESP32 IP 주소
-       CMD_URL = "http://192.168.0.50:8080/ai"
-
-       cap = cv2.VideoCapture(STREAM_URL)
-
-       while cap.isOpened():
-           ret, frame = cap.read()
-           if not ret:
-               break
-
-           # YOLOv8 실시간 객체 추론 (0: 사람, 9: 신호등)
-           results = model(frame, verbose=False)
-           person_detected = False
-
-           for r in results:
-               for box in r.boxes:
-                   cls_id = int(box.cls[0])
-                   if cls_id == 0: # 사람 감지
-                       person_detected = True
-
-           # 사람 감지 시 즉시 정지, 없으면 주행 명령 전송
-           cmd = "STOP" if person_detected else "GO"
-           try:
-               requests.get(f"{CMD_URL}?action={cmd}", timeout=0.1)
-           except Exception:
-               pass
-
-           # 화면에 바운딩 박스 표시
-           annotated = results[0].plot()
-           cv2.imshow("ESP32-S3 YOLO AI Auto-Driving", annotated)
-           if cv2.waitKey(1) & 0xFF == ord('q'):
-               break
-
-       cap.release()
-       cv2.destroyAllWindows()
-
-.. tip::
-    **완성 후 배터리 독립 구동 & 야외 핫스팟(AP) 꿀팁**
-
-    * **PC 없이 보조배터리로 완전 무선 구동하기 (main.py 저장)**:
-      스마트카나 로봇 프로젝트를 완성하여 PC 연결 없이 야외나 바닥에서 주행시킬 때는, 코드를 ESP32 보드 플래시 최상위에 ``main.py``\ 라는 이름의 파일로 저장하세요. USB 케이블을 뽑고 보조배터리나 어댑터만 연결하면, 부팅 즉시 Wi-Fi를 잡고 무선 영상 스트리밍과 주행 대기 상태에 들어갑니다.
-      PC나 스마트폰에서는 Mu 에디터 카메라 창의 Wi-Fi 주소 입력란(``http://192.168.x.x:8080/``) 또는 웹 브라우저에서 보드 IP 주소로 접속하여 무선으로 영상을 보며 제어할 수 있습니다.
-
-    * **공유기(Wi-Fi)가 없는 야외나 교실에서의 단독 핫스팟(AP 모드) 구동**:
-      주변에 Wi-Fi 공유기가 없더라도 걱정할 필요가 없습니다. ESP32 자체를 무선 공유기(AP)로 동작시키면 외부 인터넷이나 공유기 없이도 스마트폰 또는 노트북과 1:1 직결 무선 스트리밍이 가능합니다:
-
-      .. code-block:: python
-
-          import network
-          from espzero import vision
-
-          # 1. ESP32 자체를 무선 핫스팟(AP)으로 활성화
-          ap = network.WLAN(network.AP_IF)
-          ap.active(True)
-          ap.config(essid="ESP32-CAM-ROBOT", authmode=network.AUTH_OPEN)
-
-          # 2. 자체 망에서 스트리밍 시작 (기본 IP: http://192.168.4.1:8080/)
-          vision.start_wifi_stream(port=8080)
-
-      노트북이나 스마트폰의 Wi-Fi 목록에서 ``ESP32-CAM-ROBOT`` 신호에 접속한 뒤, 브라우저나 PC 컨트롤러에서 ``http://192.168.4.1:8080/`` 주소로 연결하면 어디서든 무선 스트리밍 및 AI 원격 제어가 가능합니다.
-
-기기 단독 AI (On-Device TFLite)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-ESP32 내부에 다운로드한 ``.tflite`` 모델 파일을 읽어와 직접 AI 추론을 수행합니다. PC와 연결되지 않은 상태에서도 동작할 수 있습니다.
-
-.. note::
-    ESP32(마이크로컨트롤러)용 경량 ``.tflite`` 모델들은 Kaggle Models(https://www.kaggle.com/models?framework=liteRT), Hugging Face LiteRT 커뮤니티(https://huggingface.co/litert-community), 또는 텐서플로우 마이크로 공식 저장소(https://github.com/tensorflow/tflite-micro)에서 직접 내려받을 수 있습니다.
-
-.. code-block:: python
-
-    import camera
-    import tflite
-    from time import sleep
-
-    # 카메라 초기화 및 TFLite 모델 로드
-    camera.init(framesize=camera.FRAME_QVGA)
-    model = tflite.load("model.tflite")
-
-    while True:
-        img = camera.capture()
-        if img:
-            # 이미지 분석 및 클래스 결과 추출
-            result = model.detect(img)
-            print("인식된 클래스 ID:", result.class_id)
-        sleep(0.5)
-
-
-AI 음성 (AI Voice)
-------------------
-
-ESP32 보드에 별도의 I2S 디지털 마이크 부품을 달지 않고도, **PC나 노트북의 고성능 내장 마이크**\ 를 통해 음성을 인식하고 Wi-Fi 무선 통신으로 ESP32 자동차와 로봇을 조작할 수 있습니다.
-
-PC 음성 인식 기반 스마트카 무선 조작
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-이 방식은 하드웨어 배선이 가장 단순하며 소음이 많은 교실이나 야외에서도 높은 음성 인식률을 보장합니다.
+ESP32-S3의 I2S 디지털 마이크로 수음한 고품질 오디오를 Wi-Fi 무선 네트워크를 통해 실시간 WAV 스트림(기본 포트 ``8081``)으로 PC에 전송할 수 있습니다.
+PC(Python 3 모드)에서는 Whisper, SpeechRecognition 또는 Edge Impulse 모델로 음성을 실시간 분석한 뒤, ``/ai?label=...&score=...&action=...`` 엔드포인트로 제어 명령을 전달하여 ESP32 로봇과 OLED 표정을 무선 조작합니다.
 
 **동작 원리 및 역할 분담**:
 
 .. code-block:: text
 
-    [ 사용자 ]
-      🗣️ "앞으로!" / "멈춰!" / "돌아봐!"
-      │
-      ▼ (PC/노트북 내장 마이크로 수음)
-    [ PC의 Mu 에디터 - Python 3 모드 ] (귀와 두뇌 역할)
-      - PC 마이크로 음성을 듣고 내장된 SpeechRecognition으로 한국어/영어 분석
-      - 분석된 명령어를 Wi-Fi HTTP 요청으로 전송:
-        requests.get("http://<ESP32_IP>:8080/ai?action=GO")
+    [ ESP32-S3 보드 ] (귀와 몸 역할)
+      - I2S 마이크 오디오를 Wi-Fi (HTTP WAV 스트림, 포트 8081)로 실시간 전송
+      - PC에서 수신된 음성 AI 명령('GO' / 'STOP' / 'DANCE')에 따라 로봇 구동 및 OLED 표정 변경
       ▲
-      │  (Wi-Fi 무선 네트워크: 텍스트 명령 전송)
+      │  (Wi-Fi 무선 네트워크: 실시간 오디오 스트림 & 음성 AI 명령 전송)
       ▼
-    [ ESP32 로봇 자동차 ] (몸 역할, 마이크/OLED 불필요!)
-      - Wi-Fi로 수신된 action("GO") 명령 즉시 처리
-      - 2륜 모터 구동 및 LED 상태 표시
+    [ PC의 Mu 에디터 - Python 3 모드 ] (음성 인식 두뇌 역할)
+      - http://<ESP32_IP>:8081/ 스트림에서 오디오 청크를 읽어 음성 인식 수행
+      - 인식된 명령어를 http://<ESP32_IP>:8081/ai?action=GO 로 전송
 
-**단계별 실습 가이드 (Mu 에디터 / 일반 Python 에디터 공통)**:
+1. **ESP32-S3 음성 AI 로봇 코드 업로드 (Mu [ESP32 모드])**:
 
-1. **PC 음성 인식 환경 준비**:
-   마이크로 음성을 인식하고 ESP32로 명령을 전달할 환경을 준비합니다.
+   .. literalinclude:: examples/audio_wifi_ai_robot_esp32.py
 
-   * **방법 A (Mu 에디터 환경)**:
-     Mu 에디터에는 ``SpeechRecognition``\ 과 ``requests`` 패키지가 이미 기본 내장되어 있으므로 **별도 패키지 설치 없이 곧바로 실행**할 수 있습니다.
-
-   * **방법 B (VS Code 등 외부 에디터 환경)**:
-     Mu가 아닌 일반 Python 환경을 사용할 경우, CMD 또는 PowerShell에서 아래 명령을 실행하여 필요한 패키지를 설치합니다:
-
-     .. code-block:: bash
-
-         pip install SpeechRecognition requests PyAudio
-
-2. **1단계: ESP32 로봇 자동차 코드 업로드 (Mu [ESP32 모드] 또는 Thonny / mpremote)**:
-   아래 코드를 작성하여 ESP32 보드에 업로드합니다. 보드가 Wi-Fi에 접속되면 터미널에 표시되는 IP 주소(예: ``http://192.168.0.50:8080/``)를 확인합니다.
-
-   .. literalinclude:: examples/voice_control_car.py
-
-3. **2단계: PC 음성 인식 컨트롤러 실행 (Mu [Python 3 모드] 또는 일반 Python)**:
-   Mu 에디터에서는 **[모드(Mode)]**\ 를 **Python 3 모드**\ 로 변경해 실행하고, VS Code나 터미널에서는 ``python voice_controller.py``\ 로 실행합니다. 앞서 확인한 ESP32의 IP 주소를 ``ESP_IP``\ 에 입력한 뒤 실행하면, PC 마이크가 켜지고 음성 명령 대기 상태가 됩니다.
+2. **PC 음성 인식 컨트롤러 실행 (Mu [Python 3 모드])**:
+   PC에서 ESP32의 오디오 스트림을 수신하여 Google 음성 인식 또는 Whisper로 처리한 후 명령을 전송합니다:
 
    .. code-block:: python
 
+       import io
        import requests
        import speech_recognition as sr
 
-       ESP_IP = "192.168.0.50"  # ESP32 보드의 IP 주소
-       CMD_URL = f"http://{ESP_IP}:8080/ai"
+       ESP_IP = "192.168.0.50"  # ESP32 IP 주소
+       STREAM_URL = f"http://{ESP_IP}:8081/"
+       CMD_URL = f"http://{ESP_IP}:8081/ai"
+
+       SAMPLE_RATE = 16000
+       CHUNK_BYTES = SAMPLE_RATE * 2 * 2  # 2초 분량 (16kHz * 16-bit mono)
 
        recognizer = sr.Recognizer()
-       mic = sr.Microphone()  # PC/노트북 내장 마이크 사용
 
-       print("=== PC 음성 인식 스마트카 컨트롤러 ===")
-       print("명령어 예시: '출발', '뒤로', '왼쪽', '오른쪽', '멈춰', '춤춰'")
+       with requests.get(STREAM_URL, stream=True) as resp:
+           resp.raw.read(44)  # 44바이트 WAV 헤더 건너뛰기
+           print("ESP32 무선 오디오 스트림 연결됨! 명령어를 말해 보세요 (출발 / 멈춰 / 춤춰)")
 
-       with mic as source:
-           recognizer.adjust_for_ambient_noise(source)
+           while True:
+               pcm_chunk = resp.raw.read(CHUNK_BYTES)
+               if not pcm_chunk:
+                   break
 
-       while True:
-           print("\n[말씀하세요...]")
-           with mic as source:
-               audio = recognizer.listen(source)
+               audio_data = sr.AudioData(pcm_chunk, SAMPLE_RATE, 2)
+               try:
+                   text = recognizer.recognize_google(audio_data, language="ko-KR")
+                   print("인식된 음성:", text)
 
-           try:
-               text = recognizer.recognize_google(audio, language="ko-KR")
-               print("인식된 음성:", text)
+                   action = None
+                   if "출발" in text or "가자" in text:
+                       action = "GO"
+                   elif "멈춰" in text or "정지" in text:
+                       action = "STOP"
+                   elif "춤" in text:
+                       action = "DANCE"
 
-               action = None
+                   if action:
+                       requests.get(CMD_URL, params={"action": action, "score": 0.95}, timeout=0.5)
+               except sr.UnknownValueError:
+                   pass
 
-               if "출발" in text or "앞으로" in text or "가자" in text:
-                   action = "GO"
-               elif "뒤로" in text or "후진" in text:
-                   action = "BACK"
-               elif "왼쪽" in text:
-                   action = "LEFT"
-               elif "오른쪽" in text:
-                   action = "RIGHT"
-               elif "멈춰" in text or "정지" in text:
-                   action = "STOP"
-               elif "춤" in text:
-                   action = "DANCE"
+기기 단독 온디바이스 TinyML 사운드 분류 (Edge Impulse & MFCC)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-               if action:
-                   requests.get(CMD_URL, params={"action": action}, timeout=0.5)
+PC와의 무선 통신 없이 ESP32-S3 기기 단독으로 키워드 인식(KWS)이나 이상 음향 감지를 수행할 때는 ``mic.mfcc()``\ 를 활용합니다.
 
-           except sr.UnknownValueError:
-               pass
-           except Exception as e:
-               print("전송 오류:", e)
+.. note::
+    **Edge Impulse 및 TinyML 음성 모델 개발**:
+    마이크로컨트롤러용 음향 인식 및 키워드 감지 모델을 웹 브라우저에서 손쉽게 학습하고 C++/MicroPython 라이브러리로 배포하려면 `Edge Impulse Studio <https://www.edgeimpulse.com/>`_ (https://www.edgeimpulse.com/) 및 `Edge Impulse 오디오 튜토리얼 <https://docs.edgeimpulse.com/docs/tutorials/audio>`_\ 을 이용할 수 있으며, `Kaggle Models <https://www.kaggle.com/models?framework=liteRT>`_\ 와 `LiteRT Community <https://huggingface.co/litert-community>`_\ 에서 사전 학습된 음향 분류 모델(``.tflite``)을 직접 내려받을 수도 있습니다.
 
+* **MFCC 특징 벡터 추출**: ``mic.mfcc(num_cepstra=13)``\ 를 호출하면 음성 인식 인공지능 모델(TinyML / TFLite Micro)의 표준 입력으로 쓰이는 13차원 Mel-Frequency Cepstral Coefficients를 고속으로 추출합니다.
+* **학습용 데이터셋 수집**: ``mic.save_wav("sample.wav", duration=1.0)``\ 로 온보드 플래시 메모리에 마이크 음성을 16-bit WAV 파일로 직접 저장하여 Edge Impulse 학습용 데이터셋을 손쉽게 구축할 수 있습니다.
 
+.. code-block:: python
+
+    from espzero import I2SMic
+    from time import sleep
+
+    mic = I2SMic()
+
+    # 13차원 MFCC 특징 벡터 추출 (TinyML 음성 모델 입력용)
+    features = mic.mfcc(num_cepstra=13)
+    print("MFCC 특징 벡터:", features[:5], "... (총 13개)")
+
+    # 1초 분량 학습용 음향 샘플 플래시 저장
+    mic.save_wav("cough_sample.wav", duration=1.0)
+    print("WAV 오디오 샘플 저장 완료!")

@@ -80,3 +80,26 @@ GpioLcd
 ~~~~~~~
 .. autoclass:: espzero.GpioLcd
    :members:
+
+Audio
+-------------------------------------
+
+I2SMic
+~~~~~~
+.. autoclass:: espzero.I2SMic
+   :members:
+
+Audio DSP va Wi-Fi striming (``espzero.audio``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: espzero.audio.spectrum
+
+.. autofunction:: espzero.audio.mfcc
+
+.. autofunction:: espzero.audio.freq_to_note
+
+.. autofunction:: espzero.audio.start_wifi_stream
+
+.. autofunction:: espzero.audio.get_ai_result
+
+.. autofunction:: espzero.audio.stop_stream

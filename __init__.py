@@ -64,6 +64,10 @@ def __getattr__(name):
         mod = __import__(__name__ + ".vision", None, None, ["vision"])
         globals()["vision"] = mod
         return mod
+    if name == "audio":
+        mod = __import__(__name__ + ".audio", None, None, ["audio"])
+        globals()["audio"] = mod
+        return mod
     raise AttributeError("module 'espzero' has no attribute '{}'".format(name))
 
 
@@ -148,6 +152,7 @@ from ._core import (
 )
 from ._wifi  import WiFi
 from ._touch import CapTouch
+from .audio  import I2SMic
 
 __all__ = [
     "begin", "pinout",
@@ -166,6 +171,6 @@ __all__ = [
     "DigitalOutputDevice", "PWMOutputDevice",
     "DigitalInputDevice", "AnalogInputDevice",
     "I2cLcd", "GpioLcd", "OLED",
-    "WiFi", "CapTouch",
-    "vision",
+    "WiFi", "CapTouch", "I2SMic",
+    "vision", "audio",
 ]

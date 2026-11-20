@@ -145,6 +145,49 @@ Melodiyalarni ijro etish (Play)
     ]
     spk.play(tune)
 
+Mikrofon (I2S Microphone)
+--------------------------
+
+ESP32-S3 ning tezkor hisoblash quvvati va I2S apparat interfeysidan foydalanib, 24-bitli raqamli MEMS mikrofonlaridan (masalan, INMP441) to'g'ridan-to'g'ri toza ovozni yozib olish va real vaqtda audio signallarni tahlil qilish mumkin.
+
+I2S mikrofonni ulash (INMP441, 3.3V)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``INMP441`` moduli 3.3V quvvat va raqamli I2S shinasi (SCK, WS, SD) orqali ishlaydi, shuning uchun oddiy analog mikrofonlarga qaraganda shovqindan xoli yuqori sifatli ovozni ta'minlaydi.
+Uni daraja o'zgartirgichsiz (level shifter) to'g'ridan-to'g'ri ESP32-S3 WROOM CAM platasining xavfsiz standart pinlariga (``SCK=41``, ``WS=42``, ``SD=2``) 3.3V signallari bilan ulash mumkin.
+(Yagona mono mikrofon sifatida ishlatish uchun ``L/R`` pinini ``GND`` ga ulab chap kanalni tanlang.)
+
+.. image:: /images/circuit_inmp441_mic.svg
+    :alt: ESP32-S3 I2S raqamli mikrofon (INMP441) ulanish sxemasi
+    :align: center
+
+Asosiy foydalanish va tovushni aniqlash (I2SMic)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Plata profilidagi standart pinlar avtomatik biriktiriladi. Joriy ovoz balandligi (``level``, ``0.0 ~ 1.0``), detsibellari (``decibels``), asosiy musiqa notasi (``note``) va qarsak urish hodisalari (``when_clap``) oson boshqariladi.
+
+.. code-block:: python
+
+    from espzero import I2SMic, esp_led
+    from time import sleep
+
+    # Standart I2S pinlarini avtomatik biriktirish (ESP32-S3: SCK=41, WS=42, SD=2)
+    mic = I2SMic()
+
+    # Qarsak yoki kuchli ovoz eshitilganda platadagi LED holatini o'zgartirish
+    mic.when_clap = esp_led.toggle
+
+    while True:
+        print("Ovoz kuchi:", round(mic.level, 3), "| dB:", int(mic.decibels), "| Nota:", mic.note or "---")
+        sleep(0.2)
+
+Real vaqtda OLED audio spektr analizatori (FFT Spectrum)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``mic.spectrum(bins=16)`` orqali 16 diapazonli chastota energiyasini ajratib olib, OLED displeyida real vaqtda ekvalayzer ustunlarini (``oled.show_spectrum()``) chizish va ritmga moslab RGB LEDni miltillatish mumkin.
+
+.. literalinclude:: ../examples/audio_spectrum_oled.py
+
 Kirish qurilmalari (Input Devices)
 ----------------------------------
 
@@ -714,59 +757,10 @@ Bu usul simlarni ulashni minimal darajaga tushiradi va shovqinli xonalarda ham a
 
 2. **1-qadam: ESP32 Robot Avtomobili kodini yuklash (Mu [ESP32 Rejimi] yoki Thonny / mpremote)**:
 
-   .. literalinclude:: ../examples/voice_control_car.py
+   .. literalinclude:: ../examples/voice_control_car_esp32.py
 
 3. **2-qadam: Kompyuter Ovozli Boshqaruv skriptini ishga tushirish (Mu [Python 3 Rejimi] yoki standart Python)**:
-   Mu muharririda **Python 3 Rejimida** (yoki VS Code / terminalda ``python voice_controller.py`` orqali) ``ESP_IP`` o'rniga platangiz IP manzilini kiritib ishga tushiring:
 
-   .. code-block:: python
-
-       import requests
-       import speech_recognition as sr
-
-       ESP_IP = "192.168.0.50"  # ESP32 IP manzili
-       CMD_URL = f"http://{ESP_IP}:8080/ai"
-
-       recognizer = sr.Recognizer()
-       mic = sr.Microphone()  # Kompyuter mikrofoni
-
-       print("=== Ovoz bilan boshqariladigan avtomobil boshqaruvchisi ===")
-       print("Buyruqlar: 'oldinga', 'orqaga', 'chapga', "o'ngga", "to'xta", 'raqs'")
-
-       with mic as source:
-           recognizer.adjust_for_ambient_noise(source)
-
-       while True:
-           print("\n[Eshitmoqdaman... Gapiring]")
-           with mic as source:
-               audio = recognizer.listen(source)
-
-           try:
-               # O'zbek tili (uz-UZ) da Google Speech Recognition orqali ovozni aniqlash
-               text = recognizer.recognize_google(audio, language="uz-UZ").lower()
-               print("Eshitildi:", text)
-
-               action = None
-
-               if "oldinga" in text or "yur" in text or "ketdik" in text:
-                   action = "GO"
-               elif "orqaga" in text:
-                   action = "BACK"
-               elif "chap" in text:
-                   action = "LEFT"
-               elif "o'ng" in text or "ong" in text:
-                   action = "RIGHT"
-               elif "to'xta" in text or "toxta" in text or "stop" in text:
-                   action = "STOP"
-               elif "raqs" in text or "o'yna" in text:
-                   action = "DANCE"
-
-               if action:
-                   requests.get(CMD_URL, params={"action": action}, timeout=0.5)
-
-           except sr.UnknownValueError:
-               pass
-           except Exception as e:
-               print("Xatolik:", e)
+   .. literalinclude:: ../examples/voice_control_car_pc.py
 
 

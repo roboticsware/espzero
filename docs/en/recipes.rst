@@ -145,6 +145,49 @@ Playing Melodies
     ]
     spk.play(tune)
 
+Microphone (I2S Microphone)
+---------------------------
+
+Using the ESP32-S3's processing performance and native I2S peripheral, you can capture crystal-clear audio directly from 24-bit digital MEMS microphones (such as the INMP441) and perform real-time signal analysis.
+
+Connecting an I2S Microphone (INMP441, 3.3V)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``INMP441`` supports native 3.3V power and standard digital I2S signaling (SCK, WS, SD), offering much higher signal-to-noise ratio and immunity from interference compared to traditional analog microphones.
+It connects directly to the safe default pins of the ESP32-S3 WROOM CAM (``SCK=41``, ``WS=42``, ``SD=2``) without requiring a level shifter.
+(For single mono operation, wire the ``L/R`` pin to ``GND`` to select the left audio channel.)
+
+.. image:: /images/circuit_inmp441_mic.svg
+    :alt: ESP32-S3 I2S Digital Microphone (INMP441) Circuit Diagram
+    :align: center
+
+Basic Usage & Sound Detection (I2SMic)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Instantiating ``I2SMic()`` automatically maps the safe hardware pins from the active board profile, providing sound volume (``level``, ``0.0 ~ 1.0``), sound pressure in decibels (``decibels``), dominant musical note (``note``), and clap detection events (``when_clap``).
+
+.. code-block:: python
+
+    from espzero import I2SMic, esp_led
+    from time import sleep
+
+    # Automatically maps safe I2S pins (ESP32-S3: SCK=41, WS=42, SD=2)
+    mic = I2SMic()
+
+    # Toggle the onboard LED whenever a clap or loud sound occurs
+    mic.when_clap = esp_led.toggle
+
+    while True:
+        print("Level:", round(mic.level, 3), "| dB:", int(mic.decibels), "| Note:", mic.note or "---")
+        sleep(0.2)
+
+Real-Time OLED Audio Spectrum Visualizer (FFT Spectrum)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Compute a 16-band frequency spectrum using ``mic.spectrum(bins=16)`` and render real-time equalizer bars on an OLED display (``oled.show_spectrum()``), while pulsing the RGB LED on strong bass beats.
+
+.. literalinclude:: ../examples/audio_spectrum_oled.py
+
 Input Devices
 -------------
 
@@ -714,58 +757,10 @@ This approach requires minimal hardware wiring and ensures high speech recogniti
 
 2. **Step 1: Upload ESP32 Robot Car Script (Mu [ESP32 Mode] or Thonny / mpremote)**:
 
-   .. literalinclude:: ../examples/voice_control_car.py
+   .. literalinclude:: ../examples/voice_control_car_esp32.py
 
 3. **Step 2: Run the PC Voice Controller (Mu [Python 3 Mode] or Standard Python)**:
-   Run the script below in Mu Editor's **Python 3 Mode** (or via ``python voice_controller.py`` in VS Code / terminal) after replacing ``ESP_IP`` with your ESP32's IP address:
 
-   .. code-block:: python
-
-       import requests
-       import speech_recognition as sr
-
-       ESP_IP = "192.168.0.50"  # Replace with your ESP32 IP
-       CMD_URL = f"http://{ESP_IP}:8080/ai"
-
-       recognizer = sr.Recognizer()
-       mic = sr.Microphone()  # Built-in PC microphone
-
-       print("=== Voice-Controlled Car PC Controller ===")
-       print("Commands: 'forward', 'backward', 'left', 'right', 'stop', 'dance'")
-
-       with mic as source:
-           recognizer.adjust_for_ambient_noise(source)
-
-       while True:
-           print("\n[Listening...]")
-           with mic as source:
-               audio = recognizer.listen(source)
-
-           try:
-               text = recognizer.recognize_google(audio, language="en-US").lower()
-               print("Heard:", text)
-
-               action = None
-
-               if "forward" in text or "go" in text:
-                   action = "GO"
-               elif "back" in text or "reverse" in text:
-                   action = "BACK"
-               elif "left" in text:
-                   action = "LEFT"
-               elif "right" in text:
-                   action = "RIGHT"
-               elif "stop" in text:
-                   action = "STOP"
-               elif "dance" in text:
-                   action = "DANCE"
-
-               if action:
-                   requests.get(CMD_URL, params={"action": action}, timeout=0.5)
-
-           except sr.UnknownValueError:
-               pass
-           except Exception as e:
-               print("Network error:", e)
+   .. literalinclude:: ../examples/voice_control_car_pc.py
 
 

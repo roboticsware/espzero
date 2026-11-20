@@ -36,6 +36,9 @@ class ESP32DevKitV1(BoardProfile):
     PIN_ALIASES = {
         "internal": 2,
         "led":      2,
+        "i2s_sck":  14,
+        "i2s_ws":   15,
+        "i2s_sd":   32,
     }
 
     ADC_ATTEN            = _atten()
@@ -66,6 +69,9 @@ class ESP32S3DevKit(BoardProfile):
         "neopixel":    48,
         "io2":         2,
         "digital_led": 2,
+        "i2s_sck":     41,
+        "i2s_ws":      42,
+        "i2s_sd":      2,
     }
 
     ADC_ATTEN            = _atten()
@@ -139,6 +145,9 @@ class WemosD1Mini32(BoardProfile):
     PIN_ALIASES = {
         "internal": 2,
         "led":      2,
+        "i2s_sck":  14,
+        "i2s_ws":   15,
+        "i2s_sd":   32,
     }
 
     ADC_ATTEN            = _atten()

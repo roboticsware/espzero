@@ -139,6 +139,29 @@ GpioLcd
 .. autoclass:: espzero.GpioLcd
    :members:
 
+오디오 (Audio)
+----------------------------------
+
+I2SMic
+~~~~~~
+.. autoclass:: espzero.I2SMic
+   :members:
+
+오디오 신호 처리 및 무선 스트리밍 (``espzero.audio``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: espzero.audio.spectrum
+
+.. autofunction:: espzero.audio.mfcc
+
+.. autofunction:: espzero.audio.freq_to_note
+
+.. autofunction:: espzero.audio.start_wifi_stream
+
+.. autofunction:: espzero.audio.get_ai_result
+
+.. autofunction:: espzero.audio.stop_stream
+
 통신 (Networking)
 ---------------
 
