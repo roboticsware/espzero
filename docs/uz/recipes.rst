@@ -227,7 +227,11 @@ Potentiometr
 O'rnatilgan sensorli tugma (Capacitive Touch)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ESP32 va ESP32-S3 chiplariga o'rnatilgan sig'imli sensorli periferiyadan foydalanadi. Tashqi rezistorlarsiz barmog'ingiz bilan teginishni aniqlaydi.
+ESP32 va ESP32-S3 chiplariga o'rnatilgan sig'imli sensorli periferiyadan foydalanadi. Tashqi rezistorlarsiz barmog'ingiz bilan teginishni aniqlaydi. (``InternalTouchSensor`` taxallusi orqali ham foydalanish mumkin.)
+
+.. note::
+    **Tashqi ``TouchSensor`` modulidan farqi**:
+    Agar TTP223 kabi tashqi raqamli sensor modulini ulasangiz, ``picozero-rw`` bilan mos keluvchi ``TouchSensor(pin)`` klassidan foydalaning. ``CapTouch`` (``InternalTouchSensor``) esa tashqi modulsiz to'g'ridan-to'g'ri ESP32 chipining ichki sensor pinlari uchun mo'ljallangan.
 
 .. code-block:: python
 

@@ -98,8 +98,8 @@ Potentiometer (Pot)
 .. autoclass:: espzero.Potentiometer
    :members: value, raw_value, voltage
 
-CapTouch (ESP32 내장 터치)
-~~~~~~~~~~~~~~~~~~~~~~~~~
+CapTouch / InternalTouchSensor (ESP32 내장 터치)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autoclass:: espzero.CapTouch
    :members:
 

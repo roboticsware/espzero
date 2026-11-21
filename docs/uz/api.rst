@@ -45,8 +45,13 @@ Potentiometer
 .. autoclass:: espzero.Potentiometer
    :members:
 
-CapTouch
-~~~~~~~~
+TouchSensor (Tashqi raqamli modul)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autoclass:: espzero.TouchSensor
+   :members:
+
+CapTouch / InternalTouchSensor (ESP32 ichki teginish)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autoclass:: espzero.CapTouch
    :members:
 

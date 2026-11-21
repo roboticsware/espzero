@@ -227,7 +227,11 @@ Potentiometer
 Built-in Touch Sensor (Capacitive Touch)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Use the built-in capacitive touch peripheral on ESP32 / ESP32-S3. Detects touch directly from a finger or conductive wire without external resistors.
+Use the built-in capacitive touch peripheral on ESP32 / ESP32-S3. Detects touch directly from a finger or conductive wire without external resistors. (Also available via the ``InternalTouchSensor`` alias.)
+
+.. note::
+    **Difference from External ``TouchSensor``**:
+    If you are connecting an external digital touch module (such as TTP223), use the ``picozero-rw``-compatible ``TouchSensor(pin)`` class instead. ``CapTouch`` (``InternalTouchSensor``) is specifically for ESP32's built-in hardware touch pins with no external module.
 
 .. code-block:: python
 

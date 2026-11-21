@@ -45,8 +45,13 @@ Potentiometer
 .. autoclass:: espzero.Potentiometer
    :members:
 
-CapTouch
-~~~~~~~~
+TouchSensor (External Digital Module)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autoclass:: espzero.TouchSensor
+   :members:
+
+CapTouch / InternalTouchSensor (ESP32 Built-in Touch)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autoclass:: espzero.CapTouch
    :members:
 

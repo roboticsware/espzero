@@ -62,3 +62,6 @@ class CapTouch:
         return "CapTouch(pin={}, threshold={})".format(
             self._pin_num, self._threshold
         )
+
+
+InternalTouchSensor = CapTouch
