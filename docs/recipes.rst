@@ -240,38 +240,27 @@ ESP32-S3 WROOM CAM 보드의 기본 핀(``SCK=41``, ``WS=42``, ``SD=2``)에 별�
     print("원시 16비트 ADC 값 (0 - 65535):", pot.raw_value)
     print("전압 (V):", pot.voltage)
 
-서보 모터 (Servo)
-~~~~~~~~~~~~~~~
+내장 터치 센서 (Capacitive Touch)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-서보 모터를 0~1 비율 또는 각도(0~180도)로 제어합니다. (``picozero-rw`` 호환)
-
-.. image:: /images/circuit_servo.svg
-    :alt: ESP32 서보 모터 회로 연결도
-    :align: center
+ESP32 및 ESP32-S3 칩에 내장된 정전용량식 터치 센서를 사용합니다. 외부 저항이나 회로 없이 핀에 손가락을 대는 것만으로 터치를 감지합니다.
 
 .. code-block:: python
 
-    from espzero import Servo
+    from espzero import CapTouch
     from time import sleep
 
-    servo = Servo(13)
+    # WROOM은 T0~T9 (예: GPIO 4), S3은 터치 지원 핀 (예: GPIO 1)
+    touch = CapTouch(1)
 
-    # 기본 위치 제어 (0.0: 최소, 0.5: 중간, 1.0: 최대)
-    servo.mid()
-    sleep(1)
+    while True:
+        # value: 원시 측정값 (손을 대면 값이 감소함)
+        # is_touched: threshold(기본값 300)보다 작으면 True
+        print("Raw:", touch.value, "터치됨:", touch.is_touched)
+        sleep(0.2)
 
-    # 각도 단위 직접 제어 (picozero-rw의 move_to_degree API)
-    servo.move_to_degree(90)   # 90도 (중앙)
-    sleep(1)
-    servo.move_to_degree(180)  # 180도 (최대)
-    sleep(1)
-    servo.move_to_degree(0)    # 0도 (최소)
-
-    # 부드러운 왕복 스위핑 (0도 <-> 180도 연속 왕복)
-    servo.pulse(fade_in_time=1, fade_out_time=1)
-
-온도 센서 (Temperature Sensor)
-----------------------------
+내장 온도 센서 (Internal Temperature Sensor)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ESP32 칩 내부의 온도를 측정합니다. (주의: 외부 기온과는 차이가 있을 수 있습니다.)
 
@@ -306,8 +295,8 @@ ESP32 칩 내부의 온도를 측정합니다. (주의: 외부 기온과는 차�
         print("거리: ", ds.distance, "cm")
         sleep(0.5)
 
-모터 및 로봇 (Motor & Robot)
----------------------------
+DC 모터 및 로봇 (DC Motor & Robot)
+---------------------------------
 
 DC 모터 (Motor)
 ~~~~~~~~~~~~~~
@@ -377,24 +366,35 @@ DC 모터 (Motor)
     # 로봇 정지
     robot.stop()
 
-내장 터치 센서 (Capacitive Touch)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+서보 모터 (Servo)
+----------------
 
-ESP32 및 ESP32-S3 칩에 내장된 정전용량식 터치 센서를 사용합니다. 외부 저항이나 회로 없이 핀에 손가락을 대는 것만으로 터치를 감지합니다.
+서보 모터를 0~1 비율 또는 각도(0~180도)로 제어합니다. (``picozero-rw`` 호환)
+
+.. image:: /images/circuit_servo.svg
+    :alt: ESP32 서보 모터 회로 연결도
+    :align: center
 
 .. code-block:: python
 
-    from espzero import CapTouch
+    from espzero import Servo
     from time import sleep
 
-    # WROOM은 T0~T9 (예: GPIO 4), S3은 터치 지원 핀 (예: GPIO 1)
-    touch = CapTouch(1)
+    servo = Servo(13)
 
-    while True:
-        # value: 원시 측정값 (손을 대면 값이 감소함)
-        # is_touched: threshold(기본값 300)보다 작으면 True
-        print("Raw:", touch.value, "터치됨:", touch.is_touched)
-        sleep(0.2)
+    # 기본 위치 제어 (0.0: 최소, 0.5: 중간, 1.0: 최대)
+    servo.mid()
+    sleep(1)
+
+    # 각도 단위 직접 제어 (picozero-rw의 move_to_degree API)
+    servo.move_to_degree(90)   # 90도 (중앙)
+    sleep(1)
+    servo.move_to_degree(180)  # 180도 (최대)
+    sleep(1)
+    servo.move_to_degree(0)    # 0도 (최소)
+
+    # 부드러운 왕복 스위핑 (0도 <-> 180도 연속 왕복)
+    servo.pulse(fade_in_time=1, fade_out_time=1)
 
 스텝 모터 (Stepper Motor)
 -------------------------

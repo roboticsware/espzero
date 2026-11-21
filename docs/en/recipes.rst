@@ -224,38 +224,27 @@ Potentiometer
     print("Current value (0-1):", pot.value)
     print("Voltage (V):", pot.voltage)
 
-Servo Motor (Servo)
-~~~~~~~~~~~~~~~~~~~
+Built-in Touch Sensor (Capacitive Touch)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Control standard servo motors via ratio (0.0 to 1.0) or angles (0 to 180 degrees) with ``picozero-rw`` compatibility.
-
-.. image:: /images/circuit_servo.svg
-    :alt: ESP32 Servo Motor Circuit Wiring Diagram
-    :align: center
+Use the built-in capacitive touch peripheral on ESP32 / ESP32-S3. Detects touch directly from a finger or conductive wire without external resistors.
 
 .. code-block:: python
 
-    from espzero import Servo
+    from espzero import CapTouch
     from time import sleep
 
-    servo = Servo(13)
+    # WROOM: T0~T9 (e.g. GPIO 4), ESP32-S3: touch-capable pin (e.g. GPIO 1)
+    touch = CapTouch(1)
 
-    # Position control (0.0: min, 0.5: mid, 1.0: max)
-    servo.mid()
-    sleep(1)
+    while True:
+        # value: raw capacitance reading (decreases when touched)
+        # is_touched: True if raw value drops below threshold (default: 300)
+        print("Raw:", touch.value, "Touched:", touch.is_touched)
+        sleep(0.2)
 
-    # Move to specific angle (move_to_degree API)
-    servo.move_to_degree(90)   # 90 degrees (mid)
-    sleep(1)
-    servo.move_to_degree(180)  # 180 degrees (max)
-    sleep(1)
-    servo.move_to_degree(0)    # 0 degrees (min)
-
-    # Smooth sweeping back and forth (0 deg <-> 180 deg)
-    servo.pulse(fade_in_time=1, fade_out_time=1)
-
-Temperature Sensor
-------------------
+Internal Temperature Sensor
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Measure the internal temperature of the ESP32 chip. (Note: May differ from ambient temperature).
 
@@ -290,8 +279,8 @@ Measure distance safely on ESP32-S3 using a 3.3V-compatible ultrasonic sensor su
         print("Distance: ", ds.distance, "cm")
         sleep(0.5)
 
-Motors & Robots (Motor & Robot)
--------------------------------
+DC Motors & Robots (DC Motor & Robot)
+-------------------------------------
 
 DC Motor (Motor)
 ~~~~~~~~~~~~~~~~
@@ -361,24 +350,35 @@ Easily steer a 2-wheeled robot rover with forward, backward, left, and right mov
     # Stop rover
     robot.stop()
 
-Built-in Touch Sensor (Capacitive Touch)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Servo Motor (Servo)
+-------------------
 
-Use the built-in capacitive touch peripheral on ESP32 / ESP32-S3. Detects touch directly from a finger or conductive wire without external resistors.
+Control standard servo motors via ratio (0.0 to 1.0) or angles (0 to 180 degrees) with ``picozero-rw`` compatibility.
+
+.. image:: /images/circuit_servo.svg
+    :alt: ESP32 Servo Motor Circuit Wiring Diagram
+    :align: center
 
 .. code-block:: python
 
-    from espzero import CapTouch
+    from espzero import Servo
     from time import sleep
 
-    # WROOM: T0~T9 (e.g. GPIO 4), ESP32-S3: touch-capable pin (e.g. GPIO 1)
-    touch = CapTouch(1)
+    servo = Servo(13)
 
-    while True:
-        # value: raw capacitance reading (decreases when touched)
-        # is_touched: True if raw value drops below threshold (default: 300)
-        print("Raw:", touch.value, "Touched:", touch.is_touched)
-        sleep(0.2)
+    # Position control (0.0: min, 0.5: mid, 1.0: max)
+    servo.mid()
+    sleep(1)
+
+    # Move to specific angle (move_to_degree API)
+    servo.move_to_degree(90)   # 90 degrees (mid)
+    sleep(1)
+    servo.move_to_degree(180)  # 180 degrees (max)
+    sleep(1)
+    servo.move_to_degree(0)    # 0 degrees (min)
+
+    # Smooth sweeping back and forth (0 deg <-> 180 deg)
+    servo.pulse(fade_in_time=1, fade_out_time=1)
 
 Stepper Motor
 -------------

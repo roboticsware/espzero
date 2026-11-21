@@ -224,38 +224,27 @@ Potentiometr
     print("Joriy qiymat (0-1):", pot.value)
     print("Kuchlanish (V):", pot.voltage)
 
-Servo motor (Servo)
-~~~~~~~~~~~~~~~~~~~
+O'rnatilgan sensorli tugma (Capacitive Touch)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Standart servo motorlarni nisbat (0.0 dan 1.0 gacha) yoki burchak (0 dan 180 gradusgacha) bo'yicha boshqarish (``picozero-rw`` bilan to'liq mos):
-
-.. image:: /images/circuit_servo.svg
-    :alt: ESP32 Servo motor sxemasi
-    :align: center
+ESP32 va ESP32-S3 chiplariga o'rnatilgan sig'imli sensorli periferiyadan foydalanadi. Tashqi rezistorlarsiz barmog'ingiz bilan teginishni aniqlaydi.
 
 .. code-block:: python
 
-    from espzero import Servo
+    from espzero import CapTouch
     from time import sleep
 
-    servo = Servo(13)
+    # WROOM: T0~T9 (masalan, GPIO 4), S3: touch pin (masalan, GPIO 1)
+    touch = CapTouch(1)
 
-    # Holatni boshqarish (0.0: min, 0.5: o'rta, 1.0: maks)
-    servo.mid()
-    sleep(1)
+    while True:
+        # value: xom o'lchov qiymati (tegilganda kamayadi)
+        # is_touched: threshold (standart 300) dan kichik bo'lsa True
+        print("Xom qiymat:", touch.value, "Tegildi:", touch.is_touched)
+        sleep(0.2)
 
-    # Aniq burchakka burish (move_to_degree API)
-    servo.move_to_degree(90)   # 90 gradus (markaz)
-    sleep(1)
-    servo.move_to_degree(180)  # 180 gradus (maks)
-    sleep(1)
-    servo.move_to_degree(0)    # 0 gradus (min)
-
-    # Ravon tebranish (0 <-> 180 gradus uzluksiz harakat)
-    servo.pulse(fade_in_time=1, fade_out_time=1)
-
-Harorat sensori (Temperature Sensor)
-------------------------------------
+Ichki harorat sensori (Internal Temperature Sensor)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ESP32 chipining ichki haroratini o'lchang. (Eslatma: Atrof-muhit haroratidan farq qilishi mumkin).
 
@@ -290,8 +279,8 @@ Masofa sensori (Distance Sensor)
         print("Masofa: ", ds.distance, "cm")
         sleep(0.5)
 
-Motorlar va Robotlar (Motor & Robot)
-------------------------------------
+DC Motorlar va Robotlar (DC Motor & Robot)
+------------------------------------------
 
 DC Motor (Motor)
 ~~~~~~~~~~~~~~~~
@@ -361,24 +350,35 @@ Robot Rover (Ikki g'ildirakli robot platformasi)
     # Robotni to'xtatish
     robot.stop()
 
-O'rnatilgan sensorli tugma (Capacitive Touch)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Servo motor (Servo)
+-------------------
 
-ESP32 va ESP32-S3 chiplariga o'rnatilgan sig'imli sensorli periferiyadan foydalanadi. Tashqi rezistorlarsiz barmog'ingiz bilan teginishni aniqlaydi.
+Standart servo motorlarni nisbat (0.0 dan 1.0 gacha) yoki burchak (0 dan 180 gradusgacha) bo'yicha boshqarish (``picozero-rw`` bilan to'liq mos):
+
+.. image:: /images/circuit_servo.svg
+    :alt: ESP32 Servo motor sxemasi
+    :align: center
 
 .. code-block:: python
 
-    from espzero import CapTouch
+    from espzero import Servo
     from time import sleep
 
-    # WROOM: T0~T9 (masalan, GPIO 4), S3: touch pin (masalan, GPIO 1)
-    touch = CapTouch(1)
+    servo = Servo(13)
 
-    while True:
-        # value: xom o'lchov qiymati (tegilganda kamayadi)
-        # is_touched: threshold (standart 300) dan kichik bo'lsa True
-        print("Xom qiymat:", touch.value, "Tegildi:", touch.is_touched)
-        sleep(0.2)
+    # Holatni boshqarish (0.0: min, 0.5: o'rta, 1.0: maks)
+    servo.mid()
+    sleep(1)
+
+    # Aniq burchakka burish (move_to_degree API)
+    servo.move_to_degree(90)   # 90 gradus (markaz)
+    sleep(1)
+    servo.move_to_degree(180)  # 180 gradus (maks)
+    sleep(1)
+    servo.move_to_degree(0)    # 0 gradus (min)
+
+    # Ravon tebranish (0 <-> 180 gradus uzluksiz harakat)
+    servo.pulse(fade_in_time=1, fade_out_time=1)
 
 Stepper motor (Stepper Motor)
 -----------------------------
