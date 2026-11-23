@@ -507,15 +507,15 @@ Faqat GPIO pinlari yordamida LiquidCrystal displeylarida (LCD) belgilarni chop e
 .. literalinclude:: examples/lcd.py
 
 
-AI vizualizatsiyasi (AI vision)
--------------------------------
+Kamera (Camera)
+---------------
 
-ESP32-S3 kamerasi yordamida kompyuter ko'magidagi AI va mustaqil ishlaydigan qurilmadagi AI misollari.
+ESP32-S3 WROOM CAM kabi kamerali platalarda kompyuter yoki AI serversiz mustaqil ravishda suratga olish va flash xotiraga saqlash misollari.
 
 .. important::
     **Kamerani qo'llab-quvvatlovchi proshivka zarur**:
     Rasmiy standart MicroPython proshivkasida xotira cheklovlari tufayli kamera drayveri (``camera`` moduli) mavjud emas.
-    Vizual funksiyalardan foydalanish uchun platangizga (ESP32-S3 WROOM CAM) **Kamera drayveri bilan yig'ilgan MicroPython proshivkasi (Camera-enabled Firmware)** o'rnatilgan bo'lishi kerak.
+    Kamera va vizual funksiyalardan foydalanish uchun platangizga (ESP32-S3 WROOM CAM) **Kamera drayveri bilan yig'ilgan MicroPython proshivkasi (Camera-enabled Firmware)** o'rnatilgan bo'lishi kerak.
 
 .. note::
     **Mu Muharririda o'rnatilgan proshivka qilish yo'riqnomasi (Onlayn / Oflayn qo'llab-quvvatlanadi)**:
@@ -529,22 +529,51 @@ ESP32-S3 kamerasi yordamida kompyuter ko'magidagi AI va mustaqil ishlaydigan qur
     * **Oflayn proshivka qilish ([ESP Firmware flasher] bo'limi)**:
       Internet bo'lmaganda yoki kompyuteringizda oldindan tayyorlab qo'yilgan ma'lum bir versiyadagi kamera proshivkasi (``.bin`` fayli) mavjud bo'lganda ishlatiladi. Plata turini (``ESP32-S3``) tanlang, kompyuteringizdagi faylni ko'rsating va **[O'chirish va yozish]** tugmasini bosing.
 
-Bitta rasm olish va saqlash (``vision.capture`` / ``vision.save_photo``)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Suratga olish va saqlash (``vision.save_photo`` / ``vision.capture``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Yangi (``camera.Camera`` + ``jpeg.Encoder``) va eski (``camera.init``) kamera proshivkalarini avtomatik aniqlab, bir qator kod bilan JPEG rasm oladi yoki flesh xotiraga saqlaydi. Fon oqimi (``start_wifi_stream()``) ishlayotgan paytda ham apparat to'qnashuvisiz oxirgi kadrni xavfsiz qaytaradi.
+``vision.save_photo()`` funksiyasi yangi (``camera.Camera``) va eski (``camera.init``) proshivkalarni avtomatik aniqlab, bir qator kod bilan JPEG surat oladi va plata xotirasiga saqlaydi. Telegram yoki bulutli AI uchun xom JPEG baytlari kerak bo'lganda yoki fon oqimi (``start_wifi_stream()``) davomida oxirgi kadrni xavfsiz olish uchun ``vision.capture()`` dan foydalaning. Ishni tugatgach ``vision.close()`` orqali kamera resurslarini xavfsiz bo'shating.
 
 .. code-block:: python
 
     from espzero import vision
 
-    # 1. JPEG baytlarini to'g'ridan-to'g'ri olish (Telegram / bulutli AI API uchun)
-    jpg_bytes = vision.capture(framesize="QVGA", quality=70)
+    # 1. 1 ta surat olib flash xotiraga saqlash (o'lchamlar: QQVGA, HQVGA, QVGA, VGA)
+    saved = vision.save_photo("snapshot.jpg", framesize="QVGA", quality=80)
+    print("Saqlandi:", saved)
 
-    # 2. Flesh xotiraga to'g'ridan-to'g'ri saqlash
-    vision.save_photo("snapshot.jpg", framesize="QVGA", quality=75)
+    # 2. Xom JPEG baytlarini to'g'ridan-to'g'ri olish (tarmoq/bulutli AI uchun)
+    jpg_bytes = vision.capture(framesize="QVGA", quality=70)
+    print("Rasm hajmi:", len(jpg_bytes), "bayt")
+
+    # Ishlatib bo'lgach kamerani yopish
     vision.close()
 
+Taymlaps va AI o'qitish uchun rasm to'plash
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Ma'lum vaqt oralig'ida bir nechta suratlarni avtomatik saqlab, taymlaps yaratish yoki Edge Impulse kabi TinyML modellari uchun rasm to'plamini yig'ish mumkin.
+
+.. code-block:: python
+
+    from espzero import vision, esp_led
+    from time import sleep
+
+    for i in range(1, 6):
+        esp_led.color = (0, 255, 0)
+        esp_led.on()
+        path = vision.save_photo(f"photo_{i:03d}.jpg", framesize="QVGA")
+        esp_led.off()
+        print("Suratga olindi:", path)
+        sleep(2)
+
+    vision.close()
+
+
+AI vizualizatsiyasi (AI vision)
+-------------------------------
+
+ESP32-S3 kamerasini kompyuter ko'magidagi AI (MediaPipe, YOLOv8) va mustaqil qurilmadagi TinyML modellari bilan birlashtirish misollari. (Yuqoridagi **Kamera (Camera)** bo'limida ko'rsatilgan kamera proshivkasi o'rnatilgan bo'lishi kerak.)
 PC ko'magidagi AI (MediaPipe bilan — Faqat Mu Muharriri)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -610,78 +639,15 @@ Biroq, ESP32 va kompyuter o'rtasida **Wi-Fi** orqali vazifalarni taqsimlash orqa
    Quyidagi kodni plataga ``main.py`` nomi bilan saqlang (Mu da **ESP32 rejimi**, terminalda ``mpremote cp main.py :main.py``).
    (``main.py`` qilib saqlanganda, USB kabelni uzib, faqat batareya ulaganingizda ham plata o'z-o'zidan Wi-Fi ga ulanadi va simsiz video uzatishni boshlaydi. REPL da chiqqan ESP32 IP manzilini (masalan, ``192.168.0.50``) eslab qoling.)
 
-   .. code-block:: python
-
-       from espzero import WiFi, vision, Robot
-       from time import sleep
-
-       # 1. Wi-Fi ga ulanish
-       wifi = WiFi()
-       wifi.connect("Mening_WiFi_Nomi", "parol1234")
-
-       # 2. 2 g'ildirakli robot motorini kamera bilan to'qnashmaydigan pinlarda sozlash (Chap: 41, 42 / O'ng: 47, 21)
-       car = Robot(left=(41, 42), right=(47, 21))
-
-       # 3. Simsiz kamera oqimini boshlash (standart port: 8080)
-       vision.start_wifi_stream(port=8080)
-
-       # 4. Kompyuter AI qarorlarini qabul qilish va boshqarish davri
-       while True:
-           if "__pc_ai_data" in globals():
-               action = __pc_ai_data.get("action", "STOP")
-               if action == "GO":
-                   car.forward(0.6) # Yo'l bo'sh bo'lsa oldinga harakatlanish
-               else:
-                   car.stop()       # Odam yoki to'siq aniqlanganda to'xtash
-           sleep(0.05)
+   .. literalinclude:: examples/vision_yolo_car_esp32.py
+      :start-at: from espzero import
 
 3. **2-bosqich: Kompyuter AI Avtonom Boshqaruvchisini ishga tushirish (Mu [Python 3 rejimi] yoki standart Python)**:
    Mu muharririda **Python 3 rejimi**\ da ishga tushiring, yoki VS Code / terminalda ``yolo_drive.py`` fayliga saqlab ``python yolo_drive.py`` buyrug'i bilan bajaring (avval ``STREAM_URL`` va ``CMD_URL`` ga ESP32 IP manzilini kiriting).
    Kompyuteringizda real vaqtda aniqlangan obyektlar ramka bilan ko'rsatilgan video oyna ochiladi va robot mashina avtonom harakatni boshlaydi.
 
-   .. code-block:: python
-
-       import cv2
-       import requests
-       from ultralytics import YOLO
-
-       # Yengil YOLOv8 modelini yuklash va ESP32 oqim manzilini belgilash
-       model = YOLO("yolov8n.pt")
-       STREAM_URL = "http://192.168.0.50:8080/"  # ESP32 IP manzili
-       CMD_URL = "http://192.168.0.50:8080/ai"
-
-       cap = cv2.VideoCapture(STREAM_URL)
-
-       while cap.isOpened():
-           ret, frame = cap.read()
-           if not ret:
-               break
-
-           # Real vaqtda obyektni aniqlash (0: Odam, 9: Svetofor)
-           results = model(frame, verbose=False)
-           person_detected = False
-
-           for r in results:
-               for box in r.boxes:
-                   cls_id = int(box.cls[0])
-                   if cls_id == 0: # Odam aniqlandi
-                       person_detected = True
-
-           # Buyruq yuborish (STOP yoki GO)
-           cmd = "STOP" if person_detected else "GO"
-           try:
-               requests.get(f"{CMD_URL}?action={cmd}", timeout=0.1)
-           except Exception:
-               pass
-
-           # Natijani ekranda ko'rsatish
-           annotated = results[0].plot()
-           cv2.imshow("ESP32-S3 YOLO AI Auto-Driving", annotated)
-           if cv2.waitKey(1) & 0xFF == ord('q'):
-               break
-
-       cap.release()
-       cv2.destroyAllWindows()
+   .. literalinclude:: examples/vision_yolo_car_pc.py
+      :start-at: import cv2
 
 .. tip::
     **Batareyada mustaqil ishlash va ochiq havoda Hotspot (AP rejimi) bo'yicha maslahatlar**
@@ -718,16 +684,15 @@ Mahalliy AI xulosalarini chiqarish uchun bevosita ESP32 fayl tizimidan ``.tflite
 
 .. code-block:: python
 
-    import camera
+    from espzero import vision
     import tflite
     from time import sleep
 
-    # Kamerani ishga tushirish va TFLite modelini yuklash
-    camera.init(framesize=camera.FRAME_QVGA)
+    # TFLite modelini yuklash
     model = tflite.load("model.tflite")
 
     while True:
-        img = camera.capture()
+        img = vision.capture(framesize="QVGA")
         if img:
             # Xulosa chiqarish va sinf natijasini olish
             result = model.detect(img)

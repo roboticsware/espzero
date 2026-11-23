@@ -139,6 +139,24 @@ GpioLcd
 .. autoclass:: espzero.GpioLcd
    :members:
 
+카메라 및 비전 (Camera & Vision)
+--------------------------------
+
+스냅샷 촬영, 파일 저장 및 실시간 영상 스트리밍 (``espzero.vision``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: espzero.vision.capture
+
+.. autofunction:: espzero.vision.save_photo
+
+.. autofunction:: espzero.vision.close
+
+.. autofunction:: espzero.vision.start_stream_to_pc
+
+.. autofunction:: espzero.vision.start_wifi_stream
+
+.. autofunction:: espzero.vision.stop_stream
+
 오디오 (Audio)
 ----------------------------------
 

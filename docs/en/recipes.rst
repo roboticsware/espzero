@@ -507,15 +507,15 @@ Print characters on LiquidCrystal displays (LCD) by using GPIO pins only.
 .. literalinclude:: examples/lcd.py
 
 
-AI Vision
----------
+Camera
+------
 
-Examples for using the ESP32-S3 camera with PC-assisted AI and standalone on-device AI.
+Capture JPEG snapshots and save photos directly to flash storage on camera-equipped boards (such as ESP32-S3 WROOM CAM) without needing a PC or external AI server.
 
 .. important::
     **Camera-Enabled Firmware Required**:
     The official generic MicroPython firmware does not include the camera C driver (``camera`` module).
-    To use vision features, ensure your board (e.g. ESP32-S3 WROOM CAM) is flashed with a **Camera-enabled MicroPython firmware**.
+    To use camera and vision features, ensure your board (e.g. ESP32-S3 WROOM CAM) is flashed with a **Camera-enabled MicroPython firmware**.
 
 .. note::
     **Built-in Firmware Flashing in Mu Editor (Online / Offline Supported)**:
@@ -529,22 +529,51 @@ Examples for using the ESP32-S3 camera with PC-assisted AI and standalone on-dev
     * **Offline Flashing ([ESP Firmware flasher] tab)**:
       Useful when offline or using a pre-downloaded custom camera firmware (``.bin`` file). Select your board (``ESP32-S3``), browse for the firmware file on your computer, and click **[Erase & write firmware]** to flash directly.
 
-Single Photo Snapshot (``vision.capture`` / ``vision.save_photo``)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Capturing & Saving Photos (``vision.save_photo`` / ``vision.capture``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Automatically handles both modern (``camera.Camera`` + ``jpeg.Encoder``) and legacy (``camera.init``) camera firmwares to capture a JPEG frame or save it to flash storage in one line. If ``start_wifi_stream()`` is already running in the background, ``vision.capture()`` safely reuses the latest cached frame without hardware conflicts.
+Calling ``vision.save_photo()`` snaps a JPEG image and writes it straight to flash in one line, automatically detecting both modern (``camera.Camera``) and legacy (``camera.init``) camera firmwares. Use ``vision.capture()`` when you need raw JPEG bytes in memory (for Telegram / cloud AI APIs) or want to safely reuse the latest frame while background streaming (``start_wifi_stream()``) is running. Call ``vision.close()`` to release the camera hardware when finished.
 
 .. code-block:: python
 
     from espzero import vision
 
-    # 1. Capture JPEG bytes directly (for Telegram / cloud AI APIs)
-    jpg_bytes = vision.capture(framesize="QVGA", quality=70)
+    # 1. Take a photo and save directly to flash (framesize: QQVGA, HQVGA, QVGA, VGA)
+    saved = vision.save_photo("snapshot.jpg", framesize="QVGA", quality=80)
+    print("Saved:", saved)
 
-    # 2. Save directly to flash storage
-    vision.save_photo("snapshot.jpg", framesize="QVGA", quality=75)
+    # 2. Or grab raw JPEG bytes directly (for network upload / cloud AI)
+    jpg_bytes = vision.capture(framesize="QVGA", quality=70)
+    print("Image size:", len(jpg_bytes), "bytes")
+
+    # Release camera peripheral when done
     vision.close()
 
+Time-Lapse & Image Dataset Collection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Automatically capture a sequence of photos at fixed intervals for time-lapse photography or building image training datasets (e.g. for Edge Impulse TinyML models).
+
+.. code-block:: python
+
+    from espzero import vision, esp_led
+    from time import sleep
+
+    for i in range(1, 6):
+        esp_led.color = (0, 255, 0)
+        esp_led.on()
+        path = vision.save_photo(f"photo_{i:03d}.jpg", framesize="QVGA")
+        esp_led.off()
+        print("Captured:", path)
+        sleep(2)
+
+    vision.close()
+
+
+AI Vision
+---------
+
+Examples for combining the ESP32-S3 camera with PC-assisted AI (MediaPipe, YOLOv8) and standalone on-device TinyML. (Requires the Camera-enabled firmware described in the **Camera** section above.)
 PC-Side AI (with MediaPipe — Mu Editor Only)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -651,16 +680,15 @@ Loads a ``.tflite`` model file directly from the ESP32's file system to perform 
 
 .. code-block:: python
 
-    import camera
+    from espzero import vision
     import tflite
     from time import sleep
 
-    # Initialize camera and load TFLite model
-    camera.init(framesize=camera.FRAME_QVGA)
+    # Load TFLite model
     model = tflite.load("model.tflite")
 
     while True:
-        img = camera.capture()
+        img = vision.capture(framesize="QVGA")
         if img:
             # Perform inference and extract the class result
             result = model.detect(img)

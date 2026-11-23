@@ -86,6 +86,24 @@ GpioLcd
 .. autoclass:: espzero.GpioLcd
    :members:
 
+Kamera va Vizual (Camera & Vision)
+----------------------------------
+
+Suratga olish, faylga saqlash va video striming (``espzero.vision``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: espzero.vision.capture
+
+.. autofunction:: espzero.vision.save_photo
+
+.. autofunction:: espzero.vision.close
+
+.. autofunction:: espzero.vision.start_stream_to_pc
+
+.. autofunction:: espzero.vision.start_wifi_stream
+
+.. autofunction:: espzero.vision.stop_stream
+
 Audio
 -------------------------------------
 

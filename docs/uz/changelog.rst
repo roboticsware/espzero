@@ -3,6 +3,14 @@ O'zgarishlar tarixi
 
 .. currentmodule:: espzero
 
+0.0.10 - 2026-11-23
+-------------------
++ Kamera strimerini qayta ishlatishni qo'llab-quvvatlovchi suratga olish funksiyalari (``vision.capture()``, ``vision.save_photo()``, ``vision.close()``) qo'shildi
++ Retseptlarga alohida **Kamera (Camera)** asosiy bo'limi (suratga olish/saqlash, taymlaps va ma'lumotlar to'plamini yig'ish) hamda API hujjatlariga ``espzero.vision`` funksiyalari kiritildi
++ ``CapTouch`` uchun ``InternalTouchSensor`` taxallusi qo'shildi va tashqi ``TouchSensor`` modulidan farqi aniqlashtirildi
++ Retsept bo'limlari qayta tartiblandi: o'rnatilgan sensorli tugma va ichki harorat sensori **Kirish qurilmalari** ostiga ko'chirildi, **Servo motor** alohida asosiy bo'limga ajratildi va **DC Motorlar va Robotlar** nomi yangilandi
++ ReadTheDocs ko'p tilli yig'ish uchun ``literalinclude`` yo'llari (``examples/...``) tuzatildi hamda umumiy kompyuter ovozli misollari ingliz tiliga (``en-US``) birxillashtirildi
+
 0.0.9 - 2026-11-20
 ------------------
 + INMP441 I2S raqamli mikrofonlari va DSP signallarni tahlil qilish modulini (FFT spektri, MFCC akustik xususiyatlarini ajratish) qo'llab-quvvatlovchi ``audio.py`` (``I2SMic``) kiritildi
