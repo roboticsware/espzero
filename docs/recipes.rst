@@ -681,16 +681,15 @@ ESP32 내부에 다운로드한 ``.tflite`` 모델 파일을 읽어와 직접 AI
 
 .. code-block:: python
 
-    import camera
+    from espzero import vision
     import tflite
     from time import sleep
 
-    # 카메라 초기화 및 TFLite 모델 로드
-    camera.init(framesize=camera.FRAME_QVGA)
+    # TFLite 모델 로드
     model = tflite.load("model.tflite")
 
     while True:
-        img = camera.capture()
+        img = vision.capture(framesize="QVGA")
         if img:
             # 이미지 분석 및 클래스 결과 추출
             result = model.detect(img)

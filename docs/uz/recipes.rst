@@ -728,16 +728,15 @@ Mahalliy AI xulosalarini chiqarish uchun bevosita ESP32 fayl tizimidan ``.tflite
 
 .. code-block:: python
 
-    import camera
+    from espzero import vision
     import tflite
     from time import sleep
 
-    # Kamerani ishga tushirish va TFLite modelini yuklash
-    camera.init(framesize=camera.FRAME_QVGA)
+    # TFLite modelini yuklash
     model = tflite.load("model.tflite")
 
     while True:
-        img = camera.capture()
+        img = vision.capture(framesize="QVGA")
         if img:
             # Xulosa chiqarish va sinf natijasini olish
             result = model.detect(img)

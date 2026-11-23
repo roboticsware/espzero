@@ -661,16 +661,15 @@ Loads a ``.tflite`` model file directly from the ESP32's file system to perform 
 
 .. code-block:: python
 
-    import camera
+    from espzero import vision
     import tflite
     from time import sleep
 
-    # Initialize camera and load TFLite model
-    camera.init(framesize=camera.FRAME_QVGA)
+    # Load TFLite model
     model = tflite.load("model.tflite")
 
     while True:
-        img = camera.capture()
+        img = vision.capture(framesize="QVGA")
         if img:
             # Perform inference and extract the class result
             result = model.detect(img)
