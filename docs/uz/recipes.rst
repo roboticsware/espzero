@@ -620,78 +620,15 @@ Biroq, ESP32 va kompyuter o'rtasida **Wi-Fi** orqali vazifalarni taqsimlash orqa
    Quyidagi kodni plataga ``main.py`` nomi bilan saqlang (Mu da **ESP32 rejimi**, terminalda ``mpremote cp main.py :main.py``).
    (``main.py`` qilib saqlanganda, USB kabelni uzib, faqat batareya ulaganingizda ham plata o'z-o'zidan Wi-Fi ga ulanadi va simsiz video uzatishni boshlaydi. REPL da chiqqan ESP32 IP manzilini (masalan, ``192.168.0.50``) eslab qoling.)
 
-   .. code-block:: python
-
-       from espzero import WiFi, vision, Robot
-       from time import sleep
-
-       # 1. Wi-Fi ga ulanish
-       wifi = WiFi()
-       wifi.connect("Mening_WiFi_Nomi", "parol1234")
-
-       # 2. 2 g'ildirakli robot motorini kamera bilan to'qnashmaydigan pinlarda sozlash (Chap: 41, 42 / O'ng: 47, 21)
-       car = Robot(left=(41, 42), right=(47, 21))
-
-       # 3. Simsiz kamera oqimini boshlash (standart port: 8080)
-       vision.start_wifi_stream(port=8080)
-
-       # 4. Kompyuter AI qarorlarini qabul qilish va boshqarish davri
-       while True:
-           if "__pc_ai_data" in globals():
-               action = __pc_ai_data.get("action", "STOP")
-               if action == "GO":
-                   car.forward(0.6) # Yo'l bo'sh bo'lsa oldinga harakatlanish
-               else:
-                   car.stop()       # Odam yoki to'siq aniqlanganda to'xtash
-           sleep(0.05)
+   .. literalinclude:: examples/vision_yolo_car_esp32.py
+      :start-at: from espzero import
 
 3. **2-bosqich: Kompyuter AI Avtonom Boshqaruvchisini ishga tushirish (Mu [Python 3 rejimi] yoki standart Python)**:
    Mu muharririda **Python 3 rejimi**\ da ishga tushiring, yoki VS Code / terminalda ``yolo_drive.py`` fayliga saqlab ``python yolo_drive.py`` buyrug'i bilan bajaring (avval ``STREAM_URL`` va ``CMD_URL`` ga ESP32 IP manzilini kiriting).
    Kompyuteringizda real vaqtda aniqlangan obyektlar ramka bilan ko'rsatilgan video oyna ochiladi va robot mashina avtonom harakatni boshlaydi.
 
-   .. code-block:: python
-
-       import cv2
-       import requests
-       from ultralytics import YOLO
-
-       # Yengil YOLOv8 modelini yuklash va ESP32 oqim manzilini belgilash
-       model = YOLO("yolov8n.pt")
-       STREAM_URL = "http://192.168.0.50:8080/"  # ESP32 IP manzili
-       CMD_URL = "http://192.168.0.50:8080/ai"
-
-       cap = cv2.VideoCapture(STREAM_URL)
-
-       while cap.isOpened():
-           ret, frame = cap.read()
-           if not ret:
-               break
-
-           # Real vaqtda obyektni aniqlash (0: Odam, 9: Svetofor)
-           results = model(frame, verbose=False)
-           person_detected = False
-
-           for r in results:
-               for box in r.boxes:
-                   cls_id = int(box.cls[0])
-                   if cls_id == 0: # Odam aniqlandi
-                       person_detected = True
-
-           # Buyruq yuborish (STOP yoki GO)
-           cmd = "STOP" if person_detected else "GO"
-           try:
-               requests.get(f"{CMD_URL}?action={cmd}", timeout=0.1)
-           except Exception:
-               pass
-
-           # Natijani ekranda ko'rsatish
-           annotated = results[0].plot()
-           cv2.imshow("ESP32-S3 YOLO AI Auto-Driving", annotated)
-           if cv2.waitKey(1) & 0xFF == ord('q'):
-               break
-
-       cap.release()
-       cv2.destroyAllWindows()
+   .. literalinclude:: examples/vision_yolo_car_pc.py
+      :start-at: import cv2
 
 .. tip::
     **Batareyada mustaqil ishlash va ochiq havoda Hotspot (AP rejimi) bo'yicha maslahatlar**
