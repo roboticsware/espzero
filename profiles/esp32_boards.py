@@ -34,11 +34,14 @@ class ESP32DevKitV1(BoardProfile):
     CHIP = "esp32"
 
     PIN_ALIASES = {
-        "internal": 2,
-        "led":      2,
-        "i2s_sck":  14,
-        "i2s_ws":   15,
-        "i2s_sd":   32,
+        "internal":    2,
+        "led":         2,
+        "i2s_sck":     14,
+        "i2s_ws":      15,
+        "i2s_sd":      32,
+        "i2s_spk_sck": 26,
+        "i2s_spk_ws":  25,
+        "i2s_spk_sd":  22,
     }
 
     ADC_ATTEN            = _atten()
@@ -72,6 +75,9 @@ class ESP32S3DevKit(BoardProfile):
         "i2s_sck":     41,
         "i2s_ws":      42,
         "i2s_sd":      2,
+        "i2s_spk_sck": 38,
+        "i2s_spk_ws":  39,
+        "i2s_spk_sd":  40,
     }
 
     ADC_ATTEN            = _atten()
@@ -143,11 +149,14 @@ class WemosD1Mini32(BoardProfile):
     CHIP = "esp32"
 
     PIN_ALIASES = {
-        "internal": 2,
-        "led":      2,
-        "i2s_sck":  14,
-        "i2s_ws":   15,
-        "i2s_sd":   32,
+        "internal":    2,
+        "led":         2,
+        "i2s_sck":     14,
+        "i2s_ws":      15,
+        "i2s_sd":      32,
+        "i2s_spk_sck": 26,
+        "i2s_spk_ws":  25,
+        "i2s_spk_sd":  22,
     }
 
     ADC_ATTEN            = _atten()

@@ -94,6 +94,11 @@ I2SMic
 .. autoclass:: espzero.I2SMic
    :members:
 
+I2SSpeaker
+~~~~~~~~~~
+.. autoclass:: espzero.I2SSpeaker
+   :members:
+
 Audio DSP & Wi-Fi Streaming (``espzero.audio``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -108,3 +113,20 @@ Audio DSP & Wi-Fi Streaming (``espzero.audio``)
 .. autofunction:: espzero.audio.get_ai_result
 
 .. autofunction:: espzero.audio.stop_stream
+
+Vision & Camera (``espzero.vision``)
+------------------------------------
+
+.. autofunction:: espzero.vision.capture
+
+.. autofunction:: espzero.vision.save_photo
+
+.. autofunction:: espzero.vision.close
+
+.. autofunction:: espzero.vision.start_stream_to_pc
+
+.. autofunction:: espzero.vision.start_wifi_stream
+
+.. autofunction:: espzero.vision.get_hand
+
+.. autofunction:: espzero.vision.stop_stream

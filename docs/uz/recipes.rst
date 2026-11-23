@@ -189,6 +189,22 @@ Real vaqtda OLED audio spektr analizatori (FFT Spectrum)
 .. literalinclude:: examples/audio_spectrum_oled.py
       :start-at: from espzero import
 
+I2S Raqamli Dinamik va Kuchaytirgich (I2SSpeaker / MAX98357A)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``I2SSpeaker`` apparat ``I2S(1)`` (TX rejimi) orqali I2S audio kuchaytirgich modulini (masalan, ``MAX98357A``) boshqaradi. ESP32-S3 platasida u ``I2SMic`` (``I2S(0)``) va OV2640 kamerasi bilan to'qnashmasligi uchun xavfsiz pinlarni (``BCLK=38, LRC=39, DIN=40``) avtomatik biriktiradi.
+
+.. code-block:: python
+
+    from espzero import I2SSpeaker
+
+    # ESP32-S3 standart pinlari: BCLK=38, LRC=39, DIN=40 (I2S 1 TX)
+    spk = I2SSpeaker(sample_rate=24000)
+
+    # WAV faylni ijro etish (44 baytli sarlavhani avtomatik o'tkazadi) yoki play_pcm()
+    spk.play_wav("hello.wav")
+    spk.close()
+
 Kirish qurilmalari (Input Devices)
 ----------------------------------
 
@@ -508,6 +524,22 @@ ESP32-S3 kamerasi yordamida kompyuter ko'magidagi AI va mustaqil ishlaydigan qur
 
     * **Oflayn proshivka qilish ([ESP Firmware flasher] bo'limi)**:
       Internet bo'lmaganda yoki kompyuteringizda oldindan tayyorlab qo'yilgan ma'lum bir versiyadagi kamera proshivkasi (``.bin`` fayli) mavjud bo'lganda ishlatiladi. Plata turini (``ESP32-S3``) tanlang, kompyuteringizdagi faylni ko'rsating va **[O'chirish va yozish]** tugmasini bosing.
+
+Bitta rasm olish va saqlash (``vision.capture`` / ``vision.save_photo``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Yangi (``camera.Camera`` + ``jpeg.Encoder``) va eski (``camera.init``) kamera proshivkalarini avtomatik aniqlab, bir qator kod bilan JPEG rasm oladi yoki flesh xotiraga saqlaydi. Fon oqimi (``start_wifi_stream()``) ishlayotgan paytda ham apparat to'qnashuvisiz oxirgi kadrni xavfsiz qaytaradi.
+
+.. code-block:: python
+
+    from espzero import vision
+
+    # 1. JPEG baytlarini to'g'ridan-to'g'ri olish (Telegram / bulutli AI API uchun)
+    jpg_bytes = vision.capture(framesize="QVGA", quality=70)
+
+    # 2. Flesh xotiraga to'g'ridan-to'g'ri saqlash
+    vision.save_photo("snapshot.jpg", framesize="QVGA", quality=75)
+    vision.close()
 
 PC ko'magidagi AI (MediaPipe bilan — Faqat Mu Muharriri)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

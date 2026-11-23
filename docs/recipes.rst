@@ -204,6 +204,22 @@ ESP32-S3 WROOM CAM 보드의 기본 핀(``SCK=41``, ``WS=42``, ``SD=2``)에 별�
 .. literalinclude:: examples/audio_spectrum_oled.py
       :start-at: from espzero import
 
+I2S 디지털 스피커 및 앰프 (I2SSpeaker / MAX98357A)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``I2SSpeaker``\ 는 ``MAX98357A`` 같은 3.3V/5V I2S 앰프 모듈을 하드웨어 ``I2S(1)`` (TX)로 구동합니다. ``I2SMic`` (``I2S(0)``) 및 OV2640 카메라와 핀이나 버스가 겹치지 않도록 ESP32-S3에서는 기본 핀(``BCLK=38, LRC=39, DIN=40``)이 자동 매핑됩니다.
+
+.. code-block:: python
+
+    from espzero import I2SSpeaker
+
+    # ESP32-S3 기본 핀: BCLK=38, LRC=39, DIN=40 (I2S 1 TX)
+    spk = I2SSpeaker(sample_rate=24000)
+
+    # WAV 파일 또는 16-bit PCM 바이트 재생 (44B 헤더 자동 스킵)
+    spk.play_wav("hello.wav")
+    spk.close()
+
 입력 장치 (Input Devices)
 -----------------------
 
@@ -524,6 +540,22 @@ ESP32-S3 AI 비전 카메라와 에디터 연동 및 단독 실행 AI 예제입�
 
     * **오프라인 플래싱 ([ESP Firmware flasher] 탭)**:
       인터넷이 없는 환경이거나 미리 준비된 특정 버전의 카메라 펌웨어(``.bin`` 파일)를 보유하고 있는 경우에 사용합니다. 보드 종류(``ESP32-S3``)를 선택하고 컴퓨터에 저장된 펌웨어 파일을 지정한 뒤 **[지우고 쓰기]** 버튼을 클릭하여 보드에 직접 덮어씁니다.
+
+단일 사진 캡처 및 저장 (``vision.capture`` / ``vision.save_photo``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+신형 ``camera.Camera`` + ``jpeg.Encoder`` 펌웨어와 구형 ``camera.init()`` 펌웨어를 자동으로 판별해 JPEG 사진을 한 줄로 캡처하거나 플래시 메모리에 저장합니다. 백그라운드 스트리밍(``start_wifi_stream()``) 중에도 충돌 없이 최신 프레임을 안전하게 가져옵니다.
+
+.. code-block:: python
+
+    from espzero import vision
+
+    # 1. JPEG 바이트로 직접 받기 (텔레그램/클라우드 AI 전송용)
+    jpg_bytes = vision.capture(framesize="QVGA", quality=70)
+
+    # 2. 보드 플래시에 바로 저장하기
+    vision.save_photo("snapshot.jpg", framesize="QVGA", quality=75)
+    vision.close()
 
 PC 연동 AI (MediaPipe 연동 — Mu 에디터 전용)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

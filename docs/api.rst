@@ -147,6 +147,11 @@ I2SMic
 .. autoclass:: espzero.I2SMic
    :members:
 
+I2SSpeaker
+~~~~~~~~~~
+.. autoclass:: espzero.I2SSpeaker
+   :members:
+
 오디오 신호 처리 및 무선 스트리밍 (``espzero.audio``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -161,6 +166,23 @@ I2SMic
 .. autofunction:: espzero.audio.get_ai_result
 
 .. autofunction:: espzero.audio.stop_stream
+
+비전 및 카메라 (``espzero.vision``)
+-----------------------------------
+
+.. autofunction:: espzero.vision.capture
+
+.. autofunction:: espzero.vision.save_photo
+
+.. autofunction:: espzero.vision.close
+
+.. autofunction:: espzero.vision.start_stream_to_pc
+
+.. autofunction:: espzero.vision.start_wifi_stream
+
+.. autofunction:: espzero.vision.get_hand
+
+.. autofunction:: espzero.vision.stop_stream
 
 통신 (Networking)
 ---------------

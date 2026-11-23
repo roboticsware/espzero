@@ -152,7 +152,7 @@ from ._core import (
 )
 from ._wifi  import WiFi
 from ._touch import CapTouch, InternalTouchSensor
-from .audio  import I2SMic
+from .audio  import I2SMic, I2SSpeaker
 
 __all__ = [
     "begin", "pinout",
@@ -171,6 +171,6 @@ __all__ = [
     "DigitalOutputDevice", "PWMOutputDevice",
     "DigitalInputDevice", "AnalogInputDevice",
     "I2cLcd", "GpioLcd", "OLED",
-    "WiFi", "CapTouch", "InternalTouchSensor", "I2SMic",
+    "WiFi", "CapTouch", "InternalTouchSensor", "I2SMic", "I2SSpeaker",
     "vision", "audio",
 ]

@@ -189,6 +189,22 @@ Compute a 16-band frequency spectrum using ``mic.spectrum(bins=16)`` and render 
 .. literalinclude:: examples/audio_spectrum_oled.py
       :start-at: from espzero import
 
+I2S Digital Speaker & Amplifier (I2SSpeaker / MAX98357A)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``I2SSpeaker`` drives an I2S amplifier module (such as ``MAX98357A``) on hardware ``I2S(1)`` (TX mode). On ESP32-S3, it automatically maps camera-safe pins (``BCLK=38, LRC=39, DIN=40``) so it runs alongside ``I2SMic`` (``I2S(0)``) and the OV2640 camera without conflicts.
+
+.. code-block:: python
+
+    from espzero import I2SSpeaker
+
+    # ESP32-S3 defaults: BCLK=38, LRC=39, DIN=40 (I2S 1 TX)
+    spk = I2SSpeaker(sample_rate=24000)
+
+    # Play a WAV file (auto-skips 44B header) or raw 16-bit PCM bytes via play_pcm()
+    spk.play_wav("hello.wav")
+    spk.close()
+
 Input Devices
 -------------
 
@@ -508,6 +524,22 @@ Examples for using the ESP32-S3 camera with PC-assisted AI and standalone on-dev
 
     * **Offline Flashing ([ESP Firmware flasher] tab)**:
       Useful when offline or using a pre-downloaded custom camera firmware (``.bin`` file). Select your board (``ESP32-S3``), browse for the firmware file on your computer, and click **[Erase & write firmware]** to flash directly.
+
+Single Photo Snapshot (``vision.capture`` / ``vision.save_photo``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Automatically handles both modern (``camera.Camera`` + ``jpeg.Encoder``) and legacy (``camera.init``) camera firmwares to capture a JPEG frame or save it to flash storage in one line. If ``start_wifi_stream()`` is already running in the background, ``vision.capture()`` safely reuses the latest cached frame without hardware conflicts.
+
+.. code-block:: python
+
+    from espzero import vision
+
+    # 1. Capture JPEG bytes directly (for Telegram / cloud AI APIs)
+    jpg_bytes = vision.capture(framesize="QVGA", quality=70)
+
+    # 2. Save directly to flash storage
+    vision.save_photo("snapshot.jpg", framesize="QVGA", quality=75)
+    vision.close()
 
 PC-Side AI (with MediaPipe — Mu Editor Only)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
