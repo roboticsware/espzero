@@ -3,6 +3,15 @@ O'zgarishlar tarixi
 
 .. currentmodule:: espzero
 
+0.1.0 - 2026-11-23
+------------------
++ MAX98357A kabi apparat I2S kuchaytirgichlari va dinamiklarni boshqarish uchun yangi ``I2SSpeaker`` sinfi (``audio.py``) joriy etildi:
+  - Apparat ``I2S(1)`` TX rejimida 16-bitli PCM baytlari va 8~48kHz WAV fayllarni ijro etish (44 baytli WAV sarlavhasini avtomatik aniqlash va o'tkazib yuborish)
+  - ESP32-S3 WROOM CAM (``N16R8``) platasida OV2640 kamerasi va ``I2SMic`` (I2S 0 RX) bilan to'qnashmaydigan xavfsiz standart pinlarni (``BCLK=38, LRC=39, DIN=40``) avtomatik biriktirish
++ MAX98357A I2S kuchaytirgichi va 3W dinamik uchun simlar kesishmasdan chizilgan yuqori aniqlikdagi yangi SVG sxemasi qo'shildi (``circuit_i2s_speaker.svg``)
++ 3 ta tildagi (ko, en, uz) retseptlar hujjatlarida I2S raqamli dinamik bo'limi **Buzzer va Dinamik (Buzzer & Speaker)** ostiga tartibli birlashtirildi
++ Kamera suratga olish funksiyalari (``vision.capture()``, ``vision.save_photo()``) va I2S audio API integratsiyasi barqarorlashtirildi
+
 0.0.10 - 2026-11-23
 -------------------
 + Kamera strimerini qayta ishlatishni qo'llab-quvvatlovchi suratga olish funksiyalari (``vision.capture()``, ``vision.save_photo()``, ``vision.close()``) qo'shildi

@@ -3,6 +3,15 @@ Change log
 
 .. currentmodule:: espzero
 
+0.1.0 - 2026-11-23
+------------------
++ Introduced ``I2SSpeaker`` class (``audio.py``) for driving hardware I2S amplifiers and speakers (e.g. MAX98357A):
+  - Hardware ``I2S(1)`` TX playback for 16-bit PCM bytes and 8~48kHz WAV files (with automatic 44-byte WAV header parsing & skipping)
+  - Camera-safe and microphone-safe pin auto-mapping on ESP32-S3 WROOM CAM (``BCLK=38, LRC=39, DIN=40``) coexisting with OV2640 camera and ``I2SMic`` (I2S 0 RX)
++ Added high-resolution zero-crossing SVG circuit wiring diagram for MAX98357A I2S amplifier and 3W speaker (``circuit_i2s_speaker.svg``)
++ Reorganized I2S digital speaker recipe under the **Buzzer & Speaker** section across all 3 documentation languages (ko, en, uz)
++ Integrated and stabilized camera snapshot APIs (``vision.capture()``, ``vision.save_photo()``) and I2S audio features
+
 0.0.10 - 2026-11-23
 -------------------
 + Added ``vision.capture()``, ``vision.save_photo()``, and ``vision.close()`` snapshot helpers with camera streamer reuse

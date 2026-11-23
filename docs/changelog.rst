@@ -3,6 +3,15 @@
 
 .. currentmodule:: espzero
 
+0.1.0 - 2026-11-23
+------------------
++ MAX98357A 등 하드웨어 I2S 앰프 및 스피커 구동을 위한 ``I2SSpeaker`` 클래스(``audio.py``) 신설:
+  - 하드웨어 ``I2S(1)`` TX 모드로 16-bit PCM 및 8~48kHz WAV 파일 재생 지원 (WAV 헤더 44바이트 자동 감지 및 건너뛰기)
+  - ESP32-S3 WROOM CAM(``N16R8``) 보드에서 OV2640 카메라 및 ``I2SMic``(I2S 0 RX)와 충돌 없는 안전한 기본 핀(``BCLK=38, LRC=39, DIN=40``) 자동 매핑
++ ESP32-S3 CAM 보드와 MAX98357A I2S 앰프 + 3W 스피커 간 무교차 직관적 고해상도 SVG 회로 연결도 추가 (``circuit_i2s_speaker.svg``)
++ 3개국어(한국어, 영어, 우즈베크어) 레시피 문서 내 I2S 디지털 스피커 레시피를 **부저 및 스피커 (Buzzer & Speaker)** 섹션으로 일관성 있게 통합 재배치
++ 카메라 스냅샷(``vision.capture()``, ``vision.save_photo()``) 및 I2S 오디오 API 통합 안정화
+
 0.0.10 - 2026-11-23
 -------------------
 + 카메라 스트리머 재사용을 지원하는 스냅샷 촬영 헬퍼(``vision.capture()``, ``vision.save_photo()``, ``vision.close()``) 추가
