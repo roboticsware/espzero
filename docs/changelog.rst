@@ -3,6 +3,14 @@
 
 .. currentmodule:: espzero
 
+0.0.10 - 2026-11-23
+-------------------
++ 카메라 스트리머 재사용을 지원하는 스냅샷 촬영 헬퍼(``vision.capture()``, ``vision.save_photo()``, ``vision.close()``) 추가
++ 레시피 문서에 독립 **카메라 (Camera)** 메인 섹션 신설(사진 촬영/저장, 타임랩스/데이터셋 수집) 및 API 레퍼런스에 ``espzero.vision`` 문서 추가
++ 내장 터치 센서용 ``InternalTouchSensor`` 별칭(``CapTouch``) 추가 및 외부 디지털 모듈 ``TouchSensor``\ 와의 차이점 명확화
++ 레시피 목차 구조 개선: 내장 터치/내장 온도 센서를 **입력 장치** 하위로 이동, **서보 모터**를 독립 메인 섹션으로 승격, 모터 섹션 명칭을 **DC 모터 및 로봇**으로 변경
++ ReadTheDocs 다국어 문서 빌드를 위한 ``literalinclude`` 경로(``examples/...``) 수정 및 공통 PC 음성 인식 예제 키워드/로케일(``en-US``) 영어 통일
+
 0.0.9 - 2026-11-20
 ------------------
 + INMP441 및 I2S 디지털 마이크를 지원하는 ``audio.py`` (``I2SMic``) 및 DSP 신호 분석 모듈(FFT 스펙트럼, MFCC 음향 특징 추출) 신설

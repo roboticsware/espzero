@@ -487,15 +487,15 @@ Faqat GPIO pinlari yordamida LiquidCrystal displeylarida (LCD) belgilarni chop e
 .. literalinclude:: examples/lcd.py
 
 
-AI vizualizatsiyasi (AI vision)
--------------------------------
+Kamera (Camera)
+---------------
 
-ESP32-S3 kamerasi yordamida kompyuter ko'magidagi AI va mustaqil ishlaydigan qurilmadagi AI misollari.
+ESP32-S3 WROOM CAM kabi kamerali platalarda kompyuter yoki AI serversiz mustaqil ravishda suratga olish va flash xotiraga saqlash misollari.
 
 .. important::
     **Kamerani qo'llab-quvvatlovchi proshivka zarur**:
     Rasmiy standart MicroPython proshivkasida xotira cheklovlari tufayli kamera drayveri (``camera`` moduli) mavjud emas.
-    Vizual funksiyalardan foydalanish uchun platangizga (ESP32-S3 WROOM CAM) **Kamera drayveri bilan yig'ilgan MicroPython proshivkasi (Camera-enabled Firmware)** o'rnatilgan bo'lishi kerak.
+    Kamera va vizual funksiyalardan foydalanish uchun platangizga (ESP32-S3 WROOM CAM) **Kamera drayveri bilan yig'ilgan MicroPython proshivkasi (Camera-enabled Firmware)** o'rnatilgan bo'lishi kerak.
 
 .. note::
     **Mu Muharririda o'rnatilgan proshivka qilish yo'riqnomasi (Onlayn / Oflayn qo'llab-quvvatlanadi)**:
@@ -508,6 +508,52 @@ ESP32-S3 kamerasi yordamida kompyuter ko'magidagi AI va mustaqil ishlaydigan qur
 
     * **Oflayn proshivka qilish ([ESP Firmware flasher] bo'limi)**:
       Internet bo'lmaganda yoki kompyuteringizda oldindan tayyorlab qo'yilgan ma'lum bir versiyadagi kamera proshivkasi (``.bin`` fayli) mavjud bo'lganda ishlatiladi. Plata turini (``ESP32-S3``) tanlang, kompyuteringizdagi faylni ko'rsating va **[O'chirish va yozish]** tugmasini bosing.
+
+Suratga olish va saqlash (``vision.save_photo`` / ``vision.capture``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``vision.save_photo()`` funksiyasi bir qator kod bilan JPEG surat olib, plata xotirasiga saqlaydi. Xom JPEG baytlari kerak bo'lsa ``vision.capture()`` dan foydalaning, ishni tugatgach ``vision.close()`` orqali kamera resursini bo'shating.
+
+.. code-block:: python
+
+    from espzero import vision
+
+    # 1 ta surat olib flash xotiraga saqlash (o'lchamlar: QQVGA, HQVGA, QVGA, VGA)
+    saved = vision.save_photo("snapshot.jpg", framesize="QVGA", quality=80)
+    print("Saqlandi:", saved)
+
+    # Xom JPEG baytlarini to'g'ridan-to'g'ri olish
+    jpg_bytes = vision.capture(framesize="QVGA", quality=70)
+    print("Rasm hajmi:", len(jpg_bytes), "bayt")
+
+    # Ishlatib bo'lgach kamerani yopish
+    vision.close()
+
+Taymlaps va AI o'qitish uchun rasm to'plash
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Ma'lum vaqt oralig'ida bir nechta suratlarni avtomatik saqlab, taymlaps yaratish yoki Edge Impulse kabi TinyML modellari uchun rasm to'plamini yig'ish mumkin.
+
+.. code-block:: python
+
+    from espzero import vision, esp_led
+    from time import sleep
+
+    for i in range(1, 6):
+        esp_led.color = (0, 255, 0)
+        esp_led.on()
+        path = vision.save_photo(f"photo_{i:03d}.jpg", framesize="QVGA")
+        esp_led.off()
+        print("Suratga olindi:", path)
+        sleep(2)
+
+    vision.close()
+
+
+AI vizualizatsiyasi (AI vision)
+-------------------------------
+
+ESP32-S3 kamerasini kompyuter ko'magidagi AI (MediaPipe, YOLOv8) va mustaqil qurilmadagi TinyML modellari bilan birlashtirish misollari. (Yuqoridagi **Kamera (Camera)** bo'limida ko'rsatilgan kamera proshivkasi o'rnatilgan bo'lishi kerak.)
 
 PC ko'magidagi AI (MediaPipe bilan — Faqat Mu Muharriri)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

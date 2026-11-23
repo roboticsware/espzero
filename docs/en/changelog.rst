@@ -3,6 +3,14 @@ Change log
 
 .. currentmodule:: espzero
 
+0.0.10 - 2026-11-23
+-------------------
++ Added ``vision.capture()``, ``vision.save_photo()``, and ``vision.close()`` snapshot helpers with camera streamer reuse
++ Added standalone **Camera** main section to recipes (photo capture/saving, time-lapse & dataset collection) and ``espzero.vision`` functions to API reference
++ Added ``InternalTouchSensor`` alias for ``CapTouch`` and clarified distinction from external ``TouchSensor`` module
++ Reorganized recipe sections: moved built-in touch and internal temperature sensors under **Input Devices**, promoted **Servo Motor** to its own main section, and renamed Motor & Robot to **DC Motor & Robot**
++ Fixed RTD multilingual ``literalinclude`` paths (``examples/...``) and unified shared PC voice examples to English (``en-US``)
+
 0.0.9 - 2026-11-20
 ------------------
 + Introduced ``audio.py`` (``I2SMic``) supporting INMP441 I2S microphones and DSP signal analysis (FFT spectrum, MFCC acoustic feature extraction)

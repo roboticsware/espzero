@@ -503,15 +503,15 @@ GPIO 핀만 사용하여 LiquidCrystal 디스플레이(LCD)에 문자를 출력�
 .. literalinclude:: examples/lcd.py
 
 
-AI 비전 (AI Vision)
------------------
+카메라 (Camera)
+----------------
 
-ESP32-S3 AI 비전 카메라와 에디터 연동 및 단독 실행 AI 예제입니다.
+ESP32-S3 WROOM CAM 등 카메라가 탑재된 보드에서 별도의 PC나 AI 없이 단독으로 사진을 촬영하고 플래시 메모리에 저장합니다.
 
 .. important::
     **카메라 지원 펌웨어 필요**:
     공식 MicroPython 기본 펌웨어에는 용량 문제로 카메라 드라이버(C 모듈 ``camera``)가 포함되어 있지 않습니다.
-    비전 기능을 사용하려면 보드(ESP32-S3 WROOM CAM)에 **카메라 드라이버가 포함 빌드된 MicroPython 펌웨어(Camera-enabled Firmware)**\ 가 플래싱되어 있어야 합니다.
+    카메라 및 비전 기능을 사용하려면 보드(ESP32-S3 WROOM CAM)에 **카메라 드라이버가 포함 빌드된 MicroPython 펌웨어(Camera-enabled Firmware)**\ 가 플래싱되어 있어야 합니다.
 
 .. note::
     **Mu 에디터 내장 펌웨어 플래싱 안내 (온라인 / 오프라인 지원)**:
@@ -524,6 +524,52 @@ ESP32-S3 AI 비전 카메라와 에디터 연동 및 단독 실행 AI 예제입�
 
     * **오프라인 플래싱 ([ESP Firmware flasher] 탭)**:
       인터넷이 없는 환경이거나 미리 준비된 특정 버전의 카메라 펌웨어(``.bin`` 파일)를 보유하고 있는 경우에 사용합니다. 보드 종류(``ESP32-S3``)를 선택하고 컴퓨터에 저장된 펌웨어 파일을 지정한 뒤 **[지우고 쓰기]** 버튼을 클릭하여 보드에 직접 덮어씁니다.
+
+사진 촬영 및 저장 (``vision.save_photo`` / ``vision.capture``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``vision.save_photo()``\ 를 호출하면 단 한 줄로 JPEG 사진을 촬영해 보드 내장 플래시에 저장합니다. 원시 JPEG 바이트 데이터가 필요하면 ``vision.capture()``\ 를 사용하고, 촬영이 끝나면 ``vision.close()``\ 로 카메라 하드웨어 자원을 안전하게 해제할 수 있습니다.
+
+.. code-block:: python
+
+    from espzero import vision
+
+    # 사진 1장 촬영 후 보드 플래시에 저장 (해상도: QQVGA, HQVGA, QVGA, VGA)
+    saved = vision.save_photo("snapshot.jpg", framesize="QVGA", quality=80)
+    print("저장 완료:", saved)
+
+    # 원시 JPEG 바이트 데이터가 직접 필요할 때 (웹 전송/분석용)
+    jpg_bytes = vision.capture(framesize="QVGA", quality=70)
+    print("이미지 크기:", len(jpg_bytes), "bytes")
+
+    # 사용 완료 후 카메라 하드웨어 해제
+    vision.close()
+
+타임랩스 및 AI 학습용 이미지 데이터셋 수집
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+버튼 셔터나 일정 시간 간격으로 여러 장의 사진을 자동 저장하여 타임랩스를 만들거나, Edge Impulse 등 TinyML 비전 모델 학습용 이미지 데이터셋을 손쉽게 수집할 수 있습니다.
+
+.. code-block:: python
+
+    from espzero import vision, esp_led
+    from time import sleep
+
+    for i in range(1, 6):
+        esp_led.color = (0, 255, 0)
+        esp_led.on()
+        path = vision.save_photo(f"photo_{i:03d}.jpg", framesize="QVGA")
+        esp_led.off()
+        print("촬영됨:", path)
+        sleep(2)
+
+    vision.close()
+
+
+AI 비전 (AI Vision)
+-------------------
+
+ESP32-S3 카메라 영상을 PC 연동 AI(MediaPipe, YOLOv8)나 보드 단독 TinyML 모델과 결합해 활용하는 예제입니다. (사전에 위 **카메라 (Camera)** 섹션에서 안내한 카메라 지원 펌웨어가 설치되어 있어야 합니다.)
 
 PC 연동 AI (MediaPipe 연동 — Mu 에디터 전용)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

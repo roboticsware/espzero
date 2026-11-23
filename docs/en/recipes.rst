@@ -487,15 +487,15 @@ Print characters on LiquidCrystal displays (LCD) by using GPIO pins only.
 .. literalinclude:: examples/lcd.py
 
 
-AI Vision
----------
+Camera
+------
 
-Examples for using the ESP32-S3 camera with PC-assisted AI and standalone on-device AI.
+Capture JPEG snapshots and save photos directly to flash storage on camera-equipped boards (such as ESP32-S3 WROOM CAM) without needing a PC or external AI server.
 
 .. important::
     **Camera-Enabled Firmware Required**:
     The official generic MicroPython firmware does not include the camera C driver (``camera`` module).
-    To use vision features, ensure your board (e.g. ESP32-S3 WROOM CAM) is flashed with a **Camera-enabled MicroPython firmware**.
+    To use camera and vision features, ensure your board (e.g. ESP32-S3 WROOM CAM) is flashed with a **Camera-enabled MicroPython firmware**.
 
 .. note::
     **Built-in Firmware Flashing in Mu Editor (Online / Offline Supported)**:
@@ -508,6 +508,52 @@ Examples for using the ESP32-S3 camera with PC-assisted AI and standalone on-dev
 
     * **Offline Flashing ([ESP Firmware flasher] tab)**:
       Useful when offline or using a pre-downloaded custom camera firmware (``.bin`` file). Select your board (``ESP32-S3``), browse for the firmware file on your computer, and click **[Erase & write firmware]** to flash directly.
+
+Capturing & Saving Photos (``vision.save_photo`` / ``vision.capture``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Call ``vision.save_photo()`` to snap a JPEG image and write it straight to flash in one line. Use ``vision.capture()`` when you need raw JPEG bytes in memory, and ``vision.close()`` to release the camera hardware when finished.
+
+.. code-block:: python
+
+    from espzero import vision
+
+    # Take a photo and save to flash (framesize: QQVGA, HQVGA, QVGA, VGA)
+    saved = vision.save_photo("snapshot.jpg", framesize="QVGA", quality=80)
+    print("Saved:", saved)
+
+    # Or grab raw JPEG bytes directly (for network upload / inspection)
+    jpg_bytes = vision.capture(framesize="QVGA", quality=70)
+    print("Image size:", len(jpg_bytes), "bytes")
+
+    # Release camera peripheral when done
+    vision.close()
+
+Time-Lapse & Image Dataset Collection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Automatically capture a sequence of photos at fixed intervals for time-lapse photography or building image training datasets (e.g. for Edge Impulse TinyML models).
+
+.. code-block:: python
+
+    from espzero import vision, esp_led
+    from time import sleep
+
+    for i in range(1, 6):
+        esp_led.color = (0, 255, 0)
+        esp_led.on()
+        path = vision.save_photo(f"photo_{i:03d}.jpg", framesize="QVGA")
+        esp_led.off()
+        print("Captured:", path)
+        sleep(2)
+
+    vision.close()
+
+
+AI Vision
+---------
+
+Examples for combining the ESP32-S3 camera with PC-assisted AI (MediaPipe, YOLOv8) and standalone on-device TinyML. (Requires the Camera-enabled firmware described in the **Camera** section above.)
 
 PC-Side AI (with MediaPipe — Mu Editor Only)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
