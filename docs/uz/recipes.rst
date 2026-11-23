@@ -145,6 +145,26 @@ Melodiyalarni ijro etish (Play)
     ]
     spk.play(tune)
 
+I2S Raqamli Dinamik (I2SSpeaker)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``I2SSpeaker`` apparat ``I2S(1)`` (TX rejimi) orqali 3.3V/5V I2S audio kuchaytirgich modulini (masalan, ``MAX98357A``) boshqarib, WAV/PCM ovoz va tovushlarni yuqori sifatda ijro etadi. ESP32-S3 platasida u ``I2SMic`` (``I2S(0)``) va OV2640 kamerasi bilan to'qnashmasligi uchun xavfsiz pinlarni (``BCLK=38, LRC=39, DIN=40``) avtomatik biriktiradi.
+
+.. image:: /images/circuit_i2s_speaker.svg
+    :alt: ESP32-S3 I2S raqamli dinamik (MAX98357A) ulanish sxemasi
+    :align: center
+
+.. code-block:: python
+
+    from espzero import I2SSpeaker
+
+    # ESP32-S3 standart pinlari: BCLK=38, LRC=39, DIN=40 (I2S 1 TX)
+    spk = I2SSpeaker(sample_rate=24000)
+
+    # WAV faylni ijro etish (44 baytli sarlavhani avtomatik o'tkazadi) yoki play_pcm()
+    spk.play_wav("hello.wav")
+    spk.close()
+
 Mikrofon (I2S Microphone)
 --------------------------
 
@@ -188,22 +208,6 @@ Real vaqtda OLED audio spektr analizatori (FFT Spectrum)
 
 .. literalinclude:: examples/audio_spectrum_oled.py
       :start-at: from espzero import
-
-I2S Raqamli Dinamik va Kuchaytirgich (I2SSpeaker / MAX98357A)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-``I2SSpeaker`` apparat ``I2S(1)`` (TX rejimi) orqali I2S audio kuchaytirgich modulini (masalan, ``MAX98357A``) boshqaradi. ESP32-S3 platasida u ``I2SMic`` (``I2S(0)``) va OV2640 kamerasi bilan to'qnashmasligi uchun xavfsiz pinlarni (``BCLK=38, LRC=39, DIN=40``) avtomatik biriktiradi.
-
-.. code-block:: python
-
-    from espzero import I2SSpeaker
-
-    # ESP32-S3 standart pinlari: BCLK=38, LRC=39, DIN=40 (I2S 1 TX)
-    spk = I2SSpeaker(sample_rate=24000)
-
-    # WAV faylni ijro etish (44 baytli sarlavhani avtomatik o'tkazadi) yoki play_pcm()
-    spk.play_wav("hello.wav")
-    spk.close()
 
 Kirish qurilmalari (Input Devices)
 ----------------------------------

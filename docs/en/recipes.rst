@@ -145,6 +145,26 @@ Playing Melodies
     ]
     spk.play(tune)
 
+I2S Digital Speaker (I2SSpeaker)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``I2SSpeaker`` drives a 3.3V/5V I2S amplifier module (such as ``MAX98357A``) on hardware ``I2S(1)`` (TX mode) for high-quality WAV/PCM voice and sound playback. On ESP32-S3, it automatically maps camera-safe pins (``BCLK=38, LRC=39, DIN=40``) so it runs alongside ``I2SMic`` (``I2S(0)``) and the OV2640 camera without conflicts.
+
+.. image:: /images/circuit_i2s_speaker.svg
+    :alt: ESP32-S3 I2S Digital Speaker (MAX98357A) Circuit Diagram
+    :align: center
+
+.. code-block:: python
+
+    from espzero import I2SSpeaker
+
+    # ESP32-S3 defaults: BCLK=38, LRC=39, DIN=40 (I2S 1 TX)
+    spk = I2SSpeaker(sample_rate=24000)
+
+    # Play a WAV file (auto-skips 44B header) or raw 16-bit PCM bytes via play_pcm()
+    spk.play_wav("hello.wav")
+    spk.close()
+
 Microphone (I2S Microphone)
 ---------------------------
 
@@ -188,22 +208,6 @@ Compute a 16-band frequency spectrum using ``mic.spectrum(bins=16)`` and render 
 
 .. literalinclude:: examples/audio_spectrum_oled.py
       :start-at: from espzero import
-
-I2S Digital Speaker & Amplifier (I2SSpeaker / MAX98357A)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-``I2SSpeaker`` drives an I2S amplifier module (such as ``MAX98357A``) on hardware ``I2S(1)`` (TX mode). On ESP32-S3, it automatically maps camera-safe pins (``BCLK=38, LRC=39, DIN=40``) so it runs alongside ``I2SMic`` (``I2S(0)``) and the OV2640 camera without conflicts.
-
-.. code-block:: python
-
-    from espzero import I2SSpeaker
-
-    # ESP32-S3 defaults: BCLK=38, LRC=39, DIN=40 (I2S 1 TX)
-    spk = I2SSpeaker(sample_rate=24000)
-
-    # Play a WAV file (auto-skips 44B header) or raw 16-bit PCM bytes via play_pcm()
-    spk.play_wav("hello.wav")
-    spk.close()
 
 Input Devices
 -------------

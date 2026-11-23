@@ -160,6 +160,26 @@ ESP32-S3 또는 M5Stack 등 보드 자체에 WS2812 NeoPixel RGB LED가 내장�
     ]
     spk.play(tune)
 
+I2S 디지털 스피커 (I2SSpeaker)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``I2SSpeaker``\ 는 ``MAX98357A`` 같은 3.3V/5V I2S 앰프 모듈을 하드웨어 ``I2S(1)`` (TX)로 구동하여 WAV/PCM 음성이나 효과음을 고음질로 출력합니다. ``I2SMic`` (``I2S(0)``) 및 OV2640 카메라와 핀이나 버스가 겹치지 않도록 ESP32-S3에서는 기본 핀(``BCLK=38, LRC=39, DIN=40``)이 자동 매핑됩니다.
+
+.. image:: /images/circuit_i2s_speaker.svg
+    :alt: ESP32-S3 I2S 디지털 스피커(MAX98357A) 회로 연결도
+    :align: center
+
+.. code-block:: python
+
+    from espzero import I2SSpeaker
+
+    # ESP32-S3 기본 핀: BCLK=38, LRC=39, DIN=40 (I2S 1 TX)
+    spk = I2SSpeaker(sample_rate=24000)
+
+    # WAV 파일 또는 16-bit PCM 바이트 재생 (44B 헤더 자동 스킵)
+    spk.play_wav("hello.wav")
+    spk.close()
+
 마이크 (I2S Microphone)
 -----------------------
 
@@ -203,22 +223,6 @@ ESP32-S3 WROOM CAM 보드의 기본 핀(``SCK=41``, ``WS=42``, ``SD=2``)에 별�
 
 .. literalinclude:: examples/audio_spectrum_oled.py
       :start-at: from espzero import
-
-I2S 디지털 스피커 및 앰프 (I2SSpeaker / MAX98357A)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-``I2SSpeaker``\ 는 ``MAX98357A`` 같은 3.3V/5V I2S 앰프 모듈을 하드웨어 ``I2S(1)`` (TX)로 구동합니다. ``I2SMic`` (``I2S(0)``) 및 OV2640 카메라와 핀이나 버스가 겹치지 않도록 ESP32-S3에서는 기본 핀(``BCLK=38, LRC=39, DIN=40``)이 자동 매핑됩니다.
-
-.. code-block:: python
-
-    from espzero import I2SSpeaker
-
-    # ESP32-S3 기본 핀: BCLK=38, LRC=39, DIN=40 (I2S 1 TX)
-    spk = I2SSpeaker(sample_rate=24000)
-
-    # WAV 파일 또는 16-bit PCM 바이트 재생 (44B 헤더 자동 스킵)
-    spk.play_wav("hello.wav")
-    spk.close()
 
 입력 장치 (Input Devices)
 -----------------------

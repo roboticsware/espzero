@@ -1,0 +1,401 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 580" width="100%" height="100%">
+  <!-- ESP32-S3 WROOM CAM I2S Speaker Amplifier (MAX98357A) Circuit -->
+  <defs>
+    <style>
+      .label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Malgun Gothic", Helvetica, Arial, sans-serif; font-size: 12.5px; fill: #2c3e50; font-weight: 500; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Malgun Gothic", Helvetica, Arial, sans-serif; font-size: 15px; font-weight: 700; fill: #1a252f; }
+      .comp-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Malgun Gothic", Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 700; fill: #1e293b; }
+      .pin-silk { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 8.5px; font-weight: 700; }
+      .pill-text { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 9.5px; fill: #ffffff; font-weight: 700; }
+      .wire-lbl { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Malgun Gothic", Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 700; }
+      .mono-sm { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 9px; font-weight: 700; }
+    </style>
+    <linearGradient id="shield-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dbe2ea"/>
+      <stop offset="50%" stop-color="#9aa8b8"/>
+      <stop offset="100%" stop-color="#6b7a8c"/>
+    </linearGradient>
+    <linearGradient id="pcb-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#171f30"/>
+      <stop offset="100%" stop-color="#0f1522"/>
+    </linearGradient>
+    <radialGradient id="cone-grad" cx="45%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="70%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </radialGradient>
+    <filter id="shadow" x="-8%" y="-8%" width="118%" height="120%" filterUnits="objectBoundingBox">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.18"/>
+    </filter>
+    <filter id="red-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#fcfcfc" rx="10"/>
+  <rect x="8" y="8" width="904" height="564" fill="none" stroke="#e1e8ed" stroke-width="1.5" rx="8"/>
+
+  <!-- Freenove ESP32-S3 WROOM CAM (N16R8) Board -->
+  <g transform="translate(148, 72)" filter="url(#shadow)">
+    <rect width="218" height="446" rx="14" fill="url(#pcb-grad)" stroke="#2d3a52" stroke-width="2"/>
+    <!-- PCB Meander Antenna -->
+    <rect x="59" y="10" width="100" height="30" rx="4" fill="#090d16" stroke="#1e293b" stroke-width="1"/>
+    <path d="M 68 35 L 68 17 L 79 17 L 79 31 L 90 31 L 90 17 L 101 17 L 101 31 L 112 31 L 112 17 L 123 17 L 123 31 L 134 31 L 134 17 L 145 17 L 145 35"
+          fill="none" stroke="#f59e0b" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="miter"/>
+    <!-- Metallic RF Shield -->
+    <rect x="48" y="46" width="122" height="130" rx="4" fill="url(#shield-grad)" stroke="#475569" stroke-width="1.2"/>
+    <text x="109" y="61" text-anchor="middle" font-family="sans-serif" font-size="7.5px" font-weight="800" letter-spacing="1.5" fill="#1e293b">ESPRESSIF</text>
+    <text x="109" y="73" text-anchor="middle" font-family="sans-serif" font-size="9px" font-weight="800" fill="#0f172a">ESP32-S3-WROOM-1</text>
+    <text x="109" y="85" text-anchor="middle" font-family="sans-serif" font-size="6px" font-weight="600" fill="#334155">N16R8 &#x2022; 16MB Flash &#x2022; 8MB PSRAM</text>
+    <!-- OV2640 Camera & FPC Connector -->
+    <rect x="97" y="135" width="24" height="47" fill="#e67e22" stroke="#b45309" stroke-width="0.8"/>
+    <line x1="101" y1="136" x2="101" y2="181" stroke="#d35400" stroke-width="0.7" opacity="0.7"/>
+    <line x1="105" y1="136" x2="105" y2="181" stroke="#d35400" stroke-width="0.7" opacity="0.7"/>
+    <line x1="113" y1="136" x2="113" y2="181" stroke="#d35400" stroke-width="0.7" opacity="0.7"/>
+    <line x1="117" y1="136" x2="117" y2="181" stroke="#d35400" stroke-width="0.7" opacity="0.7"/>
+    <text x="109" y="162" text-anchor="middle" font-family="monospace" font-size="6.5px" font-weight="700" fill="#431407">OV2640</text>
+    <rect x="89" y="96" width="40" height="40" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+    <circle cx="109" cy="116" r="14" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+    <circle cx="109" cy="116" r="9" fill="#090d16" stroke="#64748b" stroke-width="0.8"/>
+    <circle cx="109" cy="116" r="4.5" fill="#dc2626"/>
+    <circle cx="107.2" cy="114.2" r="1.4" fill="#fecaca" opacity="0.9"/>
+    <rect x="76" y="181" width="66" height="20" rx="2" fill="#f1f5f9" stroke="#64748b" stroke-width="1"/>
+    <rect x="80" y="184" width="58" height="5" rx="1" fill="#1e293b"/>
+    <text x="109" y="197.5" text-anchor="middle" font-family="monospace" font-size="5.8px" font-weight="700" fill="#334155">CAMERA FPC 24P</text>
+    <!-- Board Silkscreen Title -->
+    <text x="109" y="220" text-anchor="middle" font-family="sans-serif" font-size="13px" font-weight="800" letter-spacing="0.5" fill="#ffffff">ESP32-S3</text>
+    <text x="109" y="232" text-anchor="middle" font-family="sans-serif" font-size="7.5px" font-weight="700" letter-spacing="0.8" fill="#94a3b8">WROOM-1 CAM</text>
+    <!-- EN/RST, Status LEDs, BOOT(0) -->
+    <rect x="50" y="246" width="20" height="20" rx="3" fill="#334155" stroke="#64748b" stroke-width="1"/>
+    <circle cx="60" cy="256" r="5.5" fill="#cbd5e1" stroke="#475569" stroke-width="1"/>
+    <text x="60" y="275" text-anchor="middle" font-family="monospace" font-size="6.2px" font-weight="700" fill="#cbd5e1">EN/RST</text>
+
+    <rect x="78" y="250" width="12" height="14" rx="2" fill="#1e293b" stroke="#475569" stroke-width="0.8"/>
+    <circle cx="84" cy="257" r="3" fill="#ef4444" filter="url(#red-glow)"/>
+    <text x="84" y="274" text-anchor="middle" font-family="monospace" font-size="6px" font-weight="700" fill="#f87171">ON</text>
+
+    <rect x="94" y="250" width="12" height="14" rx="2" fill="#1e293b" stroke="#475569" stroke-width="0.8"/>
+    <circle cx="100" cy="257" r="2.8" fill="#475569"/>
+    <text x="100" y="274" text-anchor="middle" font-family="monospace" font-size="6px" font-weight="700" fill="#94a3b8">TX</text>
+
+    <rect x="110" y="250" width="12" height="14" rx="2" fill="#1e293b" stroke="#475569" stroke-width="0.8"/>
+    <circle cx="116" cy="257" r="2.8" fill="#475569"/>
+    <text x="116" y="274" text-anchor="middle" font-family="monospace" font-size="6px" font-weight="700" fill="#94a3b8">RX</text>
+
+    <rect x="126" y="250" width="12" height="14" rx="2" fill="#1e293b" stroke="#475569" stroke-width="0.8"/>
+    <circle cx="132" cy="257" r="2.8" fill="#475569"/>
+    <text x="132" y="274" text-anchor="middle" font-family="monospace" font-size="6px" font-weight="700" fill="#94a3b8">IO2</text>
+
+    <rect x="148" y="246" width="20" height="20" rx="3" fill="#334155" stroke="#64748b" stroke-width="1"/>
+    <circle cx="158" cy="256" r="5.5" fill="#cbd5e1" stroke="#475569" stroke-width="1"/>
+    <text x="158" y="275" text-anchor="middle" font-family="monospace" font-size="6.2px" font-weight="700" fill="#cbd5e1">BOOT(0)</text>
+    <!-- On-board WS2812 RGB LED (GPIO 48) -->
+    <rect x="96" y="288" width="26" height="26" rx="3" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+    <rect x="97.5" y="289.5" width="4" height="4" fill="#eab308"/>
+    <rect x="116.5" y="289.5" width="4" height="4" fill="#eab308"/>
+    <rect x="97.5" y="308.5" width="4" height="4" fill="#eab308"/>
+    <rect x="116.5" y="308.5" width="4" height="4" fill="#eab308"/>
+    <circle cx="109" cy="301" r="8" fill="#1e293b" stroke="#475569" stroke-width="0.8"/>
+    <circle cx="109" cy="301" r="4" fill="#334155"/>
+    <text x="109" y="326" text-anchor="middle" font-family="monospace" font-size="6.8px" font-weight="700" fill="#cbd5e1">48 (WS2812)</text>
+    <!-- Dual USB Type-C Ports -->
+    <text x="76" y="406" text-anchor="middle" font-family="monospace" font-size="6.5px" font-weight="700" fill="#cbd5e1">USB (OTG)</text>
+    <rect x="56" y="412" width="40" height="28" rx="4" fill="#334155" stroke="#94a3b8" stroke-width="1.2"/>
+    <rect x="62" y="418" width="28" height="16" rx="5" fill="#090d16"/>
+    <rect x="66" y="423" width="20" height="6" rx="2" fill="#3b82f6"/>
+
+    <text x="142" y="406" text-anchor="middle" font-family="monospace" font-size="6.5px" font-weight="700" fill="#cbd5e1">UART</text>
+    <rect x="122" y="412" width="40" height="28" rx="4" fill="#334155" stroke="#94a3b8" stroke-width="1.2"/>
+    <rect x="128" y="418" width="28" height="16" rx="5" fill="#090d16"/>
+    <rect x="132" y="423" width="20" height="6" rx="2" fill="#64748b"/>
+    <!-- 40-Pin Headers (20 Left + 20 Right) -->
+    <rect x="8" y="45" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="50" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="53" text-anchor="start" class="pin-silk" fill="#94a3b8">3V3</text>
+    <rect x="8" y="63" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="68" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="71" text-anchor="start" class="pin-silk" fill="#94a3b8">RST</text>
+    <rect x="8" y="81" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="86" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="89" text-anchor="start" class="pin-silk" fill="#94a3b8">G4</text>
+    <rect x="8" y="99" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="104" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="107" text-anchor="start" class="pin-silk" fill="#94a3b8">G5</text>
+    <rect x="8" y="117" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="122" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="125" text-anchor="start" class="pin-silk" fill="#94a3b8">G6</text>
+    <rect x="8" y="135" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="140" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="143" text-anchor="start" class="pin-silk" fill="#94a3b8">G7</text>
+    <rect x="8" y="153" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="158" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="161" text-anchor="start" class="pin-silk" fill="#94a3b8">G15</text>
+    <rect x="8" y="171" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="176" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="179" text-anchor="start" class="pin-silk" fill="#94a3b8">G16</text>
+    <rect x="8" y="189" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="194" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="197" text-anchor="start" class="pin-silk" fill="#94a3b8">G17</text>
+    <rect x="8" y="207" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="212" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="215" text-anchor="start" class="pin-silk" fill="#94a3b8">G18</text>
+    <rect x="8" y="225" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="230" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="233" text-anchor="start" class="pin-silk" fill="#94a3b8">G8</text>
+    <rect x="8" y="243" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="248" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="251" text-anchor="start" class="pin-silk" fill="#94a3b8">G3</text>
+    <rect x="8" y="261" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="266" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="269" text-anchor="start" class="pin-silk" fill="#94a3b8">G46</text>
+    <rect x="8" y="279" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="284" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="287" text-anchor="start" class="pin-silk" fill="#94a3b8">G9</text>
+    <rect x="8" y="297" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="302" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="305" text-anchor="start" class="pin-silk" fill="#94a3b8">G10</text>
+    <rect x="8" y="315" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="320" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="323" text-anchor="start" class="pin-silk" fill="#94a3b8">G11</text>
+    <rect x="8" y="333" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="338" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="341" text-anchor="start" class="pin-silk" fill="#94a3b8">G12</text>
+    <rect x="8" y="351" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="356" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="359" text-anchor="start" class="pin-silk" fill="#94a3b8">G13</text>
+    <rect x="8" y="369" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="374" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="377" text-anchor="start" class="pin-silk" fill="#94a3b8">G14</text>
+    <rect x="8" y="387" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="13" cy="392" r="1.8" fill="#f1c40f"/>
+    <text x="23" y="395" text-anchor="start" class="pin-silk" fill="#ffffff">5V</text>
+
+    <rect x="200" y="45" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="50" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="53" text-anchor="end" class="pin-silk" fill="#94a3b8">TX0</text>
+    <rect x="200" y="63" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="68" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="71" text-anchor="end" class="pin-silk" fill="#94a3b8">RX0</text>
+    <rect x="200" y="81" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="86" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="89" text-anchor="end" class="pin-silk" fill="#94a3b8">G1</text>
+    <rect x="200" y="99" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="104" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="107" text-anchor="end" class="pin-silk" fill="#94a3b8">G2</text>
+    <rect x="200" y="117" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="122" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="125" text-anchor="end" class="pin-silk" fill="#94a3b8">G42</text>
+    <rect x="200" y="135" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="140" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="143" text-anchor="end" class="pin-silk" fill="#94a3b8">G41</text>
+    <rect x="200" y="153" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="158" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="161" text-anchor="end" class="pin-silk" fill="#ffffff">G40</text>
+    <rect x="200" y="171" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="176" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="179" text-anchor="end" class="pin-silk" fill="#ffffff">G39</text>
+    <rect x="200" y="189" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="194" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="197" text-anchor="end" class="pin-silk" fill="#ffffff">G38</text>
+    <rect x="200" y="207" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="212" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="215" text-anchor="end" class="pin-silk" fill="#94a3b8">G37</text>
+    <rect x="200" y="225" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="230" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="233" text-anchor="end" class="pin-silk" fill="#94a3b8">G36</text>
+    <rect x="200" y="243" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="248" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="251" text-anchor="end" class="pin-silk" fill="#94a3b8">G35</text>
+    <rect x="200" y="261" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="266" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="269" text-anchor="end" class="pin-silk" fill="#94a3b8">G0</text>
+    <rect x="200" y="279" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="284" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="287" text-anchor="end" class="pin-silk" fill="#94a3b8">G45</text>
+    <rect x="200" y="297" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="302" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="305" text-anchor="end" class="pin-silk" fill="#94a3b8">G48</text>
+    <rect x="200" y="315" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="320" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="323" text-anchor="end" class="pin-silk" fill="#94a3b8">G47</text>
+    <rect x="200" y="333" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="338" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="341" text-anchor="end" class="pin-silk" fill="#94a3b8">G21</text>
+    <rect x="200" y="351" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="356" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="359" text-anchor="end" class="pin-silk" fill="#94a3b8">G20</text>
+    <rect x="200" y="369" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="374" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="377" text-anchor="end" class="pin-silk" fill="#94a3b8">G19</text>
+    <rect x="200" y="387" width="10" height="10" rx="1.8" fill="#0b0f17" stroke="#d49b1a" stroke-width="1.3"/>
+    <circle cx="205" cy="392" r="1.8" fill="#f1c40f"/>
+    <text x="195" y="395" text-anchor="end" class="pin-silk" fill="#ffffff">GND</text>
+  </g>
+
+  <!-- Wires (Zero-Crossing Clean Layout) -->
+  <g>
+    <!-- 5V Wire (Red) -> MAX98357A VIN -->
+    <path d="M 161 464 L 58 464 L 58 542 L 504 542 L 504 394 L 534 394" fill="none" stroke="#fcfcfc" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 161 464 L 58 464 L 58 542 L 504 542 L 504 394 L 534 394" fill="none" stroke="#e84118" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- G40 Wire (Blue/Cyan) -> MAX98357A DIN -->
+    <path d="M 353 230 L 494 230 L 494 226 L 534 226" fill="none" stroke="#fcfcfc" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 230 L 494 230 L 494 226 L 534 226" fill="none" stroke="#0ea5e9" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- G39 Wire (Green) -> MAX98357A LRC -->
+    <path d="M 353 248 L 504 248 L 504 254 L 534 254" fill="none" stroke="#fcfcfc" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 248 L 504 248 L 504 254 L 534 254" fill="none" stroke="#22c55e" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- G38 Wire (Amber/Yellow) -> MAX98357A BCLK -->
+    <path d="M 353 266 L 514 266 L 514 282 L 534 282" fill="none" stroke="#fcfcfc" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 266 L 514 266 L 514 282 L 534 282" fill="none" stroke="#f59e0b" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- GND Wire (Dark Slate) -> MAX98357A GND -->
+    <path d="M 353 464 L 484 464 L 484 366 L 534 366" fill="none" stroke="#fcfcfc" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 353 464 L 484 464 L 484 366 L 534 366" fill="none" stroke="#334155" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Active Pin Pads & Callout Pills -->
+  <!-- 5V Pad -->
+  <rect x="155.5" y="458.5" width="11" height="11" rx="2" fill="#e84118" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="161" cy="464" r="2.2" fill="#ffffff"/>
+  <g transform="translate(74, 456)">
+    <rect width="64" height="16" rx="3.5" fill="#e84118" stroke="#ffffff" stroke-width="1"/>
+    <text x="32" y="11" text-anchor="middle" class="pill-text">5V</text>
+  </g>
+
+  <!-- G40 Pad (DIN) -->
+  <rect x="347.5" y="224.5" width="11" height="11" rx="2" fill="#0ea5e9" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="353" cy="230" r="2.2" fill="#ffffff"/>
+  <g transform="translate(374, 222)">
+    <rect width="98" height="16" rx="3.5" fill="#0ea5e9" stroke="#ffffff" stroke-width="1"/>
+    <text x="49" y="11" text-anchor="middle" class="pill-text">G40 (DIN / SD)</text>
+  </g>
+
+  <!-- G39 Pad (LRC) -->
+  <rect x="347.5" y="242.5" width="11" height="11" rx="2" fill="#22c55e" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="353" cy="248" r="2.2" fill="#ffffff"/>
+  <g transform="translate(374, 240)">
+    <rect width="98" height="16" rx="3.5" fill="#22c55e" stroke="#ffffff" stroke-width="1"/>
+    <text x="49" y="11" text-anchor="middle" class="pill-text">G39 (LRC / WS)</text>
+  </g>
+
+  <!-- G38 Pad (BCLK) -->
+  <rect x="347.5" y="260.5" width="11" height="11" rx="2" fill="#f59e0b" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="353" cy="266" r="2.2" fill="#ffffff"/>
+  <g transform="translate(374, 258)">
+    <rect width="104" height="16" rx="3.5" fill="#f59e0b" stroke="#ffffff" stroke-width="1"/>
+    <text x="52" y="11" text-anchor="middle" class="pill-text">G38 (BCLK / SCK)</text>
+  </g>
+
+  <!-- GND Pad -->
+  <rect x="347.5" y="458.5" width="11" height="11" rx="2" fill="#334155" stroke="#ffffff" stroke-width="1.2"/>
+  <circle cx="353" cy="464" r="2.2" fill="#ffffff"/>
+  <g transform="translate(374, 456)">
+    <rect width="64" height="16" rx="3.5" fill="#334155" stroke="#ffffff" stroke-width="1"/>
+    <text x="32" y="11" text-anchor="middle" class="pill-text">GND</text>
+  </g>
+
+  <!-- MAX98357A I2S Amplifier Module & 3W Speaker -->
+  <g transform="translate(566, 200)" filter="url(#shadow)">
+    <!-- Speaker Wires from Screw Terminal (+ red, - slate) -->
+    <path d="M 184 88 L 224 88" fill="none" stroke="#fcfcfc" stroke-width="5.2" stroke-linecap="round"/>
+    <path d="M 184 88 L 224 88" fill="none" stroke="#e84118" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 184 130 L 224 130" fill="none" stroke="#fcfcfc" stroke-width="5.2" stroke-linecap="round"/>
+    <path d="M 184 130 L 224 130" fill="none" stroke="#334155" stroke-width="3" stroke-linecap="round"/>
+    <text x="204" y="81" text-anchor="middle" class="wire-lbl" fill="#dc2626">+</text>
+    <text x="204" y="143" text-anchor="middle" class="wire-lbl" fill="#334155">&#x2212;</text>
+
+    <!-- Left 7-Pin Header (abs x=534; abs y=226, 254, 282, 310, 338, 366, 394) -->
+    <rect x="-40" y="8" width="48" height="202" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1.2"/>
+
+    <circle cx="-32" cy="26" r="4" fill="#0ea5e9" stroke="#ffffff" stroke-width="0.9"/>
+    <text x="-22" y="29" class="mono-sm" style="font-size:8px;" fill="#7dd3fc">DIN</text>
+
+    <circle cx="-32" cy="54" r="4" fill="#22c55e" stroke="#ffffff" stroke-width="0.9"/>
+    <text x="-22" y="57" class="mono-sm" style="font-size:8px;" fill="#86efac">LRC</text>
+
+    <circle cx="-32" cy="82" r="4" fill="#f59e0b" stroke="#ffffff" stroke-width="0.9"/>
+    <text x="-22" y="85" class="mono-sm" style="font-size:8px;" fill="#fde047">BCLK</text>
+
+    <circle cx="-32" cy="110" r="3.6" fill="#0f172a" stroke="#64748b" stroke-width="0.9"/>
+    <text x="-22" y="113" class="mono-sm" style="font-size:7.8px;" fill="#64748b">GAIN</text>
+
+    <circle cx="-32" cy="138" r="3.6" fill="#0f172a" stroke="#64748b" stroke-width="0.9"/>
+    <text x="-22" y="141" class="mono-sm" style="font-size:7.8px;" fill="#64748b">SD</text>
+
+    <circle cx="-32" cy="166" r="4" fill="#334155" stroke="#94a3b8" stroke-width="0.9"/>
+    <text x="-22" y="169" class="mono-sm" style="font-size:8px;" fill="#cbd5e1">GND</text>
+
+    <circle cx="-32" cy="194" r="4" fill="#e84118" stroke="#ffffff" stroke-width="0.9"/>
+    <text x="-22" y="197" class="mono-sm" style="font-size:8px;" fill="#fca5a5">VIN</text>
+
+    <!-- Purple/Dark MAX98357A Carrier PCB -->
+    <rect x="4" y="0" width="176" height="218" rx="8" fill="#311042" stroke="#4c1d68" stroke-width="2"/>
+    <!-- Mounting Holes -->
+    <circle cx="18" cy="16" r="4.8" fill="#f8fafc" stroke="#eab308" stroke-width="1.8"/>
+    <circle cx="164" cy="16" r="4.8" fill="#f8fafc" stroke="#eab308" stroke-width="1.8"/>
+    <circle cx="18" cy="202" r="4.8" fill="#f8fafc" stroke="#eab308" stroke-width="1.8"/>
+    <circle cx="164" cy="202" r="4.8" fill="#f8fafc" stroke="#eab308" stroke-width="1.8"/>
+
+    <!-- Header Silkscreen Label -->
+    <text x="92" y="34" text-anchor="middle" class="mono-sm" style="font-size:8.5px; letter-spacing:0.6px;" fill="#e9d5ff">MAX98357A I2S AMP</text>
+
+    <!-- QFN Amplifier IC -->
+    <rect x="52" y="64" width="80" height="80" rx="5" fill="#1e1b2e" stroke="#6b21a8" stroke-width="1.4"/>
+    <rect x="66" y="78" width="52" height="52" rx="3" fill="#090d16" stroke="#94a3b8" stroke-width="1"/>
+    <circle cx="73" cy="85" r="2" fill="#cbd5e1"/>
+    <text x="92" y="102" text-anchor="middle" font-family="monospace" font-size="7.5px" font-weight="700" fill="#f8fafc">MAX98357A</text>
+    <text x="92" y="114" text-anchor="middle" font-family="monospace" font-size="6.2px" font-weight="600" fill="#38bdf8">Class-D 3W</text>
+
+    <!-- Green 2-Pin Speaker Terminal Block -->
+    <rect x="164" y="70" width="24" height="78" rx="3" fill="#15803d" stroke="#14532d" stroke-width="1.3"/>
+    <circle cx="176" cy="88" r="6.5" fill="#cbd5e1" stroke="#475569" stroke-width="1"/>
+    <line x1="172" y1="88" x2="180" y2="88" stroke="#334155" stroke-width="1.4"/>
+    <circle cx="176" cy="130" r="6.5" fill="#cbd5e1" stroke="#475569" stroke-width="1"/>
+    <line x1="172" y1="130" x2="180" y2="130" stroke="#334155" stroke-width="1.4"/>
+    <text x="157" y="91" text-anchor="end" class="mono-sm" style="font-size:8px;" fill="#fca5a5">+</text>
+    <text x="157" y="133" text-anchor="end" class="mono-sm" style="font-size:8px;" fill="#cbd5e1">&#x2212;</text>
+
+    <!-- Status Text inside PCB -->
+    <text x="92" y="172" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-size="10px" font-weight="700" fill="#38bdf8">16-bit I2S Mono TX</text>
+    <text x="92" y="188" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-size="8.5px" font-weight="600" fill="#a855f7">5V Power &#x2022; 3.3V Logic</text>
+
+    <!-- 3W Mono Speaker Graphic -->
+    <rect x="218" y="80" width="12" height="16" rx="2" fill="#e84118" stroke="#ffffff" stroke-width="0.9"/>
+    <rect x="218" y="122" width="12" height="16" rx="2" fill="#334155" stroke="#94a3b8" stroke-width="0.9"/>
+    <circle cx="272" cy="109" r="46" fill="#0f172a" stroke="#475569" stroke-width="2.2"/>
+    <circle cx="272" cy="109" r="38" fill="url(#cone-grad)" stroke="#64748b" stroke-width="1.2"/>
+    <circle cx="272" cy="109" r="24" fill="none" stroke="#475569" stroke-width="1" stroke-dasharray="3 2"/>
+    <circle cx="272" cy="109" r="12" fill="#090d16" stroke="#94a3b8" stroke-width="1"/>
+    <circle cx="268" cy="105" r="3.5" fill="#334155" opacity="0.7"/>
+    <!-- Sound waves -->
+    <path d="M 323 99 A 18 18 0 0 1 323 119" fill="none" stroke="#0ea5e9" stroke-width="1.8" stroke-linecap="round" opacity="0.85"/>
+    <path d="M 330 92 A 28 28 0 0 1 330 126" fill="none" stroke="#0ea5e9" stroke-width="1.8" stroke-linecap="round" opacity="0.55"/>
+    <text x="272" y="174" text-anchor="middle" class="wire-lbl" fill="#1e293b">4&#x2126; / 8&#x2126; 3W Speaker</text>
+
+    <!-- Module Header Title -->
+    <text x="148" y="-14" text-anchor="middle" class="comp-title">I2S Audio Amplifier (MAX98357A) + Speaker</text>
+  </g>
+
+  <!-- Info Card -->
+  <g transform="translate(448, 20)">
+    <rect width="452" height="142" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+    <text x="14" y="24" class="title">ESP32-S3 WROOM CAM &#x2014; MAX98357A Amp (5V)</text>
+    <circle cx="22" cy="44" r="5" fill="#e84118"/>
+    <text x="35" y="48" class="label">5V &#x2192; MAX98357A VIN (5V Power for 3W Speaker Output)</text>
+    <circle cx="22" cy="64" r="5" fill="#334155"/>
+    <text x="35" y="68" class="label">GND &#x2192; MAX98357A GND (Common Ground)</text>
+    <circle cx="22" cy="84" r="5" fill="#0ea5e9"/>
+    <text x="35" y="88" class="label">G40 (GPIO 40, I2S DIN / SD) &#x2192; MAX98357A DIN</text>
+    <circle cx="22" cy="104" r="5" fill="#22c55e"/>
+    <text x="35" y="108" class="label">G39 (GPIO 39, I2S LRC / WS) &#x2192; MAX98357A LRC</text>
+    <circle cx="22" cy="124" r="5" fill="#f59e0b"/>
+    <text x="35" y="128" class="label">G38 (GPIO 38, I2S BCLK / SCK) &#x2192; MAX98357A BCLK</text>
+  </g>
+</svg>
