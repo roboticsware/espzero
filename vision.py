@@ -22,9 +22,12 @@ try:
 except ImportError:
     _thread = None
 
-# Global streaming state
+# Global streaming & snapshot state
 _streaming_active = False
 _stream_thread = None
+_streamer = None
+_streamer_cfg = None
+_last_jpeg = None
 _latest_ai_data = {"hand_x": 0, "hand_y": 0, "hand_detected": False}
 
 
@@ -133,15 +136,46 @@ class _ModernCameraStreamer:
             self.cam.free_buffer()
         return jpg
 
+    def close(self):
+        if hasattr(self.cam, 'deinit'):
+            try:
+                self.cam.deinit()
+            except Exception:
+                pass
+
+
+def _close_streamer():
+    global _streamer, _streamer_cfg
+    if _streamer is not None:
+        if hasattr(_streamer, 'close'):
+            _streamer.close()
+        elif hasattr(_streamer, 'deinit'):
+            try:
+                _streamer.deinit()
+            except Exception:
+                pass
+        _streamer = None
+        _streamer_cfg = None
+
 
 def _get_streamer(framesize=None, quality=35):
+    global _streamer, _streamer_cfg
     if camera is None:
         return None
+
+    cfg = (framesize, quality)
+    if _streamer is not None and _streamer_cfg == cfg:
+        return _streamer
+
+    if _streamer is not None:
+        _close_streamer()
 
     # Check for modern micropython-camera-API
     if hasattr(camera, 'Camera'):
         try:
-            return _ModernCameraStreamer(framesize=framesize, quality=quality)
+            _streamer = _ModernCameraStreamer(framesize=framesize, quality=quality)
+            _streamer_cfg = cfg
+            return _streamer
         except Exception as e:
             print("[Vision] Modern Camera Init Error:", e)
 
@@ -153,7 +187,9 @@ def _get_streamer(framesize=None, quality=35):
             pass
         try:
             camera.init(0, format=camera.JPEG)
-            return camera
+            _streamer = camera
+            _streamer_cfg = cfg
+            return _streamer
         except Exception as e:
             print("[Vision] Legacy Camera Init Error:", e)
 
@@ -165,7 +201,7 @@ def _stream_loop(streamer, delay, is_modern):
     Internal streaming loop executed either in a background thread or synchronously.
     Streams JPEG frames over stdout and non-blockingly reads AI feedback packets from stdin.
     """
-    global _streaming_active
+    global _streaming_active, _last_jpeg
     writer = getattr(sys.stdout, 'buffer', sys.stdout)
 
     poller = None
@@ -192,6 +228,7 @@ def _stream_loop(streamer, delay, is_modern):
 
             buf_len = len(buf) if buf else 0
             if buf_len > 0:
+                _last_jpeg = bytes(buf)
                 # Transmit in chunks to prevent ESP32 UART TX buffer overflow
                 chunk_size = 512
                 for i in range(0, buf_len, chunk_size):
@@ -275,7 +312,7 @@ def _wifi_server_loop(streamer, port, delay, is_modern):
     Internal HTTP MJPEG streaming server loop over Wi-Fi.
     Also handles /ai endpoint for receiving MediaPipe AI coordinates wirelessly.
     """
-    global _streaming_active
+    global _streaming_active, _last_jpeg
     import socket
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -356,6 +393,7 @@ def _wifi_server_loop(streamer, port, delay, is_modern):
                     buf = streamer.capture()
 
                 if buf:
+                    _last_jpeg = bytes(buf)
                     header = (
                         b"--frame\r\n"
                         b"Content-Type: image/jpeg\r\n"
@@ -452,3 +490,69 @@ def stop_stream():
     global _streaming_active
     _streaming_active = False
     time.sleep(0.2)
+
+
+def capture(framesize="QVGA", quality=70):
+    """
+    Captures a single JPEG frame from the camera and returns it as ``bytes``.
+    Automatically handles both modern (``camera.Camera`` + ``jpeg.Encoder``) and
+    legacy (``camera.init``) MicroPython camera firmwares, and safely reuses the
+    latest frame if a background stream is already running.
+
+    :param framesize: 'QQVGA' (160x120), 'HQVGA' (240x176), 'QVGA' (320x240, default), or 'VGA' (640x480).
+    :param quality: JPEG compression quality (1-100, default: 70).
+    :returns: JPEG ``bytes``, or ``None`` if capture failed.
+    """
+    global _last_jpeg
+
+    if camera is None:
+        print("[Vision] Error: Camera module is missing. Are you using a camera-enabled firmware?")
+        return None
+
+    if _streaming_active and _last_jpeg:
+        return _last_jpeg
+
+    streamer = _get_streamer(framesize=framesize, quality=quality)
+    if streamer is None:
+        print("[Vision] Camera Init Error: Could not initialize camera on this board.")
+        return None
+
+    try:
+        if hasattr(streamer, 'capture_jpeg'):
+            jpg = streamer.capture_jpeg()
+        else:
+            jpg = streamer.capture()
+        if jpg:
+            _last_jpeg = bytes(jpg)
+            return _last_jpeg
+    except Exception as e:
+        print("[Vision] Capture Error:", e)
+    return None
+
+
+def save_photo(filename, framesize="QVGA", quality=70):
+    """
+    Captures a single JPEG frame and saves it to ``filename`` on flash storage.
+
+    :param filename: Target path (e.g. ``"snapshot.jpg"`` or ``"/dataset/img_001.jpg"``).
+    :param framesize: 'QQVGA', 'HQVGA', 'QVGA' (default), or 'VGA'.
+    :param quality: JPEG compression quality (default: 70).
+    :returns: ``filename`` on success, or ``None`` if capture failed.
+    """
+    jpg = capture(framesize=framesize, quality=quality)
+    if not jpg:
+        return None
+    with open(filename, "wb") as f:
+        f.write(jpg)
+    return filename
+
+
+def close():
+    """
+    Stops any active stream and releases the camera hardware peripheral.
+    """
+    global _last_jpeg
+    if _streaming_active:
+        stop_stream()
+    _close_streamer()
+    _last_jpeg = None
