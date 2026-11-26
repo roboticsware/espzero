@@ -1832,7 +1832,9 @@ def pinout(output=True):
     Identical to picozero-rw pinout().
     """
     p = _hal.get_profile()
-    pins = """          --- USB ---
+    pins = getattr(p, "PINOUT", None)
+    if not pins:
+        pins = """          --- USB ---
 EN    1  |o         o| 30  D23  (MOSI/SPI)
 VP    2  |o         o| 29  D22  (SCL/I2C)
 VN    3  |o         o| 28  TX0  (Serial TX)

@@ -51,6 +51,23 @@ class ESP32DevKitV1(BoardProfile):
     STRAPPING_PINS       = [0, 2, 5, 12, 15]
     ADC2_PINS            = [0, 2, 4, 12, 13, 14, 15, 25, 26, 27]
 
+    PINOUT = """          --- USB ---
+EN    1  |o         o| 30  D23  (MOSI/SPI)
+VP    2  |o         o| 29  D22  (SCL/I2C)
+VN    3  |o         o| 28  TX0  (Serial TX)
+D34   4  |o         o| 27  RX0  (Serial RX)
+D35   5  |o         o| 26  D21  (SDA/I2C)
+D32   6  |o         o| 25  D19  (MISO/SPI)
+D33   7  |o         o| 24  D18  (SCK/SPI)
+D25   8  |o         o| 23  D5   (SS/CS)
+D26   9  |o         o| 22  TX2  (Serial2 TX)
+D27  10  |o         o| 21  RX2  (Serial2 RX)
+D14  11  |o         o| 20  D4   (Touch0)
+D12  12  |o         o| 19  D2   (LED/Touch2)
+D13  13  |o         o| 18  D15  (Touch3)
+GND  14  |o         o| 17  GND
+VIN  15  |o         o| 16  3V3"""
+
 
 # --------------------------------------------------------------
 # ESP32-S3 DevKit-C
@@ -87,6 +104,28 @@ class ESP32S3DevKit(BoardProfile):
     STRAPPING_PINS       = [0, 3, 45, 46]
     ADC2_PINS            = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
+    PINOUT = """           --- USB / CAM ---
+3V3    1  |o               o| 40  GND
+RST    2  |o               o| 39  TX0  (G43)
+G4     3  |o               o| 38  RX0  (G44)
+G5     4  |o               o| 37  G1   (ADC1/Touch)
+G6     5  |o               o| 36  G2   (I2S SD / Blue LED)
+G7     6  |o               o| 35  G42  (I2S WS / CS)
+G15    7  |o               o| 34  G41  (I2S SCK / MISO)
+G16    8  |o               o| 33  G40  (SPI MOSI / SD D0)
+G17    9  |o               o| 32  G39  (SPI SCK / SD CLK)
+G18   10  |o               o| 31  G38  (RFID RST / SD CMD)
+G8    11  |o               o| 30  G37  (PSRAM - Do not use)
+G3    12  |o               o| 29  G36  (PSRAM - Do not use)
+G46   13  |o               o| 28  G35  (PSRAM - Do not use)
+G9    14  |o               o| 27  G0   (BOOT)
+G10   15  |o               o| 26  G45  (STRAP)
+G11   16  |o               o| 25  G48  (RGB WS2812)
+G12   17  |o               o| 24  G47  (I2C SCL)
+G13   18  |o               o| 23  G21  (I2C SDA)
+G14   19  |o               o| 22  G20  (USB D+)
+5V    20  |o               o| 21  G19  (USB D-)"""
+
 
 # --------------------------------------------------------------
 # ESP32-C3 Mini / SuperMini
@@ -112,6 +151,16 @@ class ESP32C3Mini(BoardProfile):
     INTERNAL_LED_ACTIVE_HIGH = False   # active-low
     STRAPPING_PINS       = [2, 8, 9]
     ADC2_PINS            = []          # C3 has no ADC2
+
+    PINOUT = """         --- USB ---
+5V    1  |o       o| 16  IO21 (TX)
+GND   2  |o       o| 15  IO20 (RX)
+3V3   3  |o       o| 14  IO10
+IO0   4  |o       o| 13  IO9  (BOOT)
+IO1   5  |o       o| 12  IO8  (LED)
+IO2   6  |o       o| 11  IO7
+IO3   7  |o       o| 10  IO6
+IO4   8  |o       o|  9  IO5"""
 
 
 # --------------------------------------------------------------
@@ -274,3 +323,24 @@ class ESP32_38Pin_NodeMCU(BoardProfile):
 
     # Flash-memory pins — NEVER use as GPIO; doing so corrupts flash
     RESTRICTED_PINS = [6, 7, 8, 9, 10, 11]
+
+    PINOUT = """          --- USB ---
+3V3   1  |o         o| 38  GND
+EN    2  |o         o| 37  D23  (MOSI/SPI)
+VP    3  |o         o| 36  D22  (SCL/I2C)
+VN    4  |o         o| 35  TX0  (Serial TX)
+D34   5  |o         o| 34  RX0  (Serial RX)
+D35   6  |o         o| 33  D21  (SDA/I2C)
+D32   7  |o         o| 32  GND
+D33   8  |o         o| 31  D19  (MISO/SPI)
+D25   9  |o         o| 30  D18  (SCK/SPI)
+D26  10  |o         o| 29  D5   (SS/CS)
+D27  11  |o         o| 28  TX2  (Serial2 TX)
+D14  12  |o         o| 27  RX2  (Serial2 RX)
+D12  13  |o         o| 26  D4   (Touch0)
+GND  14  |o         o| 25  D2   (Touch2)
+D13  15  |o         o| 24  D15  (Touch3)
+D9   16  |o         o| 23  D8   (Flash - DO NOT USE)
+D10  17  |o         o| 22  D7   (Flash - DO NOT USE)
+D11  18  |o         o| 21  D6   (Flash - DO NOT USE)
+5V   19  |o         o| 20  CLK  (Flash - DO NOT USE)"""

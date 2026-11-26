@@ -56,6 +56,9 @@ class BoardProfile:
     # Driving these pins will corrupt flash memory and hang the system.
     RESTRICTED_PINS = []    # Example: [6, 7, 8, 9, 10, 11]
 
+    # ── Textual pinout diagram for pinout() ───────────────────────
+    PINOUT = None
+
     # ─────────────────────────────────────────────────────────────
 
     def resolve_pin(self, pin):
