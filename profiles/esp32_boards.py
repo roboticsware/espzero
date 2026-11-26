@@ -104,27 +104,28 @@ class ESP32S3DevKit(BoardProfile):
     STRAPPING_PINS       = [0, 3, 45, 46]
     ADC2_PINS            = [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
-    PINOUT = """           --- USB / CAM ---
-3V3    1  |o               o| 40  GND
-RST    2  |o               o| 39  TX0  (G43)
-G4     3  |o               o| 38  RX0  (G44)
-G5     4  |o               o| 37  G1   (ADC1/Touch)
-G6     5  |o               o| 36  G2   (I2S SD / Blue LED)
-G7     6  |o               o| 35  G42  (I2S WS / CS)
-G15    7  |o               o| 34  G41  (I2S SCK / MISO)
-G16    8  |o               o| 33  G40  (SPI MOSI / SD D0)
-G17    9  |o               o| 32  G39  (SPI SCK / SD CLK)
-G18   10  |o               o| 31  G38  (RFID RST / SD CMD)
-G8    11  |o               o| 30  G37  (PSRAM - Do not use)
-G3    12  |o               o| 29  G36  (PSRAM - Do not use)
-G46   13  |o               o| 28  G35  (PSRAM - Do not use)
-G9    14  |o               o| 27  G0   (BOOT)
-G10   15  |o               o| 26  G45  (STRAP)
-G11   16  |o               o| 25  G48  (RGB WS2812)
-G12   17  |o               o| 24  G47  (I2C SCL)
-G13   18  |o               o| 23  G21  (I2C SDA)
-G14   19  |o               o| 22  G20  (USB D+)
-5V    20  |o               o| 21  G19  (USB D-)"""
+    PINOUT = """           --- CAM / ANT ---
+3V3    1  |o               o| 40  TX0  (G43)
+RST    2  |o               o| 39  RX0  (G44)
+G4     3  |o               o| 38  G1   (ADC1/Touch)
+G5     4  |o               o| 37  G2   (I2S SD / Blue LED)
+G6     5  |o               o| 36  G42  (I2S WS / CS)
+G7     6  |o               o| 35  G41  (I2S SCK / MISO)
+G15    7  |o               o| 34  G40  (SPI MOSI / SD D0)
+G16    8  |o               o| 33  G39  (SPI SCK / SD CLK)
+G17    9  |o               o| 32  G38  (RFID RST / SD CMD)
+G18   10  |o               o| 31  G37  (PSRAM - Do not use)
+G8    11  |o               o| 30  G36  (PSRAM - Do not use)
+G3    12  |o               o| 29  G35  (PSRAM - Do not use)
+G46   13  |o               o| 28  G0   (BOOT)
+G9    14  |o               o| 27  G45  (STRAP)
+G10   15  |o               o| 26  G48  (RGB WS2812)
+G11   16  |o               o| 25  G47  (I2C SCL)
+G12   17  |o               o| 24  G21  (I2C SDA)
+G13   18  |o               o| 23  G20  (USB D+)
+G14   19  |o               o| 22  G19  (USB D-)
+5V    20  |o               o| 21  GND
+             --- USB ---"""
 
 
 # --------------------------------------------------------------
