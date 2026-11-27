@@ -91,6 +91,12 @@ RGB LED
     rgb.color = (255, 255, 0) # 노란색 (빨강+초록)
     sleep(0.5)
 
+    # 색상 이름 문자열로 간편하게 지정 (red, green, blue, yellow, cyan, magenta, purple, white, black, orange)
+    rgb.color = "cyan"
+    sleep(0.5)
+    rgb.color = "orange"
+    sleep(0.5)
+
     # 개별 채널 강도 조절 (0~255)
     rgb.red = 128
     rgb.blue = 255
@@ -99,8 +105,8 @@ RGB LED
     rgb.invert()
     rgb.toggle()
 
-    # 다채로운 자동 애니메이션 (점멸, 페이드, 무지개 순환)
-    rgb.blink(on_times=0.5, colors=((255, 0, 0), (0, 255, 0), (0, 0, 255)), n=2, wait=True)
+    # 다채로운 자동 애니메이션 (점멸, 페이드, 무지개 순환 — 색상 이름 문자열도 사용 가능)
+    rgb.blink(on_times=0.5, colors=("red", "cyan", "orange"), n=2, wait=True)
     rgb.pulse(fade_times=1, n=2, wait=True)  # 부드럽게 페이드
     rgb.cycle(fade_times=1, n=2, wait=True)  # 무지개 색상 순환
 

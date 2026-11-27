@@ -642,6 +642,13 @@ class Speaker(OutputDevice, PinMixin):
 
 
 class RGBLED(OutputDevice, PinsMixin):
+    """Full-colour RGB LED connected across three GPIO pins (red, green, blue).
+
+    Supports both ``0–255`` RGB tuples (e.g. ``(255, 128, 0)``) and named
+    colour strings (e.g. ``"red"``, ``"green"``, ``"cyan"``, ``"orange"``)
+    via :attr:`color` and :meth:`blink`.
+    """
+
     def __init__(self, red=None, green=None, blue=None,
                  active_high=True, initial_value=(0,0,0), pwm=True):
         if red is None or green is None or blue is None:
@@ -690,6 +697,11 @@ class RGBLED(OutputDevice, PinsMixin):
 
     @property
     def color(self):
+        """Colour of the LED as an ``(R, G, B)`` 0–255 tuple.
+
+        Accepts either an ``(R, G, B)`` 0–255 tuple or a colour name string such as
+        ``"red"``, ``"green"``, ``"cyan"``, ``"orange"``.
+        """
         return tuple(self._to_255(v) for v in self.value)
 
     @color.setter

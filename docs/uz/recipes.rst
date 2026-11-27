@@ -76,6 +76,12 @@ Turli xil ranglarni yaratish uchun Qizil, Yashil va Moviy pinlarni birlashtiring
     rgb.color = (255, 255, 0) # Sariq (Qizil + Yashil)
     sleep(0.5)
 
+    # Rang nomlari qator sifatida ham qo'llab-quvvatlanadi (red, green, blue, yellow, cyan, magenta, purple, white, black, orange)
+    rgb.color = "cyan"
+    sleep(0.5)
+    rgb.color = "orange"
+    sleep(0.5)
+
     # Alohida kanal yorqinligini boshqarish (0~255)
     rgb.red = 128
     rgb.blue = 255
@@ -84,8 +90,8 @@ Turli xil ranglarni yaratish uchun Qizil, Yashil va Moviy pinlarni birlashtiring
     rgb.invert()
     rgb.toggle()
 
-    # Avtomatik animatsiyalar (miltillash, ravon pulsatsiya, kamalak aylanishi)
-    rgb.blink(on_times=0.5, colors=((255, 0, 0), (0, 255, 0), (0, 0, 255)), n=2, wait=True)
+    # Avtomatik animatsiyalar (miltillash, ravon pulsatsiya, kamalak aylanishi — rang nomlari ham ishlaydi)
+    rgb.blink(on_times=0.5, colors=("red", "cyan", "orange"), n=2, wait=True)
     rgb.pulse(fade_times=1, n=2, wait=True)  # Ravon o'chib-yonish
     rgb.cycle(fade_times=1, n=2, wait=True)  # Kamalak ranglari tsikli
 

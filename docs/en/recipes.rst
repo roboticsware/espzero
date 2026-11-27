@@ -76,6 +76,12 @@ Combine Red, Green, and Blue pins to create various colors.
     rgb.color = (255, 255, 0) # Yellow (Red + Green)
     sleep(0.5)
 
+    # Named color strings are also supported (red, green, blue, yellow, cyan, magenta, purple, white, black, orange)
+    rgb.color = "cyan"
+    sleep(0.5)
+    rgb.color = "orange"
+    sleep(0.5)
+
     # Adjust individual channel brightness (0~255)
     rgb.red = 128
     rgb.blue = 255
@@ -84,8 +90,8 @@ Combine Red, Green, and Blue pins to create various colors.
     rgb.invert()
     rgb.toggle()
 
-    # Dynamic animations (blink, pulse fade, rainbow cycle)
-    rgb.blink(on_times=0.5, colors=((255, 0, 0), (0, 255, 0), (0, 0, 255)), n=2, wait=True)
+    # Dynamic animations (blink, pulse fade, rainbow cycle — named colors also work in colors=)
+    rgb.blink(on_times=0.5, colors=("red", "cyan", "orange"), n=2, wait=True)
     rgb.pulse(fade_times=1, n=2, wait=True)  # Smooth fade pulse
     rgb.cycle(fade_times=1, n=2, wait=True)  # Rainbow color cycle
 
