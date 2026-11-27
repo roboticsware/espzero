@@ -332,6 +332,20 @@ def LED(pin, pwm=True, active_high=True, initial_value=False):
         return DigitalLED(pin=pin, active_high=active_high, initial_value=initial_value)
 
 
+_NAMED_COLORS = {
+    "red": (255, 0, 0),
+    "green": (0, 255, 0),
+    "blue": (0, 0, 255),
+    "yellow": (255, 255, 0),
+    "cyan": (0, 255, 255),
+    "magenta": (255, 0, 255),
+    "purple": (128, 0, 255),
+    "white": (255, 255, 255),
+    "black": (0, 0, 0),
+    "orange": (255, 128, 0),
+}
+
+
 class NeoPixelLED(OutputDevice, PinMixin):
     """WS2812 single-pixel wrapper for boards with a built-in RGB LED.
     Automatically used when INTERNAL_LED_TYPE == 'neopixel'.
@@ -355,13 +369,10 @@ class NeoPixelLED(OutputDevice, PinMixin):
                 return tuple(clamp(round(v * 255), 0, 255) for v in value[:3])
             return tuple(clamp(int(v), 0, 255) for v in value[:3])
         elif isinstance(value, str):
-            named = {
-                "red": (255, 0, 0), "green": (0, 255, 0), "blue": (0, 0, 255),
-                "yellow": (255, 255, 0), "cyan": (0, 255, 255), "magenta": (255, 0, 255),
-                "purple": (128, 0, 255), "white": (255, 255, 255), "black": (0, 0, 0),
-                "orange": (255, 128, 0),
-            }
-            return named.get(value.lower(), (255, 255, 255))
+            rgb = _NAMED_COLORS.get(value.lower())
+            if rgb is None:
+                raise ValueError("Unknown color name: {}".format(value))
+            return rgb
         return (255, 255, 255)
 
     @property
@@ -456,6 +467,7 @@ class NeoPixelLED(OutputDevice, PinMixin):
             on_times = (on_times,) * len(colors)
         if type(fade_times) is not tuple:
             fade_times = (fade_times,) * len(colors)
+        colors = tuple(self._parse_color(c) if isinstance(c, str) else c for c in colors)
         if any(v > 1 for v in sum(colors, ())):
             parsed_colors = tuple(tuple(clamp(int(v), 0, 255) for v in t) for t in colors)
         else:
@@ -668,13 +680,22 @@ class RGBLED(OutputDevice, PinsMixin):
     def _to_255(self, v): return round(v * 255)
     def _from_255(self, v): return 0 if v == 0 else v / 255
 
+    def _parse_color_255(self, value):
+        if isinstance(value, str):
+            rgb = _NAMED_COLORS.get(value.lower())
+            if rgb is None:
+                raise ValueError("Unknown color name: {}".format(value))
+            return rgb
+        return value
+
     @property
     def color(self):
         return tuple(self._to_255(v) for v in self.value)
 
     @color.setter
     def color(self, value):
-        self.value = tuple(self._from_255(v) for v in value)
+        rgb = self._parse_color_255(value)
+        self.value = tuple(self._from_255(v) for v in rgb)
 
     @property
     def red(self):
@@ -724,6 +745,7 @@ class RGBLED(OutputDevice, PinsMixin):
             on_times = (on_times,) * len(colors)
         if type(fade_times) is not tuple:
             fade_times = (fade_times,) * len(colors)
+        colors = tuple(self._parse_color_255(c) if isinstance(c, str) else c for c in colors)
         if any(v > 1 for v in sum(colors, ())):
             colors = tuple(tuple(self._from_255(v) for v in t) for t in colors)
 
