@@ -49,7 +49,7 @@
 + Mu 에디터 내장 온라인 플래셔([ESP Online Flasher]) 및 오프라인 플래셔 가이드 보강
 + Mu 에디터 환경과 일반 Python 에디터(VS Code, Thonny, mpremote) 환경을 명확히 구분한 패키지 설치 가이드
 + 초음파(HC-SR04P 3.3V) 및 LCD(PCF8574 레벨 시프터 연동) 회로도를 안전한 3.3V 기준으로 전면 개편
-+ Freenove ESP32-S3 WROOM CAM (N16R8) 카메라 간섭 방지 안전 핀맵 기준 고해상도 SVG 회로도 제공
++ ESP32-S3 WROOM CAM (N16R8) 카메라 간섭 방지 안전 핀맵 기준 고해상도 SVG 회로도 제공
 + 문서 인덱스에 PyPI 최신 패키지 버전 배지 및 ReadTheDocs 빌드 상태 배지 연동
 + 한국어, 영어, 우즈베크어 문서에 버전별 히스토리 관리를 위한 ``changelog.rst`` 신설
 
@@ -63,7 +63,7 @@
 0.0.6 - 2026-11-16
 ------------------
 + 카메라 비전 모듈 및 관련 RST 문서 추가
-+ Freenove ESP32-S3 WROOM CAM 공식 핀 별칭 및 보드 메타데이터 추가
++ ESP32-S3 WROOM CAM 공식 핀 별칭 및 보드 메타데이터 추가
 + ESP32-S3용 NeoPixelLED 색상 설정기(setter) 및 핀 유효성 검증 강화
 + Sphinx 다국어(ko, en, uz) 문서 빌드 환경 구축
 

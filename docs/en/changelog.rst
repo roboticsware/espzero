@@ -49,7 +49,7 @@ Change log
 + Enhanced firmware flashing guide covering Mu Editor's online cloud flasher ([ESP Online Flasher]) and offline flasher
 + Clarified environment setup distinguishing Mu Editor built-in packages from standard Python environments (VS Code, Thonny, mpremote)
 + Updated Ultrasonic (HC-SR04P) and LCD (PCF8574 with level shifter) circuit diagrams for safe 3.3V operation
-+ Redesigned circuit wiring diagrams for Freenove ESP32-S3 WROOM CAM (N16R8) with camera-safe pins
++ Redesigned circuit wiring diagrams for ESP32-S3 WROOM CAM (N16R8) with camera-safe pins
 + Added PyPI and ReadTheDocs badges and version tracking to documentation index
 + Added ``changelog.rst`` across English, Korean, and Uzbek documentation
 
@@ -63,7 +63,7 @@ Change log
 0.0.6 - 2026-11-16
 ------------------
 + Introduced camera vision module and supporting rst documentation
-+ Added official Freenove ESP32-S3 WROOM CAM pin aliases and board metadata
++ Added official ESP32-S3 WROOM CAM pin aliases and board metadata
 + Improved NeoPixelLED with color setter and clear pin validation for ESP32-S3
 + Added Sphinx multilingual documentation configuration (en, ko, uz)
 

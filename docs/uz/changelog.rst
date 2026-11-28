@@ -49,7 +49,7 @@ O'zgarishlar tarixi
 + Mu muharriri va standart Python muhitlarini (VS Code, Thonny, mpremote) aniq ajratgan holda o'rnatish qo'llanmasi yaxshilandi
 + SSD1306 va SH1106 I2C displeylarini qo'llab-quvvatlovchi ``OLED`` klassi joriy etildi
 + Ultratovush (HC-SR04P 3.3V) va LCD (daraja o'zgartirgichli PCF8574) ulanish diagrammalari xavfsiz 3.3V sxemalarga almashtirildi
-+ Freenove ESP32-S3 WROOM CAM (N16R8) kamera xavfsiz pinlari asosida yuqori aniqlikdagi SVG sxemalari yaratildi
++ ESP32-S3 WROOM CAM (N16R8) kamera xavfsiz pinlari asosida yuqori aniqlikdagi SVG sxemalari yaratildi
 + Hujjatlar indeksiga PyPI joriy versiya nishoni va ReadTheDocs holati nishoni qo'shildi
 + Versiyalar tarixini boshqarish uchun ingliz, koreys va o'zbek tillarida ``changelog.rst`` qo'shildi
 
@@ -63,7 +63,7 @@ O'zgarishlar tarixi
 0.0.6 - 2026-11-16
 ------------------
 + Kamera ko'rish moduli (vision) va rst hujjatlari qo'shildi
-+ Freenove ESP32-S3 WROOM CAM rasmiy pin nomlari va plata metama'lumotlari kiritildi
++ ESP32-S3 WROOM CAM rasmiy pin nomlari va plata metama'lumotlari kiritildi
 + ESP32-S3 uchun NeoPixelLED rang sozlagichi va pin tekshiruvi yaxshilandi
 + Sphinx ko'p tilli (en, ko, uz) hujjatlar tuzilmasi yaratildi
 
