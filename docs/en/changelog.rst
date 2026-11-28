@@ -3,6 +3,16 @@ Change log
 
 .. currentmodule:: espzero
 
+0.1.1 - 2026-11-28
+------------------
++ Added Access Point (hotspot) and lightweight HTTP web server helpers to ``WiFi`` (``_wifi.py``):
+  - ``WiFi.start_ap(ssid, password=None)`` / ``WiFi.stop_ap()``: one-line standalone Wi-Fi hotspot (``AP_IF``, default ``192.168.4.1``) management
+  - ``WiFi.serve(handler, port=80)`` / ``await WiFi.async_serve(handler, port=80)``: blocking and ``asyncio`` HTTP servers that automatically parse ``(path, params)`` and send HTML/JSON/plain-text response headers
+  - Updated ``WiFi.ip`` and ``WiFi.ifconfig`` to automatically report the active AP interface when STA is not connected
++ Added ``audio.start_ai_receiver(port=8081, background=True)`` to receive PC-side ``/ai?action=...`` voice AI results via ``audio.get_ai_result()`` without wiring a hardware ``I2SMic``
++ Added named color string support (e.g. ``"red"``, ``"cyan"``, ``"yellow"``) to ``RGBLED`` and ``NeoPixelLED.blink()``
++ Updated ``pinout()`` to render board-specific pinout diagrams (including the physical 40-pin layout of ``ESP32S3DevKit``)
+
 0.1.0 - 2026-11-23
 ------------------
 + Introduced ``I2SSpeaker`` class (``audio.py``) for driving hardware I2S amplifiers and speakers (e.g. MAX98357A):

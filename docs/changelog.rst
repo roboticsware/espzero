@@ -3,6 +3,16 @@
 
 .. currentmodule:: espzero
 
+0.1.1 - 2026-11-28
+------------------
++ ``WiFi`` 클래스(``_wifi.py``)에 무선 AP 핫스팟 및 경량 HTTP 웹 서버 헬퍼 추가:
+  - ``WiFi.start_ap(ssid, password=None)`` / ``WiFi.stop_ap()``: 한 줄로 자체 Wi-Fi 핫스팟(``AP_IF``, 기본 ``192.168.4.1``) 개설 및 종료
+  - ``WiFi.serve(handler, port=80)`` / ``await WiFi.async_serve(handler, port=80)``: 요청 경로(``path``)와 쿼리 파라미터(``params``)를 자동 파싱하고 HTML/JSON/텍스트 응답 헤더를 자동 생성하는 동기·비동기(``asyncio``) 웹 서버 헬퍼
+  - ``WiFi.ip`` 및 ``WiFi.ifconfig`` 속성이 AP 모드 활성화 상태도 자동 인식하도록 개선
++ ``audio.start_ai_receiver(port=8081, background=True)`` 추가: 하드웨어 ``I2SMic`` 없이도 PC 마이크 등에서 보낸 ``/ai?action=...`` 명령을 백그라운드로 수신하여 ``audio.get_ai_result()``\ 로 조회 가능
++ ``RGBLED`` 및 ``NeoPixelLED.blink()``\ 에 ``"red"``, ``"cyan"``, ``"yellow"`` 등 이름 기반 색상 문자열(Named Color String) 지원 추가
++ ``pinout()`` 함수가 현재 보드 프로필에 맞는 전용 핀맵 다이어그램(``ESP32S3DevKit`` 물리 40핀 배열 포함)을 출력하도록 개선
+
 0.1.0 - 2026-11-23
 ------------------
 + MAX98357A 등 하드웨어 I2S 앰프 및 스피커 구동을 위한 ``I2SSpeaker`` 클래스(``audio.py``) 신설:

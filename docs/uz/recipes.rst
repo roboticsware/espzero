@@ -667,15 +667,12 @@ Biroq, ESP32 va kompyuter o'rtasida **Wi-Fi** orqali vazifalarni taqsimlash orqa
 
       .. code-block:: python
 
-          import network
-          from espzero import vision
+          from espzero import WiFi, vision
 
-          # 1. ESP32 ni mustaqil Wi-Fi kirish nuqtasi (AP) sifatida yoqish
-          ap = network.WLAN(network.AP_IF)
-          ap.active(True)
-          ap.config(essid="ESP32-CAM-ROBOT", authmode=network.AUTH_OPEN)
+          # 1. ESP32 ni mustaqil Wi-Fi kirish nuqtasi (AP) sifatida yoqish (standart IP: 192.168.4.1)
+          WiFi().start_ap("ESP32-CAM-ROBOT")
 
-          # 2. Hotspot tarmog'ida video uzatishni boshlash (Standart IP: http://192.168.4.1:8080/)
+          # 2. Hotspot tarmog'ida video uzatishni boshlash (http://192.168.4.1:8080/)
           vision.start_wifi_stream(port=8080)
 
       Noutbuk yoki telefoningizdan ``ESP32-CAM-ROBOT`` Wi-Fi tarmog'iga ulaning va brauzer yoki kompyuter dasturida ``http://192.168.4.1:8080/`` manziliga kirib, istalgan joyda simsiz video va AI boshqaruvidan foydalaning.

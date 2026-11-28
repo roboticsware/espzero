@@ -683,15 +683,12 @@ ESP32 카메라 영상을 PC(Mu 에디터)로 전송하고, PC의 MediaPipe 라�
 
       .. code-block:: python
 
-          import network
-          from espzero import vision
+          from espzero import WiFi, vision
 
-          # 1. ESP32 자체를 무선 핫스팟(AP)으로 활성화
-          ap = network.WLAN(network.AP_IF)
-          ap.active(True)
-          ap.config(essid="ESP32-CAM-ROBOT", authmode=network.AUTH_OPEN)
+          # 1. ESP32 자체를 무선 핫스팟(AP)으로 활성화 (기본 IP: 192.168.4.1)
+          WiFi().start_ap("ESP32-CAM-ROBOT")
 
-          # 2. 자체 망에서 스트리밍 시작 (기본 IP: http://192.168.4.1:8080/)
+          # 2. 자체 망에서 스트리밍 시작 (http://192.168.4.1:8080/)
           vision.start_wifi_stream(port=8080)
 
       노트북이나 스마트폰의 Wi-Fi 목록에서 ``ESP32-CAM-ROBOT`` 신호에 접속한 뒤, 브라우저나 PC 컨트롤러에서 ``http://192.168.4.1:8080/`` 주소로 연결하면 어디서든 무선 스트리밍 및 AI 원격 제어가 가능합니다.

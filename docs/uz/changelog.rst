@@ -3,6 +3,16 @@ O'zgarishlar tarixi
 
 .. currentmodule:: espzero
 
+0.1.1 - 2026-11-28
+------------------
++ ``WiFi`` sinfiga (``_wifi.py``) mustaqil kirish nuqtasi (AP hotspot) va yengil HTTP veb-server yordamchilari qo'shildi:
+  - ``WiFi.start_ap(ssid, password=None)`` / ``WiFi.stop_ap()``: bir qator kod bilan mustaqil Wi-Fi hotspot (``AP_IF``, standart ``192.168.4.1``) ochish va to'xtatish
+  - ``WiFi.serve(handler, port=80)`` / ``await WiFi.async_serve(handler, port=80)``: so'rov yo'li (``path``) va parametrlarini (``params``) avtomatik ajratib, HTML/JSON/matn sarlavhalari bilan javob beruvchi sinxron va asinxron (``asyncio``) veb-serverlar
+  - ``WiFi.ip`` va ``WiFi.ifconfig`` xususiyatlari faol AP rejimini ham avtomatik aniqlaydigan qilib takomillashtirildi
++ ``audio.start_ai_receiver(port=8081, background=True)`` qo'shildi: apparat ``I2SMic`` mikrofonsiz ham kompyuterdan kelgan ``/ai?action=...`` buyruqlarini ``audio.get_ai_result()`` orqali qabul qilish imkoniyati
++ ``RGBLED`` va ``NeoPixelLED.blink()`` uchun nomlangan rang matnlari (``"red"``, ``"cyan"``, ``"yellow"`` va boshqalar) qo'llab-quvvatlovi qo'shildi
++ ``pinout()`` funksiyasi har bir plata profiliga mos pinout diagrammasini (jumladan ``ESP32S3DevKit`` 40-pinli fizik joylashuvini) ko'rsatadigan qilib yangilandi
+
 0.1.0 - 2026-11-23
 ------------------
 + MAX98357A kabi apparat I2S kuchaytirgichlari va dinamiklarni boshqarish uchun yangi ``I2SSpeaker`` sinfi (``audio.py``) joriy etildi:

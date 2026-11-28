@@ -128,6 +128,8 @@ Audio DSP va Wi-Fi striming (``espzero.audio``)
 
 .. autofunction:: espzero.audio.start_wifi_stream
 
+.. autofunction:: espzero.audio.start_ai_receiver
+
 .. autofunction:: espzero.audio.get_ai_result
 
 .. autofunction:: espzero.audio.stop_stream
@@ -148,3 +150,11 @@ Ko'rish va Kamera (``espzero.vision``)
 .. autofunction:: espzero.vision.get_hand
 
 .. autofunction:: espzero.vision.stop_stream
+
+Tarmoq (Networking)
+-------------------
+
+WiFi
+~~~~
+.. autoclass:: espzero.WiFi
+   :members:

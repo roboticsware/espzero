@@ -181,6 +181,8 @@ I2SSpeaker
 
 .. autofunction:: espzero.audio.start_wifi_stream
 
+.. autofunction:: espzero.audio.start_ai_receiver
+
 .. autofunction:: espzero.audio.get_ai_result
 
 .. autofunction:: espzero.audio.stop_stream

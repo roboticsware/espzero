@@ -663,15 +663,12 @@ However, by dividing responsibilities between the ESP32 and a PC over **Wi-Fi**,
 
       .. code-block:: python
 
-          import network
-          from espzero import vision
+          from espzero import WiFi, vision
 
-          # 1. Enable ESP32 as a standalone Wi-Fi Access Point (hotspot)
-          ap = network.WLAN(network.AP_IF)
-          ap.active(True)
-          ap.config(essid="ESP32-CAM-ROBOT", authmode=network.AUTH_OPEN)
+          # 1. Enable ESP32 as a standalone Wi-Fi Access Point (default IP: 192.168.4.1)
+          WiFi().start_ap("ESP32-CAM-ROBOT")
 
-          # 2. Start video stream on the hotspot network (Default IP: http://192.168.4.1:8080/)
+          # 2. Start video stream on the hotspot network (http://192.168.4.1:8080/)
           vision.start_wifi_stream(port=8080)
 
       Connect your laptop or smartphone to the ``ESP32-CAM-ROBOT`` Wi-Fi network and open ``http://192.168.4.1:8080/`` to stream video and run AI remote control anywhere outdoors.

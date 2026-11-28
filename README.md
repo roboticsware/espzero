@@ -323,8 +323,13 @@ print("Connected:", ip)         # blocks until connected or raises OSError
 
 wifi.scan()                     # returns list of nearby APs
 wifi.is_connected               # True / False
-wifi.ip                         # current IP string
+wifi.ip                         # current IP string (STA or AP)
 wifi.disconnect()
+
+# Access Point (standalone hotspot) & lightweight HTTP server
+ap_ip = wifi.start_ap("ESP32-S3-AP")           # default IP: 192.168.4.1
+wifi.serve(lambda path, params: "OK", port=80) # blocking HTTP server
+# Or inside asyncio: await wifi.async_serve(handle_web, port=80)
 ```
 
 > **Note:** After `connect()`, the HAL sets `_wifi_active = True` automatically.  
